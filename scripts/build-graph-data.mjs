@@ -46,15 +46,43 @@ const saptarishi = [
   ["vashishtha", "Vashishtha", "वशिष्ठ"],
   ["vishvamitra", "Vishvamitra", "विश्वामित्र"],
 ];
+const STAR_NOTE = {
+  atri: " Also traditionally identified with the star Megrez in Ursa Major.",
+  vashishtha: " Also traditionally identified with the star Mizar in Ursa Major (with his wife Arundhati as the companion star Alcor).",
+};
 for (const [id, name, sanskrit] of saptarishi) {
-  nodes.push({ id, type: "sage", group: "saptarishi", name, sanskrit, summary: `One of the Saptarishi (Seven Sages) of the current Manvantara, represented among the stars of Ursa Major.` });
+  nodes.push({
+    id,
+    type: "sage",
+    group: "saptarishi",
+    name,
+    sanskrit,
+    summary: `One of the Saptarishi (Seven Sages) of the current Manvantara.${STAR_NOTE[id] ?? ""}`,
+  });
   addEdge(id, "dhruva-tara", "astronomical-association", "part of the navigable ring around Dhruva Tārā");
 }
 
 // Progenitor lineage: Brahma -> Marichi -> Kashyapa
-nodes.push({ id: "marichi", type: "sage", group: "progenitor", name: "Marichi", sanskrit: "मरीचि", summary: "Mind-born son of Brahma; father of Kashyapa." });
+nodes.push({ id: "marichi", type: "sage", group: "progenitor", name: "Marichi", sanskrit: "मरीचि", summary: "Mind-born son of Brahma; father of Kashyapa. Traditionally identified with the star Alkaid in Ursa Major." });
 addEdge("brahma", "marichi", "parent", "mind-born son");
 addEdge("marichi", "kashyapa", "parent", undefined);
+
+// The other mind-born sons of Brahma (manasputra) traditionally identified
+// with the remaining stars of Ursa Major / the Big Dipper. This is a
+// *distinct* group of seven from the "current Manvantara" Saptarishi above
+// (Atri and Vashishtha appear in both lists across different traditions —
+// see docs/research/nakshatra-deities-sources.md for the full explanation).
+// Kept separate here so the real star map (src/data/stars.ts) has a graph
+// node for every star-linked rishi, without conflating the two lists.
+nodes.push(
+  { id: "kratu", type: "sage", group: "progenitor", name: "Kratu", sanskrit: "क्रतु", summary: "Mind-born son of Brahma. Traditionally identified with the star Dubhe in Ursa Major." },
+  { id: "pulaha", type: "sage", group: "progenitor", name: "Pulaha", sanskrit: "पुलह", summary: "Mind-born son of Brahma. Traditionally identified with the star Merak in Ursa Major." },
+  { id: "pulastya", type: "sage", group: "progenitor", name: "Pulastya", sanskrit: "पुलस्त्य", summary: "Mind-born son of Brahma; grandfather of Ravana. Traditionally identified with the star Phecda in Ursa Major." },
+  { id: "angiras", type: "sage", group: "progenitor", name: "Angiras", sanskrit: "अङ्गिरस्", summary: "Mind-born son of Brahma; a primal source of several priestly lineages. Traditionally identified with the star Alioth in Ursa Major." },
+);
+for (const id of ["kratu", "pulaha", "pulastya", "angiras"]) {
+  addEdge("brahma", id, "parent", "mind-born son");
+}
 
 nodes.push({ id: "aditi", type: "deity", group: "aditya", name: "Aditi", sanskrit: "अदिति", summary: "Mother of the Adityas; consort of Kashyapa." });
 addEdge("kashyapa", "aditi", "spouse", undefined);

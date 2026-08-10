@@ -7,17 +7,35 @@ import type { GraphNode } from "../types/graph";
 
 export type Position = [number, number, number];
 
-const RING_1_RADIUS = 7; // nakshatras + saptarishi
+const RING_1_RADIUS = 7; // nakshatras + saptarishi (excluding star-represented ones, below)
 const RING_2_RADIUS = 12; // deities (trimurti, adityas, nakshatra deities, progenitors)
 const EARTH_CLUSTER_CENTER: Position = [0, -7, -16];
 const EARTH_CLUSTER_RADIUS = 4;
 
+// Rishis rendered as real stars in the sky layer (src/components/sky) get
+// their position from actual RA/Dec instead of this abstract ring, so they
+// aren't excluded here — they're excluded from it, to avoid appearing
+// twice. Keep in sync with the rishiIds in src/data/stars.ts.
+const STAR_REPRESENTED_IDS = new Set([
+  "kratu",
+  "pulaha",
+  "pulastya",
+  "atri",
+  "angiras",
+  "vashishtha",
+  "marichi",
+]);
+
 export function computeLayout(nodes: GraphNode[]): Record<string, Position> {
   const positions: Record<string, Position> = {};
 
-  const ring1 = nodes.filter((n) => n.type === "nakshatra" || n.group === "saptarishi");
+  const ring1 = nodes.filter(
+    (n) => n.type === "nakshatra" || (n.group === "saptarishi" && !STAR_REPRESENTED_IDS.has(n.id)),
+  );
   const ring2 = nodes.filter(
-    (n) => n.type === "deity" || (n.type === "sage" && n.group !== "saptarishi"),
+    (n) =>
+      n.type === "deity" ||
+      (n.type === "sage" && n.group !== "saptarishi" && !STAR_REPRESENTED_IDS.has(n.id)),
   );
   const earthCluster = nodes.filter((n) => n.type === "character" || n.type === "story-event");
 

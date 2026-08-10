@@ -4,6 +4,7 @@ import { CelestialScene } from "./scene/CelestialScene";
 import { Header } from "./components/Header";
 import { DetailPanel } from "./components/DetailPanel";
 import { SearchPanel } from "./components/SearchPanel";
+import { LayerToggles } from "./components/ui/LayerToggles";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Header />
       <SearchPanel />
       <DetailPanel />
+      <LayerToggles />
 
       <footer className="pointer-events-none absolute inset-x-0 bottom-3 z-10 text-center text-[10px] tracking-widest text-white/30">
         DRAG TO ORBIT · CLICK A STAR TO EXPLORE
