@@ -31,16 +31,19 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
   const position = useMemo(() => altAzToVector3(alt, az, DOME_RADIUS - 1), [alt, az]);
 
   useFrame(({ clock }) => {
-    const breathe = 0.7 + Math.sin(clock.elapsedTime * 0.8 + star.ra) * 0.08;
+    const breathe = 0.4 + Math.sin(clock.elapsedTime * 0.6 + star.ra) * 0.06;
     const glowMaterial = glowRef.current?.material as { opacity: number } | undefined;
-    if (glowMaterial) glowMaterial.opacity = figureTexture ? (isActive ? 0.55 : 0.32) : isActive ? 0.95 : breathe;
+    if (glowMaterial) glowMaterial.opacity = figureTexture ? (isActive ? 0.5 : 0.28) : isActive ? 0.75 : breathe;
     const figureMaterial = figureRef.current?.material as { opacity: number } | undefined;
-    if (figureMaterial) figureMaterial.opacity = isActive ? 0.95 : 0.8;
+    if (figureMaterial) figureMaterial.opacity = isActive ? 0.85 : 0.55;
   });
 
+  // Large, semi-transparent, sitting over the whole star rather than a
+  // tight badge next to it — closer to how SkyGuide overlays a
+  // constellation figure across the stars it belongs to.
   return (
     <group
-      position={[position.x, position.y + 2, position.z]}
+      position={[position.x, position.y + 3.5, position.z]}
       onClick={
         star.nodeId
           ? (e) => {
@@ -54,23 +57,23 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
     >
       <Billboard>
         <mesh ref={glowRef} position={[0, 0, -0.01]}>
-          <planeGeometry args={[figureTexture ? 4 : 2.6, figureTexture ? 4.6 : 3.4]} />
+          <planeGeometry args={[figureTexture ? 9 : 6.5, figureTexture ? 10.5 : 8.5]} />
           <meshBasicMaterial
             map={glowTexture}
             color={isActive ? "#ffe6b8" : RISHI_GLOW_COLOR}
             transparent
-            opacity={0.7}
+            opacity={0.4}
             depthWrite={false}
             toneMapped={false}
           />
         </mesh>
         {figureTexture && (
           <mesh ref={figureRef}>
-            <planeGeometry args={[2.8, 2.8]} />
-            <meshBasicMaterial map={figureTexture} transparent opacity={0.8} depthWrite={false} toneMapped={false} />
+            <planeGeometry args={[7, 7]} />
+            <meshBasicMaterial map={figureTexture} transparent opacity={0.55} depthWrite={false} toneMapped={false} />
           </mesh>
         )}
-        <Html position={[0, figureTexture ? -2.2 : -2, 0]} distanceFactor={40} center style={{ pointerEvents: "none" }}>
+        <Html position={[0, figureTexture ? -5.5 : -4.8, 0]} distanceFactor={40} center style={{ pointerEvents: "none" }}>
           <div className="whitespace-nowrap text-xs tracking-wide text-amber-100/85">{star.indianName}</div>
         </Html>
       </Billboard>

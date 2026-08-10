@@ -24,7 +24,10 @@ export const useGraphStore = create<GraphState>((set) => ({
   nodes: graph.nodes,
   edges: graph.edges,
   positions,
-  selectedId: "dhruva-tara",
+  // No node selected on load — the sky itself should be the first thing
+  // the user sees, per ADR0002. DetailPanel only opens once something is
+  // actually clicked.
+  selectedId: null,
   hoveredId: null,
   searchQuery: "",
   select: (id) => set({ selectedId: id }),

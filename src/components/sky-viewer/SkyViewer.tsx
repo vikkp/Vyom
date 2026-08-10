@@ -7,6 +7,7 @@ import { StarField } from "./StarField";
 import { AsterismLines } from "./AsterismLines";
 import { RishiOverlays } from "./RishiOverlays";
 import { GraphLines } from "./GraphLines";
+import { SkyGradient } from "./SkyGradient";
 import { DOME_RADIUS } from "./constants";
 
 /**
@@ -23,10 +24,12 @@ export function SkyViewer() {
 
   return (
     <>
-      <color attach="background" args={["#03040f"]} />
-      <fog attach="fog" args={["#03040f", DOME_RADIUS * 0.7, DOME_RADIUS * 1.3]} />
-      <ambientLight intensity={0.15} />
-      <Stars radius={DOME_RADIUS + 10} depth={15} count={2000} factor={1} saturation={0} fade speed={0.2} />
+      {/* Fallback flat colour behind the gradient dome, in case it fails to render. */}
+      <color attach="background" args={["#02030a"]} />
+      <ambientLight intensity={0.1} />
+
+      <SkyGradient />
+      <Stars radius={DOME_RADIUS + 15} depth={25} count={5000} factor={1.4} saturation={0} fade speed={0.15} />
 
       <group onPointerMissed={() => select(null)}>
         <StarField stars={STAR_CATALOG} />
