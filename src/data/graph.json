@@ -1,0 +1,1249 @@
+{
+  "nodes": [
+    {
+      "id": "dhruva-tara",
+      "type": "celestial",
+      "group": "center",
+      "name": "Dhruva Tārā",
+      "sanskrit": "ध्रुव तारा",
+      "summary": "The Pole Star (Polaris). The fixed point in the night sky around which all other stars appear to turn."
+    },
+    {
+      "id": "brahma",
+      "type": "deity",
+      "group": "trimurti",
+      "name": "Brahma",
+      "sanskrit": "ब्रह्मा",
+      "summary": "The Creator, first of the Trimurti."
+    },
+    {
+      "id": "vishnu",
+      "type": "deity",
+      "group": "trimurti",
+      "name": "Vishnu",
+      "sanskrit": "विष्णु",
+      "summary": "The Preserver, second of the Trimurti."
+    },
+    {
+      "id": "shiva",
+      "type": "deity",
+      "group": "trimurti",
+      "name": "Shiva",
+      "sanskrit": "शिव",
+      "summary": "The Destroyer/Transformer, third of the Trimurti."
+    },
+    {
+      "id": "atri",
+      "type": "sage",
+      "group": "saptarishi",
+      "name": "Atri",
+      "sanskrit": "अत्रि",
+      "summary": "One of the Saptarishi (Seven Sages) of the current Manvantara, represented among the stars of Ursa Major."
+    },
+    {
+      "id": "bharadvaja",
+      "type": "sage",
+      "group": "saptarishi",
+      "name": "Bharadvaja",
+      "sanskrit": "भरद्वाज",
+      "summary": "One of the Saptarishi (Seven Sages) of the current Manvantara, represented among the stars of Ursa Major."
+    },
+    {
+      "id": "gautama",
+      "type": "sage",
+      "group": "saptarishi",
+      "name": "Gautama",
+      "sanskrit": "गौतम",
+      "summary": "One of the Saptarishi (Seven Sages) of the current Manvantara, represented among the stars of Ursa Major."
+    },
+    {
+      "id": "jamadagni",
+      "type": "sage",
+      "group": "saptarishi",
+      "name": "Jamadagni",
+      "sanskrit": "जमदग्नि",
+      "summary": "One of the Saptarishi (Seven Sages) of the current Manvantara, represented among the stars of Ursa Major."
+    },
+    {
+      "id": "kashyapa",
+      "type": "sage",
+      "group": "saptarishi",
+      "name": "Kashyapa",
+      "sanskrit": "कश्यप",
+      "summary": "One of the Saptarishi (Seven Sages) of the current Manvantara, represented among the stars of Ursa Major."
+    },
+    {
+      "id": "vashishtha",
+      "type": "sage",
+      "group": "saptarishi",
+      "name": "Vashishtha",
+      "sanskrit": "वशिष्ठ",
+      "summary": "One of the Saptarishi (Seven Sages) of the current Manvantara, represented among the stars of Ursa Major."
+    },
+    {
+      "id": "vishvamitra",
+      "type": "sage",
+      "group": "saptarishi",
+      "name": "Vishvamitra",
+      "sanskrit": "विश्वामित्र",
+      "summary": "One of the Saptarishi (Seven Sages) of the current Manvantara, represented among the stars of Ursa Major."
+    },
+    {
+      "id": "marichi",
+      "type": "sage",
+      "group": "progenitor",
+      "name": "Marichi",
+      "sanskrit": "मरीचि",
+      "summary": "Mind-born son of Brahma; father of Kashyapa."
+    },
+    {
+      "id": "aditi",
+      "type": "deity",
+      "group": "aditya",
+      "name": "Aditi",
+      "sanskrit": "अदिति",
+      "summary": "Mother of the Adityas; consort of Kashyapa."
+    },
+    {
+      "id": "ashwini-kumaras",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Ashwini Kumaras",
+      "sanskrit": "अश्विनीकुमारौ",
+      "summary": "Twin horse-headed physician gods of the Devas."
+    },
+    {
+      "id": "yama",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Yama",
+      "sanskrit": "यम",
+      "summary": "God of death and dharma; judge of the dead."
+    },
+    {
+      "id": "agni",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Agni",
+      "sanskrit": "अग्नि",
+      "summary": "God of fire, the divine messenger between humans and gods."
+    },
+    {
+      "id": "chandra",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Chandra",
+      "sanskrit": "चन्द्र",
+      "summary": "God of the Moon, also known as Soma."
+    },
+    {
+      "id": "rudra",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Rudra",
+      "sanskrit": "रुद्र",
+      "summary": "Fierce storm form of Shiva."
+    },
+    {
+      "id": "brihaspati",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Brihaspati",
+      "sanskrit": "बृहस्पति",
+      "summary": "Guru of the Devas, god of wisdom and speech."
+    },
+    {
+      "id": "sarpa",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Sarpa",
+      "sanskrit": "सर्प",
+      "summary": "The serpent deity, associated with the Nagas."
+    },
+    {
+      "id": "pitris",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Pitris",
+      "sanskrit": "पितृ",
+      "summary": "The divine ancestors."
+    },
+    {
+      "id": "bhaga",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Bhaga",
+      "sanskrit": "भग",
+      "summary": "Aditya of prosperity, marital bliss and good fortune."
+    },
+    {
+      "id": "aryaman",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Aryaman",
+      "sanskrit": "अर्यमन्",
+      "summary": "Aditya of contracts, honour and unions."
+    },
+    {
+      "id": "savitar",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Savitar",
+      "sanskrit": "सवितृ",
+      "summary": "Aditya of the sun before sunrise, the impeller."
+    },
+    {
+      "id": "vishvakarma",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Vishvakarma",
+      "sanskrit": "विश्वकर्मा",
+      "summary": "Divine architect and craftsman of the gods."
+    },
+    {
+      "id": "vayu",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Vayu",
+      "sanskrit": "वायु",
+      "summary": "God of wind and breath."
+    },
+    {
+      "id": "indra",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Indra",
+      "sanskrit": "इन्द्र",
+      "summary": "King of the Devas, wielder of the vajra."
+    },
+    {
+      "id": "mitra",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Mitra",
+      "sanskrit": "मित्र",
+      "summary": "Aditya of friendship, contracts and covenants."
+    },
+    {
+      "id": "nirrti",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Nirrti",
+      "sanskrit": "निर्ऋति",
+      "summary": "Goddess of dissolution and destruction."
+    },
+    {
+      "id": "apah",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Apah",
+      "sanskrit": "आपः",
+      "summary": "Deity of the cosmic waters."
+    },
+    {
+      "id": "vishvadevas",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Vishvadevas",
+      "sanskrit": "विश्वेदेवाः",
+      "summary": "The collective of Universal Gods."
+    },
+    {
+      "id": "vasu",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Ashta Vasu",
+      "sanskrit": "अष्टवसु",
+      "summary": "The eight elemental gods of natural phenomena."
+    },
+    {
+      "id": "varuna",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Varuna",
+      "sanskrit": "वरुण",
+      "summary": "God of cosmic and earthly waters, keeper of cosmic order."
+    },
+    {
+      "id": "aja-ekapada",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Aja Ekapada",
+      "sanskrit": "अज एकपाद",
+      "summary": "The one-footed goat, a fierce form associated with lightning."
+    },
+    {
+      "id": "ahirbudhnya",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Ahirbudhnya",
+      "sanskrit": "अहिर्बुध्न्य",
+      "summary": "The serpent of the deep, guardian of hidden wisdom."
+    },
+    {
+      "id": "pushan",
+      "type": "deity",
+      "group": "nakshatra-deity",
+      "name": "Pushan",
+      "sanskrit": "पूषन्",
+      "summary": "Aditya who nourishes and protects travellers and animals."
+    },
+    {
+      "id": "ashwini",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Ashwini",
+      "sanskrit": "अश्विनी",
+      "symbol": "Horse's head",
+      "summary": "The healer — swift beginnings and new starts."
+    },
+    {
+      "id": "bharani",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Bharani",
+      "sanskrit": "भरणी",
+      "symbol": "Yoni (womb)",
+      "summary": "The bearer — restraint, transformation and the boundary of life."
+    },
+    {
+      "id": "krittika",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Krittika",
+      "sanskrit": "कृत्तिका",
+      "symbol": "Razor / flame",
+      "summary": "The cutter — sharp purification and burning away illusion."
+    },
+    {
+      "id": "rohini",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Rohini",
+      "sanskrit": "रोहिणी",
+      "symbol": "Ox-cart / chariot",
+      "summary": "The ascender — growth, fertility and creative beauty."
+    },
+    {
+      "id": "mrigashira",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Mrigashira",
+      "sanskrit": "मृगशिरा",
+      "symbol": "Deer's head",
+      "summary": "The searcher — gentle curiosity and quiet pursuit."
+    },
+    {
+      "id": "ardra",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Ardra",
+      "sanskrit": "आर्द्रा",
+      "symbol": "Teardrop / gem",
+      "summary": "The moist one — storms that clear the way for renewal."
+    },
+    {
+      "id": "punarvasu",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Punarvasu",
+      "sanskrit": "पुनर्वसु",
+      "symbol": "Bow and quiver",
+      "summary": "The return of the light — renewal after hardship."
+    },
+    {
+      "id": "pushya",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Pushya",
+      "sanskrit": "पुष्य",
+      "symbol": "Lotus / cow's udder",
+      "summary": "The nourisher — the most auspicious of the Nakshatras."
+    },
+    {
+      "id": "ashlesha",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Ashlesha",
+      "sanskrit": "आश्लेषा",
+      "symbol": "Coiled serpent",
+      "summary": "The embracer — hypnotic wisdom and hidden intent."
+    },
+    {
+      "id": "magha",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Magha",
+      "sanskrit": "मघा",
+      "symbol": "Royal throne",
+      "summary": "The mighty one — ancestry, legacy and inherited power."
+    },
+    {
+      "id": "purva-phalguni",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Purva Phalguni",
+      "sanskrit": "पूर्वाफाल्गुनी",
+      "symbol": "Front legs of a bed",
+      "summary": "The former reddish one — pleasure, rest and good fortune."
+    },
+    {
+      "id": "uttara-phalguni",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Uttara Phalguni",
+      "sanskrit": "उत्तराफाल्गुनी",
+      "symbol": "Back legs of a bed",
+      "summary": "The latter reddish one — bonds of friendship and patronage."
+    },
+    {
+      "id": "hasta",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Hasta",
+      "sanskrit": "हस्त",
+      "symbol": "The hand",
+      "summary": "The hand — skill, craft and the power to grasp opportunity."
+    },
+    {
+      "id": "chitra",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Chitra",
+      "sanskrit": "चित्रा",
+      "symbol": "Bright jewel",
+      "summary": "The brilliant one — artistry and divine craftsmanship."
+    },
+    {
+      "id": "swati",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Swati",
+      "sanskrit": "स्वाती",
+      "symbol": "Young shoot swaying in the wind",
+      "summary": "The independent one — movement, trade and self-reliance."
+    },
+    {
+      "id": "vishakha",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Vishakha",
+      "sanskrit": "विशाखा",
+      "symbol": "Triumphal archway",
+      "summary": "The forked branch — determined pursuit of a goal."
+    },
+    {
+      "id": "anuradha",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Anuradha",
+      "sanskrit": "अनुराधा",
+      "symbol": "Triumphal archway / lotus",
+      "summary": "The follower of Radha — devotion, friendship and success through cooperation."
+    },
+    {
+      "id": "jyeshtha",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Jyeshtha",
+      "sanskrit": "ज्येष्ठा",
+      "symbol": "Circular amulet / umbrella",
+      "summary": "The eldest — seniority, protection and quiet authority."
+    },
+    {
+      "id": "mula",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Mula",
+      "sanskrit": "मूल",
+      "symbol": "Bundle of roots",
+      "summary": "The root — getting to the foundation by uprooting what came before."
+    },
+    {
+      "id": "purva-ashadha",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Purva Ashadha",
+      "sanskrit": "पूर्वाषाढा",
+      "symbol": "Elephant tusk / fan",
+      "summary": "The former invincible one — early, unstoppable conviction."
+    },
+    {
+      "id": "uttara-ashadha",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Uttara Ashadha",
+      "sanskrit": "उत्तराषाढा",
+      "symbol": "Elephant tusk / planks of a bed",
+      "summary": "The latter invincible one — lasting victory earned through universal support."
+    },
+    {
+      "id": "shravana",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Shravana",
+      "sanskrit": "श्रवण",
+      "symbol": "Ear / three footprints",
+      "summary": "The listener — learning, memory and connection through hearing."
+    },
+    {
+      "id": "dhanishta",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Dhanishta",
+      "sanskrit": "धनिष्ठा",
+      "symbol": "Drum",
+      "summary": "The wealthiest — rhythm, prosperity and celebration."
+    },
+    {
+      "id": "shatabhisha",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Shatabhisha",
+      "sanskrit": "शतभिषा",
+      "symbol": "Empty circle / a hundred stars",
+      "summary": "The hundred healers — mystery, healing and cosmic law."
+    },
+    {
+      "id": "purva-bhadrapada",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Purva Bhadrapada",
+      "sanskrit": "पूर्वाभाद्रपदा",
+      "symbol": "Front legs of a funeral cot",
+      "summary": "The former auspicious feet — intense transformation through fire."
+    },
+    {
+      "id": "uttara-bhadrapada",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Uttara Bhadrapada",
+      "sanskrit": "उत्तराभाद्रपदा",
+      "symbol": "Back legs of a funeral cot",
+      "summary": "The latter auspicious feet — deep wisdom held in stillness."
+    },
+    {
+      "id": "revati",
+      "type": "nakshatra",
+      "group": "nakshatra",
+      "name": "Revati",
+      "sanskrit": "रेवती",
+      "symbol": "Fish",
+      "summary": "The wealthy wanderer — safe passage and nourishment at the journey's end."
+    },
+    {
+      "id": "swayambhuva-manu",
+      "type": "character",
+      "group": "dhruva-family",
+      "name": "Swayambhuva Manu",
+      "sanskrit": "स्वायम्भुव मनु",
+      "summary": "The first Manu; Dhruva's grandfather."
+    },
+    {
+      "id": "shatarupa",
+      "type": "character",
+      "group": "dhruva-family",
+      "name": "Shatarupa",
+      "sanskrit": "शतरूपा",
+      "summary": "Consort of Swayambhuva Manu; Dhruva's grandmother."
+    },
+    {
+      "id": "uttanapada",
+      "type": "character",
+      "group": "dhruva-family",
+      "name": "Uttanapada",
+      "sanskrit": "उत्तानपाद",
+      "summary": "King, son of Swayambhuva Manu; Dhruva's father."
+    },
+    {
+      "id": "suniti",
+      "type": "character",
+      "group": "dhruva-family",
+      "name": "Suniti",
+      "sanskrit": "सुनीति",
+      "summary": "Elder queen of Uttanapada; Dhruva's mother."
+    },
+    {
+      "id": "suruchi",
+      "type": "character",
+      "group": "dhruva-family",
+      "name": "Suruchi",
+      "sanskrit": "सुरुचि",
+      "summary": "Younger, favoured queen of Uttanapada; Uttama's mother."
+    },
+    {
+      "id": "uttama",
+      "type": "character",
+      "group": "dhruva-family",
+      "name": "Uttama",
+      "sanskrit": "उत्तम",
+      "summary": "Son of Suruchi; Dhruva's half-brother."
+    },
+    {
+      "id": "dhruva",
+      "type": "character",
+      "group": "dhruva-family",
+      "name": "Dhruva",
+      "sanskrit": "ध्रुव",
+      "summary": "Prince who, through penance, was granted an unmoving place in the sky by Vishnu."
+    },
+    {
+      "id": "narada",
+      "type": "character",
+      "group": "dhruva-family",
+      "name": "Narada",
+      "sanskrit": "नारद",
+      "summary": "Celestial sage who guided young Dhruva toward his penance."
+    },
+    {
+      "id": "dhruva-penance",
+      "type": "story-event",
+      "group": "story",
+      "name": "Dhruva's Penance",
+      "summary": "Wounded by Suruchi's rejection, Dhruva undertakes fierce penance in the forest, guided by Narada, until Vishnu grants him an eternal place in the heavens."
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "atri",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e2",
+      "source": "bharadvaja",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e3",
+      "source": "gautama",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e4",
+      "source": "jamadagni",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e5",
+      "source": "kashyapa",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e6",
+      "source": "vashishtha",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e7",
+      "source": "vishvamitra",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e8",
+      "source": "brahma",
+      "target": "marichi",
+      "type": "parent",
+      "label": "mind-born son"
+    },
+    {
+      "id": "e9",
+      "source": "marichi",
+      "target": "kashyapa",
+      "type": "parent"
+    },
+    {
+      "id": "e10",
+      "source": "kashyapa",
+      "target": "aditi",
+      "type": "spouse"
+    },
+    {
+      "id": "e11",
+      "source": "rudra",
+      "target": "shiva",
+      "type": "form-of",
+      "label": "fierce form of Shiva"
+    },
+    {
+      "id": "e12",
+      "source": "kashyapa",
+      "target": "indra",
+      "type": "parent",
+      "label": "Aditya"
+    },
+    {
+      "id": "e13",
+      "source": "aditi",
+      "target": "indra",
+      "type": "parent",
+      "label": "Aditya"
+    },
+    {
+      "id": "e14",
+      "source": "kashyapa",
+      "target": "mitra",
+      "type": "parent",
+      "label": "Aditya"
+    },
+    {
+      "id": "e15",
+      "source": "aditi",
+      "target": "mitra",
+      "type": "parent",
+      "label": "Aditya"
+    },
+    {
+      "id": "e16",
+      "source": "kashyapa",
+      "target": "aryaman",
+      "type": "parent",
+      "label": "Aditya"
+    },
+    {
+      "id": "e17",
+      "source": "aditi",
+      "target": "aryaman",
+      "type": "parent",
+      "label": "Aditya"
+    },
+    {
+      "id": "e18",
+      "source": "kashyapa",
+      "target": "bhaga",
+      "type": "parent",
+      "label": "Aditya"
+    },
+    {
+      "id": "e19",
+      "source": "aditi",
+      "target": "bhaga",
+      "type": "parent",
+      "label": "Aditya"
+    },
+    {
+      "id": "e20",
+      "source": "kashyapa",
+      "target": "varuna",
+      "type": "parent",
+      "label": "Aditya"
+    },
+    {
+      "id": "e21",
+      "source": "aditi",
+      "target": "varuna",
+      "type": "parent",
+      "label": "Aditya"
+    },
+    {
+      "id": "e22",
+      "source": "kashyapa",
+      "target": "pushan",
+      "type": "parent",
+      "label": "Aditya"
+    },
+    {
+      "id": "e23",
+      "source": "aditi",
+      "target": "pushan",
+      "type": "parent",
+      "label": "Aditya"
+    },
+    {
+      "id": "e24",
+      "source": "kashyapa",
+      "target": "savitar",
+      "type": "parent",
+      "label": "Aditya"
+    },
+    {
+      "id": "e25",
+      "source": "aditi",
+      "target": "savitar",
+      "type": "parent",
+      "label": "Aditya"
+    },
+    {
+      "id": "e26",
+      "source": "ashwini-kumaras",
+      "target": "ashwini",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e27",
+      "source": "ashwini",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e28",
+      "source": "yama",
+      "target": "bharani",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e29",
+      "source": "bharani",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e30",
+      "source": "agni",
+      "target": "krittika",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e31",
+      "source": "krittika",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e32",
+      "source": "brahma",
+      "target": "rohini",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e33",
+      "source": "rohini",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e34",
+      "source": "chandra",
+      "target": "mrigashira",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e35",
+      "source": "mrigashira",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e36",
+      "source": "rudra",
+      "target": "ardra",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e37",
+      "source": "ardra",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e38",
+      "source": "aditi",
+      "target": "punarvasu",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e39",
+      "source": "punarvasu",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e40",
+      "source": "brihaspati",
+      "target": "pushya",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e41",
+      "source": "pushya",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e42",
+      "source": "sarpa",
+      "target": "ashlesha",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e43",
+      "source": "ashlesha",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e44",
+      "source": "pitris",
+      "target": "magha",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e45",
+      "source": "magha",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e46",
+      "source": "bhaga",
+      "target": "purva-phalguni",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e47",
+      "source": "purva-phalguni",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e48",
+      "source": "aryaman",
+      "target": "uttara-phalguni",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e49",
+      "source": "uttara-phalguni",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e50",
+      "source": "savitar",
+      "target": "hasta",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e51",
+      "source": "hasta",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e52",
+      "source": "vishvakarma",
+      "target": "chitra",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e53",
+      "source": "chitra",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e54",
+      "source": "vayu",
+      "target": "swati",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e55",
+      "source": "swati",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e56",
+      "source": "indra",
+      "target": "vishakha",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e57",
+      "source": "vishakha",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e58",
+      "source": "mitra",
+      "target": "anuradha",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e59",
+      "source": "anuradha",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e60",
+      "source": "indra",
+      "target": "jyeshtha",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e61",
+      "source": "jyeshtha",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e62",
+      "source": "nirrti",
+      "target": "mula",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e63",
+      "source": "mula",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e64",
+      "source": "apah",
+      "target": "purva-ashadha",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e65",
+      "source": "purva-ashadha",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e66",
+      "source": "vishvadevas",
+      "target": "uttara-ashadha",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e67",
+      "source": "uttara-ashadha",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e68",
+      "source": "vishnu",
+      "target": "shravana",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e69",
+      "source": "shravana",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e70",
+      "source": "vasu",
+      "target": "dhanishta",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e71",
+      "source": "dhanishta",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e72",
+      "source": "varuna",
+      "target": "shatabhisha",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e73",
+      "source": "shatabhisha",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e74",
+      "source": "aja-ekapada",
+      "target": "purva-bhadrapada",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e75",
+      "source": "purva-bhadrapada",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e76",
+      "source": "ahirbudhnya",
+      "target": "uttara-bhadrapada",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e77",
+      "source": "uttara-bhadrapada",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e78",
+      "source": "pushan",
+      "target": "revati",
+      "type": "astronomical-association",
+      "label": "presiding deity"
+    },
+    {
+      "id": "e79",
+      "source": "revati",
+      "target": "dhruva-tara",
+      "type": "astronomical-association",
+      "label": "part of the navigable ring around Dhruva Tārā"
+    },
+    {
+      "id": "e80",
+      "source": "swayambhuva-manu",
+      "target": "shatarupa",
+      "type": "spouse"
+    },
+    {
+      "id": "e81",
+      "source": "swayambhuva-manu",
+      "target": "uttanapada",
+      "type": "parent"
+    },
+    {
+      "id": "e82",
+      "source": "shatarupa",
+      "target": "uttanapada",
+      "type": "parent"
+    },
+    {
+      "id": "e83",
+      "source": "uttanapada",
+      "target": "suniti",
+      "type": "spouse"
+    },
+    {
+      "id": "e84",
+      "source": "uttanapada",
+      "target": "suruchi",
+      "type": "spouse"
+    },
+    {
+      "id": "e85",
+      "source": "suniti",
+      "target": "dhruva",
+      "type": "parent"
+    },
+    {
+      "id": "e86",
+      "source": "suruchi",
+      "target": "uttama",
+      "type": "parent"
+    },
+    {
+      "id": "e87",
+      "source": "uttama",
+      "target": "dhruva",
+      "type": "sibling",
+      "label": "half-brother"
+    },
+    {
+      "id": "e88",
+      "source": "suruchi",
+      "target": "dhruva-penance",
+      "type": "story-link",
+      "label": "rejection that sparked the penance"
+    },
+    {
+      "id": "e89",
+      "source": "narada",
+      "target": "dhruva-penance",
+      "type": "guru",
+      "label": "guided Dhruva's practice"
+    },
+    {
+      "id": "e90",
+      "source": "dhruva",
+      "target": "dhruva-penance",
+      "type": "story-link"
+    },
+    {
+      "id": "e91",
+      "source": "vishnu",
+      "target": "dhruva-penance",
+      "type": "story-link",
+      "label": "granted the boon"
+    },
+    {
+      "id": "e92",
+      "source": "vishnu",
+      "target": "dhruva",
+      "type": "boon",
+      "label": "granted Dhruva an unmoving, eternal place in the sky"
+    },
+    {
+      "id": "e93",
+      "source": "dhruva",
+      "target": "dhruva-tara",
+      "type": "transformation",
+      "label": "became the pole star"
+    }
+  ]
+}
