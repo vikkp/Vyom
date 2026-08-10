@@ -30,9 +30,13 @@ Individual nakshatra pages consulted for entries not fully covered in the summar
 - [AjmerAstro — Purva Bhadrapada Nakshatra](https://www.ajmerastro.com/en/nakshatras/purva-bhadrapada-nakshatra)
 - [AstroSight — Deity for Each Nakshatra (Ishta Devata Guide)](https://astrosight.ai/spirituality/deity-for-each-nakshatra)
 
-### Note on Vishakha's deity
+### Note on Vishakha's deity — corrected 2026-08-10
 
-Most sources list Vishakha's presiding deity as the pair **Indra-Agni**. For v1 this was simplified to **Indra** alone (Agni already exists as a separate node for Krittika), noted as a simplification worth revisiting if the content pipeline (ADR0004) wants to model co-presiding deities as multiple edges rather than a single one.
+Most sources, including the Taittiriya Samhita (4.4.10), list Vishakha's presiding deity as the dual pair **Indra-Agni**. v1 originally simplified this to Indra alone; a senior review flagged this as incorrect ("do not simplify — model it properly"), since Agni already presiding over Krittika doesn't make its second role at Vishakha any less real or attested. This has been fixed: `graph.json` now has two `astronomical-association` edges into `vishakha` (from `indra` and from `agni`), both labelled `"co-presiding deity (Indra-Agni, dual)"`.
+
+### Note on Rohini's deity
+
+Rohini's presiding deity is modelled via the existing `brahma` node, with the edge label noting the alternate identification as **Prajapati** (the name used in older/Vedic-layer sources, vs. the later Puranic "Brahma"). This is a lightweight dual-label on the edge rather than a separate node, since Brahma/Prajapati is treated as the same deity across the graph.
 
 ## Saptarishi (Seven Sages)
 
@@ -49,12 +53,23 @@ Hindu cosmology describes 14 Manvantaras, each with its own Saptarishi. Sources 
 
 Marichi is still included in the v1 graph as a separate progenitor node (mind-born son of Brahma, father of Kashyapa) to preserve the Brahma → Marichi → Kashyapa → Adityas lineage, without conflating him with the current Saptarishi group.
 
+Transliteration is kept consistent as **Vashishtha** (ASCII form; **Vasiṣṭha** with diacritics is an acceptable alternative if the project later adopts IAST throughout) across the codebase.
+
 ## Dhruva family, Trimurti, and the Kashyapa–Aditi/Aditya lineage
 
-Not web-researched — this is standard Puranic narrative content (primarily Vishnu Purana and Bhagavata Purana) that didn't require verification against current sources. Worth a dedicated pass with primary-text citations (e.g. specific Purana chapter/verse) once ADR0004 (content pipeline) is decided, so each node can cite its textual source rather than general tradition.
+Not web-researched — this is standard Puranic narrative content (primarily Vishnu Purana and Bhagavata Purana) that didn't require verification against current sources. A senior review (2026-08-10) accepted this as fine for v1 but flagged citation quality as a gap: proceeding on the standard narrative is fine for now, but primary-text citations are a **hard requirement**, not just a nice-to-have, before any of this is treated as authoritative — see below.
+
+## Senior review — 2026-08-10
+
+Reviewed and accepted as the base for v1, with the following mandatory changes (all applied in this revision):
+
+1. **Vishakha's dual deity restored** — Indra-Agni modelled as two `astronomical-association` edges rather than simplified to Indra alone. Fixed in `graph.json`.
+2. **Transliteration made consistent** — `Nirrti` corrected to **Nirriti** (id and display name) to match the standard spelling; Vashishtha confirmed consistent throughout.
+3. **Rohini/Prajapati dual-label added** — edge label now notes the Prajapati identification rather than presenting Brahma as the only name.
+4. Primary Puranic citations (Purana + skanda/adhyaya) are now a **hard requirement for ADR0004** (content pipeline), not an optional follow-up.
 
 ## Open follow-ups for ADR0004 (content pipeline)
 
-- Decide whether co-presiding deities (e.g. Vishakha's Indra-Agni) should be modelled as multiple typed edges.
-- Add primary-text citations (Purana + chapter/verse) per node, not just secondary astrology-site sourcing.
-- Revisit the Adityas set — traditional lists of the twelve Adityas vary; v1 only includes the ones already needed as nakshatra deities (Indra, Mitra, Aryaman, Bhaga, Varuna, Pushan, Savitar) plus Aditi and Kashyapa as parents.
+1. **Add primary-text citations** (Purana + chapter/verse) per node — mandatory, per senior review.
+2. Decide the exact Adityas set — traditional lists of the twelve Adityas vary; v1 only includes the ones already needed as nakshatra deities (Indra, Mitra, Aryaman, Bhaga, Varuna, Pushan, Savitar) plus Aditi and Kashyapa as parents. Pragmatic for v1, accepted as-is by senior review.
+3. Consider whether other nakshatras beyond Vishakha have under-modelled co-presiding or alternate deities worth a second look, now that the dual-edge pattern exists.

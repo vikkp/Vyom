@@ -78,7 +78,7 @@ const deities = {
   vayu: ["Vayu", "वायु", "God of wind and breath."],
   indra: ["Indra", "इन्द्र", "King of the Devas, wielder of the vajra."],
   mitra: ["Mitra", "मित्र", "Aditya of friendship, contracts and covenants."],
-  nirrti: ["Nirrti", "निर्ऋति", "Goddess of dissolution and destruction."],
+  nirriti: ["Nirriti", "निर्ऋति", "Goddess of dissolution and destruction."],
   apah: ["Apah", "आपः", "Deity of the cosmic waters."],
   vishvadevas: ["Vishvadevas", "विश्वेदेवाः", "The collective of Universal Gods."],
   vasu: ["Ashta Vasu", "अष्टवसु", "The eight elemental gods of natural phenomena."],
@@ -120,7 +120,7 @@ const nakshatras = [
   ["vishakha", "Vishakha", "विशाखा", "indra", "Triumphal archway", "The forked branch — determined pursuit of a goal."],
   ["anuradha", "Anuradha", "अनुराधा", "mitra", "Triumphal archway / lotus", "The follower of Radha — devotion, friendship and success through cooperation."],
   ["jyeshtha", "Jyeshtha", "ज्येष्ठा", "indra", "Circular amulet / umbrella", "The eldest — seniority, protection and quiet authority."],
-  ["mula", "Mula", "मूल", "nirrti", "Bundle of roots", "The root — getting to the foundation by uprooting what came before."],
+  ["mula", "Mula", "मूल", "nirriti", "Bundle of roots", "The root — getting to the foundation by uprooting what came before."],
   ["purva-ashadha", "Purva Ashadha", "पूर्वाषाढा", "apah", "Elephant tusk / fan", "The former invincible one — early, unstoppable conviction."],
   ["uttara-ashadha", "Uttara Ashadha", "उत्तराषाढा", "vishvadevas", "Elephant tusk / planks of a bed", "The latter invincible one — lasting victory earned through universal support."],
   ["shravana", "Shravana", "श्रवण", "vishnu", "Ear / three footprints", "The listener — learning, memory and connection through hearing."],
@@ -132,9 +132,21 @@ const nakshatras = [
 ];
 for (const [id, name, sanskrit, deityId, symbol, summary] of nakshatras) {
   nodes.push({ id, type: "nakshatra", group: "nakshatra", name, sanskrit, symbol, summary });
-  addEdge(deityId, id, "astronomical-association", "presiding deity");
+  const deityLabel =
+    id === "rohini"
+      ? "presiding deity (also identified as Prajapati in this role)"
+      : id === "vishakha"
+        ? "co-presiding deity (Indra-Agni, dual)"
+        : "presiding deity";
+  addEdge(deityId, id, "astronomical-association", deityLabel);
   addEdge(id, "dhruva-tara", "astronomical-association", "part of the navigable ring around Dhruva Tārā");
 }
+
+// Vishakha's second co-presiding deity: Indra-Agni is a dual deity in the
+// Taittiriya Samhita and virtually all subsequent Jyotish sources — Agni is
+// not dropped just because it already presides over Krittika (senior review,
+// 2026-08-10: "Do not simplify" to Indra alone).
+addEdge("agni", "vishakha", "astronomical-association", "co-presiding deity (Indra-Agni, dual)");
 
 // ---------------------------------------------------------------------------
 // Dhruva family

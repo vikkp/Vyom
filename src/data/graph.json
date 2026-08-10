@@ -225,10 +225,10 @@
       "summary": "Aditya of friendship, contracts and covenants."
     },
     {
-      "id": "nirrti",
+      "id": "nirriti",
       "type": "deity",
       "group": "nakshatra-deity",
-      "name": "Nirrti",
+      "name": "Nirriti",
       "sanskrit": "निर्ऋति",
       "summary": "Goddess of dissolution and destruction."
     },
@@ -824,7 +824,7 @@
       "source": "brahma",
       "target": "rohini",
       "type": "astronomical-association",
-      "label": "presiding deity"
+      "label": "presiding deity (also identified as Prajapati in this role)"
     },
     {
       "id": "e33",
@@ -992,7 +992,7 @@
       "source": "indra",
       "target": "vishakha",
       "type": "astronomical-association",
-      "label": "presiding deity"
+      "label": "co-presiding deity (Indra-Agni, dual)"
     },
     {
       "id": "e57",
@@ -1031,7 +1031,7 @@
     },
     {
       "id": "e62",
-      "source": "nirrti",
+      "source": "nirriti",
       "target": "mula",
       "type": "astronomical-association",
       "label": "presiding deity"
@@ -1157,89 +1157,96 @@
     },
     {
       "id": "e80",
+      "source": "agni",
+      "target": "vishakha",
+      "type": "astronomical-association",
+      "label": "co-presiding deity (Indra-Agni, dual)"
+    },
+    {
+      "id": "e81",
       "source": "swayambhuva-manu",
       "target": "shatarupa",
       "type": "spouse"
     },
     {
-      "id": "e81",
+      "id": "e82",
       "source": "swayambhuva-manu",
       "target": "uttanapada",
       "type": "parent"
     },
     {
-      "id": "e82",
+      "id": "e83",
       "source": "shatarupa",
       "target": "uttanapada",
       "type": "parent"
     },
     {
-      "id": "e83",
+      "id": "e84",
       "source": "uttanapada",
       "target": "suniti",
       "type": "spouse"
     },
     {
-      "id": "e84",
+      "id": "e85",
       "source": "uttanapada",
       "target": "suruchi",
       "type": "spouse"
     },
     {
-      "id": "e85",
+      "id": "e86",
       "source": "suniti",
       "target": "dhruva",
       "type": "parent"
     },
     {
-      "id": "e86",
+      "id": "e87",
       "source": "suruchi",
       "target": "uttama",
       "type": "parent"
     },
     {
-      "id": "e87",
+      "id": "e88",
       "source": "uttama",
       "target": "dhruva",
       "type": "sibling",
       "label": "half-brother"
     },
     {
-      "id": "e88",
+      "id": "e89",
       "source": "suruchi",
       "target": "dhruva-penance",
       "type": "story-link",
       "label": "rejection that sparked the penance"
     },
     {
-      "id": "e89",
+      "id": "e90",
       "source": "narada",
       "target": "dhruva-penance",
       "type": "guru",
       "label": "guided Dhruva's practice"
     },
     {
-      "id": "e90",
+      "id": "e91",
       "source": "dhruva",
       "target": "dhruva-penance",
       "type": "story-link"
     },
     {
-      "id": "e91",
+      "id": "e92",
       "source": "vishnu",
       "target": "dhruva-penance",
       "type": "story-link",
       "label": "granted the boon"
     },
     {
-      "id": "e92",
+      "id": "e93",
       "source": "vishnu",
       "target": "dhruva",
       "type": "boon",
       "label": "granted Dhruva an unmoving, eternal place in the sky"
     },
     {
-      "id": "e93",
+      "id": "e94",
       "source": "dhruva",
       "target": "dhruva-tara",
       "type": "transformation",
