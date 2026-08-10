@@ -1,4 +1,4 @@
-import { Html } from "@react-three/drei";
+import { Billboard, Text } from "@react-three/drei";
 import { DoubleSide } from "three";
 import { altAzToVector3 } from "../../utils/astronomy";
 import { DOME_RADIUS } from "./constants";
@@ -15,6 +15,11 @@ const DIRECTIONS: Array<{ label: string; az: number }> = [
  * horizon line (like distant city light / atmospheric haze), with
  * cardinal-direction labels — matching the "Walk the Sky" framing of
  * standing somewhere real and looking up.
+ *
+ * Labels use drei's <Text> (real, depth-tested geometry) rather than
+ * <Html>: Html doesn't get frustum-culled the same way, so a label
+ * directly behind the camera (e.g. "S" when facing north) was projecting
+ * to a garbled position near screen-centre instead of just disappearing.
  */
 export function Horizon() {
   return (
@@ -34,9 +39,11 @@ export function Horizon() {
       {DIRECTIONS.map(({ label, az }) => {
         const pos = altAzToVector3(0, az, DOME_RADIUS + 2);
         return (
-          <Html key={label} position={[pos.x, 0.2, pos.z]} center distanceFactor={40} style={{ pointerEvents: "none" }}>
-            <div className="text-xs tracking-widest text-white/40">{label}</div>
-          </Html>
+          <Billboard key={label} position={[pos.x, 0.4, pos.z]}>
+            <Text fontSize={1.1} color="#ffffff" fillOpacity={0.4} anchorX="center" anchorY="middle">
+              {label}
+            </Text>
+          </Billboard>
         );
       })}
     </group>

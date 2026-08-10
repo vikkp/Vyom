@@ -16,7 +16,16 @@ import { SkyLayerToggles } from "./components/sky-viewer/SkyLayerToggles";
 function App() {
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-black">
-      <Canvas camera={{ position: [0, 0, -0.1], fov: 72 }}>
+      {/*
+        Camera sits ~40deg above the horizon, facing north, on load —
+        looking flat at the horizon (elevation 0) put the horizon line at
+        screen-centre and wasted half the view on empty ground, which read
+        as "emptier" rather than immersive. Position is derived from
+        altAzToVector3(40, 0, radius), negated (camera position, not
+        target position) and scaled to the same tiny orbit radius
+        OrbitControls uses in SkyViewer.
+      */}
+      <Canvas camera={{ position: [0, -0.064, -0.077], fov: 72 }}>
         <Suspense fallback={null}>
           <SkyViewer />
         </Suspense>
