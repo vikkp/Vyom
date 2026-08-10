@@ -7,6 +7,7 @@ import { StarField } from "./StarField";
 import { AsterismLines } from "./AsterismLines";
 import { RishiOverlays } from "./RishiOverlays";
 import { GraphLines } from "./GraphLines";
+import { DOME_RADIUS } from "./constants";
 
 /**
  * The real-sky scene content (ADR0002): observer stands at the world
@@ -14,7 +15,8 @@ import { GraphLines } from "./GraphLines";
  * the selected city and time. OrbitControls is used as a "look around
  * from a fixed point" panorama control — the camera orbits a near-zero
  * radius around the origin, which moves its facing direction without
- * meaningfully moving its position, since every star sits ~90 units out.
+ * meaningfully moving its position, since every star sits DOME_RADIUS
+ * units out.
  */
 export function SkyViewer() {
   const select = useGraphStore((s) => s.select);
@@ -22,9 +24,9 @@ export function SkyViewer() {
   return (
     <>
       <color attach="background" args={["#03040f"]} />
-      <fog attach="fog" args={["#03040f", 60, 100]} />
+      <fog attach="fog" args={["#03040f", DOME_RADIUS * 0.7, DOME_RADIUS * 1.3]} />
       <ambientLight intensity={0.15} />
-      <Stars radius={95} depth={20} count={2000} factor={1.5} saturation={0} fade speed={0.2} />
+      <Stars radius={DOME_RADIUS + 10} depth={15} count={2000} factor={1} saturation={0} fade speed={0.2} />
 
       <group onPointerMissed={() => select(null)}>
         <StarField stars={STAR_CATALOG} />

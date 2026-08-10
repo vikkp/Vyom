@@ -7,8 +7,8 @@ import { raDecToAltAz, altAzToVector3 } from "../../utils/astronomy";
 import { useGraphStore } from "../../store/useGraphStore";
 import { useSkyViewerStore } from "../../store/skyViewerStore";
 import { makeGlowTexture } from "../sky/glowTexture";
+import { DOME_RADIUS } from "./constants";
 
-const DOME_RADIUS = 90;
 const COOL_WHITE = "#cfe8ff";
 // A few well-known warm-toned stars, per the visual-style spec ("mostly
 // cool white/blue-white, a few warmer, e.g. Dubhe").

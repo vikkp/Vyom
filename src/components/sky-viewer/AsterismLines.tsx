@@ -4,8 +4,7 @@ import { Line } from "@react-three/drei";
 import type { Asterism, SkyCatalogStar } from "../../types/skyViewer";
 import { raDecToAltAz, altAzToVector3 } from "../../utils/astronomy";
 import { useSkyViewerStore } from "../../store/skyViewerStore";
-
-const DOME_RADIUS = 90;
+import { DOME_RADIUS } from "./constants";
 
 interface AsterismLinesProps {
   asterisms: Asterism[];

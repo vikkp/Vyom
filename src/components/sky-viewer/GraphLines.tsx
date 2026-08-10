@@ -4,8 +4,7 @@ import type { SkyCatalogStar } from "../../types/skyViewer";
 import { raDecToAltAz, altAzToVector3 } from "../../utils/astronomy";
 import { useGraphStore } from "../../store/useGraphStore";
 import { useSkyViewerStore } from "../../store/skyViewerStore";
-
-const DOME_RADIUS = 90;
+import { DOME_RADIUS } from "./constants";
 
 /**
  * The "graph" layer: draws the existing relationship-graph edges directly

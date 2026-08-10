@@ -8,8 +8,8 @@ import { useGraphStore } from "../../store/useGraphStore";
 import { useSkyViewerStore } from "../../store/skyViewerStore";
 import { makeGlowTexture } from "../sky/glowTexture";
 import { useOptionalTexture } from "../sky/useOptionalTexture";
+import { DOME_RADIUS } from "./constants";
 
-const DOME_RADIUS = 90;
 const RISHI_GLOW_COLOR = "#ffcf8a";
 
 interface RishiFigureProps {

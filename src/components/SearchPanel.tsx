@@ -14,7 +14,7 @@ export function SearchPanel() {
   }, [nodes, searchQuery]);
 
   return (
-    <div className="pointer-events-auto absolute left-4 top-24 z-10 w-72 max-w-[85vw]">
+    <div className="pointer-events-auto absolute left-4 top-40 z-10 w-72 max-w-[85vw]">
       <input
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}

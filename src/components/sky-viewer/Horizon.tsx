@@ -1,5 +1,6 @@
 import { Html } from "@react-three/drei";
 import { altAzToVector3 } from "../../utils/astronomy";
+import { DOME_RADIUS } from "./constants";
 
 const DIRECTIONS: Array<{ label: string; az: number }> = [
   { label: "N", az: 0 },
@@ -17,11 +18,11 @@ export function Horizon() {
   return (
     <group>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, 0]}>
-        <circleGeometry args={[95, 64]} />
+        <circleGeometry args={[DOME_RADIUS + 5, 64]} />
         <meshBasicMaterial color="#050614" transparent opacity={0.85} depthWrite={false} />
       </mesh>
       {DIRECTIONS.map(({ label, az }) => {
-        const pos = altAzToVector3(0, az, 92);
+        const pos = altAzToVector3(0, az, DOME_RADIUS + 2);
         return (
           <Html key={label} position={[pos.x, 0.2, pos.z]} center distanceFactor={40} style={{ pointerEvents: "none" }}>
             <div className="text-xs tracking-widest text-white/40">{label}</div>
