@@ -44,14 +44,16 @@ Rohini's presiding deity is modelled via the existing `brahma` node, with the ed
 - [Utsav App — Saptarishi: The Eternal Seven Sages of Wisdom](https://utsavapp.in/gyan/dharmik-gyan/story-of-saptarishis)
 - [Exotic India Art — Saptarishi: The Seven Sages of Hinduism](https://www.exoticindiaart.com/article/saptarishi-the-seven-sages-in-hinduism/)
 
-### Note on variant lists
+### Note on variant lists — two lists, kept distinct (approved 2026-08-11)
 
-Hindu cosmology describes 14 Manvantaras, each with its own Saptarishi. Sources converged on two commonly cited lists:
+Hindu cosmology describes 14 Manvantaras, each with its own Saptarishi, and the Big Dipper's traditional star-rishi identification draws from a different list again. Two lists are both present in the graph, deliberately kept separate rather than merged:
 
-- **Current Manvantara** (used in v1, per ADR0001 decision 4's "current Saptarishi"): Atri, Bharadvaja, Gautama, Jamadagni, Kashyapa, Vashishtha, Vishvamitra.
-- **Alternate/earlier list** (not used, but relevant to progenitor lineage): Marichi, Atri, Angiras, Pulastya, Pulaha, Kratu, Vashishtha.
+- **Current Manvantara Saptarishi** (`group: "saptarishi"`, per ADR0001 decision 4's "current Saptarishi") — the narrative/graph nodes: Atri, Bharadvaja, Gautama, Jamadagni, Kashyapa, Vashishtha, Vishvamitra.
+- **Astronomical Saptarishi** — Brahma's mind-born sons (`group: "progenitor"`), traditionally identified with the seven stars of the Big Dipper and rendered in the real sky layer (`src/data/stars.ts`): Marichi (Alkaid), Atri (Megrez), Angiras (Alioth), Pulastya (Phecda), Pulaha (Merak), Kratu (Dubhe), Vashishtha (Mizar).
 
-Marichi is still included in the v1 graph as a separate progenitor node (mind-born son of Brahma, father of Kashyapa) to preserve the Brahma → Marichi → Kashyapa → Adityas lineage, without conflating him with the current Saptarishi group.
+**Decision:** do not collapse the two lists into one. They are historically distinct traditions, and forcing them into a single list of seven would misrepresent both. Atri and Vashishtha correctly appear in both (same node id, since the same named rishi is drawn from both traditions); Bharadvaja, Gautama, Jamadagni, Kashyapa and Vishvamitra exist only as the current-Manvantara sages (no star); Marichi, Angiras, Pulastya, Pulaha and Kratu exist only as the astronomical/mind-born-sons group (Marichi additionally carries the Brahma → Marichi → Kashyapa → Adityas progenitor lineage).
+
+**Backlog:** a small UI note or toggle distinguishing "Astronomical Saptarishi" from "Current Manvantara Saptarishi" in the detail panel, in case users are confused by seeing Atri/Vashishtha in two contexts. Not built yet — noted for a future pass once the rest of ADR0003 (navigation model) is settled.
 
 Transliteration is kept consistent as **Vashishtha** (ASCII form; **Vasiṣṭha** with diacritics is an acceptable alternative if the project later adopts IAST throughout) across the codebase.
 
@@ -73,3 +75,4 @@ Reviewed and accepted as the base for v1, with the following mandatory changes (
 1. **Add primary-text citations** (Purana + chapter/verse) per node — mandatory, per senior review.
 2. Decide the exact Adityas set — traditional lists of the twelve Adityas vary; v1 only includes the ones already needed as nakshatra deities (Indra, Mitra, Aryaman, Bhaga, Varuna, Pushan, Savitar) plus Aditi and Kashyapa as parents. Pragmatic for v1, accepted as-is by senior review.
 3. Consider whether other nakshatras beyond Vishakha have under-modelled co-presiding or alternate deities worth a second look, now that the dual-edge pattern exists.
+4. UI note/toggle distinguishing "Astronomical Saptarishi" from "Current Manvantara Saptarishi" — see backlog note above, approved 2026-08-11.
