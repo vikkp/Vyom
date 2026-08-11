@@ -37,4 +37,12 @@ export interface Asterism {
   /** Ordered star ids, for line drawing between consecutive pairs. */
   starIds: string[];
   nodeId?: string;
+  /**
+   * Visual weight. "secondary" asterisms (context/orientation shapes with no
+   * story of their own, e.g. the Ursa Minor scaffolding around Dhruva Tara)
+   * render dimmer and thinner than "primary" ones, so they read as quiet
+   * background structure rather than competing with the storied shapes for
+   * attention. Defaults to "primary" when omitted.
+   */
+  emphasis?: "primary" | "secondary";
 }

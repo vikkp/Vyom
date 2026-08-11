@@ -52,5 +52,9 @@ export const ASTERISMS: Asterism[] = [
     // comment above URSA_MINOR_CONTEXT_STARS in starCatalog.ts for why.
     starIds: ["polaris", "yildun", "epsilon-umi", "zeta-umi", "eta-umi", "pherkad", "kochab", "zeta-umi"],
     nodeId: undefined,
+    // Orientation scaffolding around Dhruva Tara, not a storied shape in its
+    // own right -- kept visually quiet so it doesn't compete with Saptarishi
+    // right next to it near the pole.
+    emphasis: "secondary",
   },
 ];

@@ -51,7 +51,14 @@ export function CitySkyline() {
   return (
     <mesh position={[0, baseY + BAND_HEIGHT / 2, 0]}>
       <cylinderGeometry args={[BAND_RADIUS, BAND_RADIUS, BAND_HEIGHT, 96, 1, true]} />
-      <meshBasicMaterial map={texture} alphaTest={0.5} side={DoubleSide} depthWrite toneMapped={false} />
+      <meshBasicMaterial
+        map={texture}
+        alphaTest={0.5}
+        alphaToCoverage
+        side={DoubleSide}
+        depthWrite
+        toneMapped={false}
+      />
     </mesh>
   );
 }

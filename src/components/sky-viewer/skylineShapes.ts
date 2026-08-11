@@ -498,13 +498,35 @@ function mulberry32(seed: number) {
   };
 }
 
+// A plain rect-per-building comb reads as flat/blocky at a glance. Giving a
+// minority of buildings a varied roofline (stepped-back tier, gable peak, or
+// a thin antenna) breaks up that "bar chart" silhouette into something that
+// reads more like an actual low-rise skyline, without adding enough detail
+// to compete with the hero landmarks.
 export function genericFillerRow(ctx: Ctx, x0: number, x1: number, gY: number, seed: number, maxH = 34) {
   const rand = mulberry32(seed);
   let x = x0;
   while (x < x1) {
     const w = 10 + rand() * 16;
-    const h = (6 + rand() * maxH) * (0.6 + rand() * 0.6);
+    const h = (6 + rand() * maxH) * (0.55 + rand() * 0.55);
+    const roofRoll = rand();
     rect(ctx, x, gY - h, w, h);
+    if (roofRoll > 0.85) {
+      // Stepped-back tier.
+      const tierW = w * (0.45 + rand() * 0.2);
+      const tierH = h * (0.25 + rand() * 0.2);
+      rect(ctx, x + (w - tierW) / 2, gY - h - tierH, tierW, tierH);
+    } else if (roofRoll > 0.7) {
+      // Gable/peaked roof.
+      poly(ctx, [
+        [x, gY - h],
+        [x + w, gY - h],
+        [x + w / 2, gY - h - h * 0.22],
+      ]);
+    } else if (roofRoll > 0.62) {
+      // Thin antenna spike.
+      rect(ctx, x + w / 2 - 1, gY - h - h * 0.4, 1.5, h * 0.4);
+    }
     x += w + 2 + rand() * 4;
   }
 }

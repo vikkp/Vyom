@@ -39,10 +39,25 @@ function StarPoint({ star, alt, az }: StarPointProps) {
   const position = useMemo(() => altAzToVector3(alt, az, DOME_RADIUS), [alt, az]);
   const isDhruva = star.id === "polaris";
   const color = WARM_STARS[star.id] ?? COOL_WHITE;
-  const size = isDhruva ? 1.1 : magnitudeToSize(star.mag);
+  // Named/storied stars (part of a graph node, e.g. an asterism member) get
+  // a visibility floor so faint-but-important members of tight clusters
+  // (Mrigashira, Krittika) don't vanish into the dense background field at
+  // their true magnitude. Pure context stars (no nodeId, no Indian name --
+  // e.g. the Ursa Minor "little dipper" fill-in stars) recede instead, so
+  // the sky's visual weight favours the storied stars over the scaffolding
+  // around them.
+  const isNamed = star.nodeId != null;
+  const isContextOnly = !isNamed && !star.indianName;
+  const size = isDhruva ? 1.1 : isNamed ? Math.max(magnitudeToSize(star.mag), 0.32) : magnitudeToSize(star.mag);
   const isActive = star.nodeId != null && selectedId === star.nodeId;
   const glowTexture = useMemo(() => makeGlowTexture(color), [color]);
   const showNames = visibleLayers.has("names");
+  // Indian names are the primary label language for this app. Western-only
+  // labels (stars with no sourced Indian name) are kept off by default --
+  // shown only when that specific star is actively selected -- so the sky
+  // reads "Indian-first" instead of surfacing every catalogued Western
+  // proper name (Pherkad, Kochab, Yildun, ...) at once.
+  const canShowLabel = star.indianName ? showNames || isActive : isActive;
 
   useFrame(({ clock }) => {
     if (!groupRef.current) return;
@@ -79,10 +94,16 @@ function StarPoint({ star, alt, az }: StarPointProps) {
       <Billboard>
         <mesh>
           <planeGeometry args={[size * 2.4, size * 2.4]} />
-          <meshBasicMaterial map={glowTexture} transparent opacity={isDhruva ? 0.9 : 0.55} depthWrite={false} toneMapped={false} />
+          <meshBasicMaterial
+            map={glowTexture}
+            transparent
+            opacity={isDhruva ? 0.9 : isContextOnly ? 0.38 : isNamed ? 0.62 : 0.55}
+            depthWrite={false}
+            toneMapped={false}
+          />
         </mesh>
       </Billboard>
-      {(showNames || isActive) && (star.indianName || star.westernName) && (
+      {canShowLabel && (star.indianName || star.westernName) && (
         <Html distanceFactor={30} center style={{ pointerEvents: "none" }}>
           <div className="whitespace-nowrap rounded bg-black/60 px-1.5 py-0.5 text-[10px] text-amber-100/90">
             {star.indianName ?? star.westernName}

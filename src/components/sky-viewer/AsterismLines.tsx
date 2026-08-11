@@ -20,8 +20,13 @@ export function AsterismLines({ asterisms, stars }: AsterismLinesProps) {
   const starsById = useMemo(() => new Map(stars.map((s) => [s.id, s])), [stars]);
 
   const segments = useMemo(() => {
-    const result: Array<{ id: string; points: [[number, number, number], [number, number, number]] }> = [];
+    const result: Array<{
+      id: string;
+      points: [[number, number, number], [number, number, number]];
+      secondary: boolean;
+    }> = [];
     for (const asterism of asterisms) {
+      const secondary = asterism.emphasis === "secondary";
       for (let i = 0; i < asterism.starIds.length - 1; i++) {
         const fromStar = starsById.get(asterism.starIds[i]);
         const toStar = starsById.get(asterism.starIds[i + 1]);
@@ -34,16 +39,23 @@ export function AsterismLines({ asterisms, stars }: AsterismLinesProps) {
         // crosses an arbitrary altitude threshold.
         const from = altAzToVector3(fromAltAz.alt, fromAltAz.az, DOME_RADIUS);
         const to = altAzToVector3(toAltAz.alt, toAltAz.az, DOME_RADIUS);
-        result.push({ id: `${asterism.id}-${i}`, points: [[from.x, from.y, from.z], [to.x, to.y, to.z]] });
+        result.push({ id: `${asterism.id}-${i}`, points: [[from.x, from.y, from.z], [to.x, to.y, to.z]], secondary });
       }
     }
     return result;
   }, [asterisms, starsById, selectedCity, currentDate]);
 
   useFrame(({ clock }) => {
-    const breathe = 0.45 + Math.sin(clock.elapsedTime * 0.4) * 0.12;
-    materialRefs.current.forEach((mat) => {
-      if (mat) mat.opacity = breathe;
+    // Brighter, more assertive breathing range than the original -- the
+    // smaller nakshatra asterisms (Mrigashira, Krittika) are compact and
+    // were getting lost against the dense background starfield at the old
+    // 0.33-0.57 range. Secondary (context-only) shapes breathe at a much
+    // quieter range so they read as background structure.
+    const primaryBreathe = 0.62 + Math.sin(clock.elapsedTime * 0.4) * 0.15;
+    const secondaryBreathe = 0.22 + Math.sin(clock.elapsedTime * 0.4) * 0.06;
+    segments.forEach((seg, i) => {
+      const mat = materialRefs.current[i];
+      if (mat) mat.opacity = seg.secondary ? secondaryBreathe : primaryBreathe;
     });
   });
 
@@ -59,10 +71,10 @@ export function AsterismLines({ asterisms, stars }: AsterismLinesProps) {
             if (material) materialRefs.current[i] = material;
           }}
           points={seg.points}
-          color="#f3d98b"
-          lineWidth={1.2}
+          color={seg.secondary ? "#c9d6ea" : "#f6dfa0"}
+          lineWidth={seg.secondary ? 1 : 1.8}
           transparent
-          opacity={0.5}
+          opacity={seg.secondary ? 0.25 : 0.65}
         />
       ))}
     </group>
