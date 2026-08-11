@@ -134,18 +134,18 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Jyeshtha",
   },
-  // Third batch: Ardra, Punarvasu, Pushya -- placeholders only, real art
-  // pending (per the project owner, generated after this batch ships). No
-  // real PNGs exist yet, so realSize below is a guess from each
-  // silhouette's own canvas aspect, same as the earlier batches' initial
-  // placeholder-only state -- update to measured pixel dimensions once
-  // real art lands, same as Ashwini/Magha/Jyeshtha did.
+  // Third batch: Ardra, Punarvasu, Pushya. Real art has landed for all
+  // three (784x1168, same portrait dimensions as Mrigashira/Dhruva) --
+  // realSize below is measured from the actual delivered pixels, same as
+  // the first two batches. All three compositions are close to vertically
+  // centred (alpha centroid 0.475-0.502 of the frame height), so none
+  // need a realAnchorFrac override.
   {
     nodeId: "ardra",
     anchorStarIds: ["betelgeuse"],
     makeTexture: makeArdraTeardropSilhouette,
     placeholderSize: [3.1, 4.0],
-    realSize: sizeForAspect(220 / 280),
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Ardra",
   },
   {
@@ -153,7 +153,7 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     anchorStarIds: ["pollux", "castor"],
     makeTexture: makePunarvasuBowSilhouette,
     placeholderSize: [4.3, 3.7],
-    realSize: sizeForAspect(300 / 260),
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Punarvasu",
   },
   {
@@ -161,7 +161,7 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     anchorStarIds: ["asellus-australis", "asellus-borealis", "theta-cancri"],
     makeTexture: makePushyaLotusSilhouette,
     placeholderSize: [3.7, 4.0],
-    realSize: sizeForAspect(260 / 280),
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Pushya",
   },
 ];
