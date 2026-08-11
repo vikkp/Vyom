@@ -12,6 +12,7 @@ import { SkyGradient } from "./SkyGradient";
 import { CitySkyline } from "./CitySkyline";
 import { DOME_RADIUS, CAMERA_ORBIT_RADIUS } from "./constants";
 import { CameraFocusController } from "./CameraFocusController";
+import { FovZoomController } from "./FovZoomController";
 
 /**
  * The real-sky scene content (ADR0002): observer stands at the world
@@ -61,6 +62,10 @@ export function SkyViewer() {
       <OrbitControls
         makeDefault
         target={[0, 0, 0]}
+        // ADR0004: zoom is handled by FovZoomController (narrowing/widening
+        // camera.fov) instead of OrbitControls' own distance-based zoom --
+        // enableZoom stays false and min/maxDistance stay pinned equal so
+        // there's nothing for the two to fight over.
         enableZoom={false}
         enablePan={false}
         enableDamping
@@ -72,6 +77,7 @@ export function SkyViewer() {
         maxPolarAngle={Math.PI - 0.05}
       />
       <CameraFocusController />
+      <FovZoomController />
     </>
   );
 }

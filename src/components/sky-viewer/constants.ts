@@ -19,6 +19,23 @@ export const DOME_RADIUS = 30;
 // a magic "0.1" repeated in two files that could drift out of sync.
 export const CAMERA_ORBIT_RADIUS = 0.1;
 
+// ADR0004: zoom is FOV-based, not distance-based -- the fixed-origin
+// camera target above means dolly zoom has a hard floor at DOME_RADIUS and
+// can never produce a real close-up (see the ADR for the full math). Wheel
+// (desktop) and pinch (mobile), handled by FovZoomController.tsx, instead
+// narrow/widen camera.fov between these bounds. The app's launch FOV is 72
+// (see App.tsx's <Canvas>), close to MAX_FOV -- today's "no zoom" view
+// already sits near the wide end of this range. First-pass values pending
+// hands-on tuning, per the ADR's Follow-up section.
+export const MIN_FOV = 25;
+export const MAX_FOV = 75;
+
+// How quickly camera.fov eases toward its target value each frame (0-1,
+// higher = snappier). Mirrors the role OrbitControls' own dampingFactor
+// plays for rotation, so wheel/pinch zoom feels like the same "considered,
+// smoothed" interaction rather than an instant jump.
+export const FOV_DAMPING = 0.12;
+
 // ADR0003: curvature radius of the stylized "ground planet" — the ground
 // mesh droops away from flat using the standard curvature sagitta
 // approximation (drop = distance^2 / (2 * radius)), so a LARGER value
