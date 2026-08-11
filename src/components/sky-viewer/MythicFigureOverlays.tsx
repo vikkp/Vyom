@@ -104,16 +104,15 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
   },
   // Second batch: Ashwini, Magha, Jyeshtha. Same "stars + lines first"
   // rule applied earlier -- these three shipped as data before their
-  // figures. realSize below is a best-guess aspect until real art exists
-  // for these three (see docs/research/*-figure-sources.md) -- update it
-  // once actual pixel dimensions are known, same as happened for the
-  // first batch's figures.
+  // figures. Real art has since landed for all three (see
+  // docs/research/*-figure-sources.md); realSize below is measured from
+  // the actual delivered pixel dimensions, same as the first batch.
   {
     nodeId: "ashwini",
     anchorStarIds: ["sheratan", "mesarthim"],
     makeTexture: makeAshwiniKumarasSilhouette,
     placeholderSize: [5.2, 3.6],
-    realSize: sizeForAspect(380 / 260),
+    realSize: sizeForAspect(1712 / 1152),
     label: "Ashwini",
   },
   {
@@ -121,7 +120,7 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     anchorStarIds: ["rho-leonis", "31-leonis", "omicron-leonis", "regulus", "eta-leonis", "algieba"],
     makeTexture: makeMaghaThroneSilhouette,
     placeholderSize: [3.6, 4.7],
-    realSize: sizeForAspect(260 / 340),
+    realSize: sizeForAspect(784 / 1168),
     label: "Magha",
   },
   {
@@ -129,7 +128,7 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     anchorStarIds: ["sigma-scorpii", "antares", "tau-scorpii"],
     makeTexture: makeJyeshthaTalismanSilhouette,
     placeholderSize: [2.9, 3.9],
-    realSize: sizeForAspect(220 / 300),
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Jyeshtha",
   },
 ];
