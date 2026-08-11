@@ -16,6 +16,9 @@ import {
   makeAshwiniKumarasSilhouette,
   makeMaghaThroneSilhouette,
   makeJyeshthaTalismanSilhouette,
+  makeArdraTeardropSilhouette,
+  makePunarvasuBowSilhouette,
+  makePushyaLotusSilhouette,
 } from "./mythicFigureSilhouette";
 import { DOME_RADIUS, sizeForAspect } from "./constants";
 
@@ -130,6 +133,36 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     placeholderSize: [2.9, 3.9],
     realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Jyeshtha",
+  },
+  // Third batch: Ardra, Punarvasu, Pushya -- placeholders only, real art
+  // pending (per the project owner, generated after this batch ships). No
+  // real PNGs exist yet, so realSize below is a guess from each
+  // silhouette's own canvas aspect, same as the earlier batches' initial
+  // placeholder-only state -- update to measured pixel dimensions once
+  // real art lands, same as Ashwini/Magha/Jyeshtha did.
+  {
+    nodeId: "ardra",
+    anchorStarIds: ["betelgeuse"],
+    makeTexture: makeArdraTeardropSilhouette,
+    placeholderSize: [3.1, 4.0],
+    realSize: sizeForAspect(220 / 280),
+    label: "Ardra",
+  },
+  {
+    nodeId: "punarvasu",
+    anchorStarIds: ["pollux", "castor"],
+    makeTexture: makePunarvasuBowSilhouette,
+    placeholderSize: [4.3, 3.7],
+    realSize: sizeForAspect(300 / 260),
+    label: "Punarvasu",
+  },
+  {
+    nodeId: "pushya",
+    anchorStarIds: ["asellus-australis", "asellus-borealis", "theta-cancri"],
+    makeTexture: makePushyaLotusSilhouette,
+    placeholderSize: [3.7, 4.0],
+    realSize: sizeForAspect(260 / 280),
+    label: "Pushya",
   },
 ];
 

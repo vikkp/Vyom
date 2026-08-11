@@ -152,6 +152,30 @@ export const JYESHTHA_EXTRA_STARS: SkyCatalogStar[] = [
   { id: "tau-scorpii", ra: 16.5981, dec: -28.216, mag: 2.82, indianName: "Jyeshtha", westernName: "Tau Scorpii", nodeId: "jyeshtha", constellation: "Nakshatra" },
 ];
 
+// Third asterism batch: Ardra, Punarvasu, Pushya. Ardra is a deliberate
+// exception -- confirmed with the project owner that it stays a
+// single-star nakshatra (its classical symbol is a single teardrop/gem
+// with no traditionally sourced companion stars), so there's no
+// ARDRA_EXTRA_STARS group; see docs/research/ardra-asterism-sources.md.
+
+// Punarvasu: the existing yogatara Pollux plus its twin Castor -- both
+// stars are explicitly named as the nakshatra's basis (not just the
+// yogatara alone). Castor previously lived in BRIGHT_STARS as an
+// unlinked background star; it moves here now that it has a sourced
+// nakshatra role. See docs/research/punarvasu-asterism-sources.md.
+export const PUNARVASU_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "castor", ra: 7.577, dec: 31.888, mag: 1.58, indianName: "Punarvasu", westernName: "Castor (α Geminorum)", nodeId: "punarvasu", constellation: "Nakshatra" },
+];
+
+// Pushya: the existing yogatara Asellus Australis plus its documented
+// companions Asellus Borealis and Theta Cancri -- the classical "Little
+// Asses" flanking the Praesepe/Beehive cluster. See
+// docs/research/pushya-asterism-sources.md.
+export const PUSHYA_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "asellus-borealis", ra: 8.7214, dec: 21.4686, mag: 4.65, indianName: "Pushya", westernName: "Asellus Borealis (γ Cancri)", nodeId: "pushya", constellation: "Nakshatra" },
+  { id: "theta-cancri", ra: 8.5266, dec: 18.0944, mag: 5.32, indianName: "Pushya", westernName: "Theta Cancri", nodeId: "pushya", constellation: "Nakshatra" },
+];
+
 export const BRIGHT_STARS: SkyCatalogStar[] = [
   { id: "sirius", ra: 6.753, dec: -16.716, mag: -1.46, westernName: "Sirius" },
   { id: "canopus", ra: 6.399, dec: -52.696, mag: -0.74, westernName: "Canopus" },
@@ -166,7 +190,6 @@ export const BRIGHT_STARS: SkyCatalogStar[] = [
   { id: "mimosa", ra: 12.795, dec: -59.689, mag: 1.25, westernName: "Mimosa" },
   { id: "fomalhaut", ra: 22.961, dec: -29.622, mag: 1.16, westernName: "Fomalhaut" },
   { id: "deneb", ra: 20.69, dec: 45.28, mag: 1.25, westernName: "Deneb" },
-  { id: "castor", ra: 7.577, dec: 31.888, mag: 1.58, westernName: "Castor" },
   { id: "bellatrix", ra: 5.419, dec: 6.35, mag: 1.64, westernName: "Bellatrix" },
   { id: "elnath", ra: 5.438, dec: 28.608, mag: 1.65, westernName: "Elnath" },
   { id: "alnilam", ra: 5.604, dec: -1.202, mag: 1.69, westernName: "Alnilam" },
@@ -191,5 +214,7 @@ export const STAR_CATALOG: SkyCatalogStar[] = [
   ...ASHWINI_EXTRA_STARS,
   ...MAGHA_EXTRA_STARS,
   ...JYESHTHA_EXTRA_STARS,
+  ...PUNARVASU_EXTRA_STARS,
+  ...PUSHYA_EXTRA_STARS,
   ...BRIGHT_STARS,
 ];

@@ -458,6 +458,222 @@ export function makeJyeshthaTalismanSilhouette(color: string, w = 220, h = 300):
 }
 
 /**
+ * Ardra: the nakshatra's own symbol -- a single teardrop/gem, matching its
+ * single-star (Betelgeuse) astronomical basis; see
+ * docs/research/ardra-asterism-sources.md for why this stays a one-star
+ * nakshatra with a correspondingly simple, single-form figure. Faceted cut
+ * lines read as "jewel" rather than a plain drop of water, echoing the
+ * "shining diamond" reading some sources give alongside "teardrop." A
+ * faint inward swirl behind it gestures at Rudra's stormy nature without
+ * needing a literal storm scene.
+ */
+export function makeArdraTeardropSilhouette(color: string, w = 220, h = 280): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const cx = w / 2;
+
+  auraBackdrop(ctx, cx, h * 0.5, w * 0.65, color);
+
+  // Faint storm-swirl behind the gem, Rudra's fierce/stormy nature.
+  withGlowFill(ctx, color, w * 0.05, 0.18, () => {
+    ctx.lineWidth = w * 0.015;
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.arc(cx, h * 0.5, w * 0.42, Math.PI * 0.1, Math.PI * 1.5);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(cx, h * 0.5, w * 0.52, Math.PI * 0.9, Math.PI * 2.1);
+    ctx.stroke();
+  });
+
+  withGlowFill(ctx, color, w * 0.06, 0.7, () => {
+    // Main teardrop body: rounded top, tapering to a point at the bottom.
+    ctx.beginPath();
+    ctx.moveTo(cx, h * 0.2);
+    ctx.quadraticCurveTo(cx + w * 0.26, h * 0.42, cx + w * 0.2, h * 0.66);
+    ctx.quadraticCurveTo(cx + w * 0.12, h * 0.86, cx, h * 0.92);
+    ctx.quadraticCurveTo(cx - w * 0.12, h * 0.86, cx - w * 0.2, h * 0.66);
+    ctx.quadraticCurveTo(cx - w * 0.26, h * 0.42, cx, h * 0.2);
+    ctx.closePath();
+    ctx.fill();
+  });
+
+  // Facet lines, cut-gem detail, drawn as thin strokes over the fill.
+  withGlowFill(ctx, color, w * 0.02, 0.9, () => {
+    ctx.lineWidth = w * 0.008;
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(cx, h * 0.2);
+    ctx.lineTo(cx, h * 0.92);
+    ctx.moveTo(cx - w * 0.18, h * 0.5);
+    ctx.lineTo(cx + w * 0.18, h * 0.5);
+    ctx.moveTo(cx - w * 0.12, h * 0.35);
+    ctx.lineTo(cx + w * 0.05, h * 0.62);
+    ctx.moveTo(cx + w * 0.12, h * 0.35);
+    ctx.lineTo(cx - w * 0.05, h * 0.62);
+    ctx.stroke();
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
+ * Punarvasu: the nakshatra's own symbol -- a bow with a quiver of arrows,
+ * matching the twin-star (Castor/Pollux) "two brothers" framing loosely
+ * (bow + quiver as a paired set of tools) without depicting either twin
+ * directly, since neither has a single sourced iconographic form here. See
+ * docs/research/punarvasu-asterism-sources.md.
+ */
+export function makePunarvasuBowSilhouette(color: string, w = 300, h = 260): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const cx = w / 2;
+  const cy = h * 0.5;
+
+  auraBackdrop(ctx, cx, cy, w * 0.6, color);
+
+  withGlowFill(ctx, color, w * 0.03, 0.6, () => {
+    // Bow: a tall arc plus taut string.
+    ctx.lineWidth = w * 0.02;
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.arc(cx - w * 0.02, cy, h * 0.42, Math.PI * 0.62, Math.PI * 1.38);
+    ctx.stroke();
+    // String, straight line between the bow's two tips.
+    ctx.lineWidth = w * 0.006;
+    ctx.beginPath();
+    ctx.moveTo(cx - w * 0.02 + Math.cos(Math.PI * 0.62) * h * 0.42, cy + Math.sin(Math.PI * 0.62) * h * 0.42);
+    ctx.lineTo(cx - w * 0.02 + Math.cos(Math.PI * 1.38) * h * 0.42, cy + Math.sin(Math.PI * 1.38) * h * 0.42);
+    ctx.stroke();
+
+    // Arrow, nocked and drawn back against the string.
+    ctx.lineWidth = w * 0.012;
+    ctx.beginPath();
+    ctx.moveTo(cx - w * 0.02, cy);
+    ctx.lineTo(cx + w * 0.34, cy);
+    ctx.stroke();
+    // Arrowhead.
+    ctx.beginPath();
+    ctx.moveTo(cx + w * 0.34, cy);
+    ctx.lineTo(cx + w * 0.27, cy - h * 0.03);
+    ctx.lineTo(cx + w * 0.27, cy + h * 0.03);
+    ctx.closePath();
+    ctx.fill();
+    // Fletching.
+    ctx.beginPath();
+    ctx.moveTo(cx - w * 0.02, cy);
+    ctx.lineTo(cx - w * 0.08, cy - h * 0.04);
+    ctx.moveTo(cx - w * 0.02, cy);
+    ctx.lineTo(cx - w * 0.08, cy + h * 0.04);
+    ctx.stroke();
+  });
+
+  // Quiver, leaning behind the bow with a few extra arrow shafts peeking out.
+  withGlowFill(ctx, color, w * 0.03, 0.5, () => {
+    const qx = cx - w * 0.22;
+    const qy = h * 0.74;
+    ctx.beginPath();
+    ctx.moveTo(qx - w * 0.05, qy);
+    ctx.lineTo(qx + w * 0.05, qy);
+    ctx.lineTo(qx + w * 0.035, qy - h * 0.28);
+    ctx.lineTo(qx - w * 0.035, qy - h * 0.28);
+    ctx.closePath();
+    ctx.fill();
+    ctx.lineWidth = w * 0.008;
+    ctx.strokeStyle = color;
+    for (const dx of [-0.02, 0, 0.02]) {
+      ctx.beginPath();
+      ctx.moveTo(qx + w * dx, qy - h * 0.26);
+      ctx.lineTo(qx + w * dx * 1.4, qy - h * 0.42);
+      ctx.stroke();
+    }
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
+ * Pushya: a lotus in bloom with an arrow rising through its centre --
+ * combining two of the nakshatra's cited symbols (lotus, arrow); the
+ * cow's-udder reading is the most commonly cited primary symbol but
+ * doesn't translate into a legible standalone silhouette the way the
+ * lotus does, so it's left for real art to interpret later. See
+ * docs/research/pushya-asterism-sources.md.
+ */
+export function makePushyaLotusSilhouette(color: string, w = 260, h = 280): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const cx = w / 2;
+  const petalBaseY = h * 0.68;
+
+  auraBackdrop(ctx, cx, h * 0.55, w * 0.65, color);
+
+  withGlowFill(ctx, color, w * 0.04, 0.6, () => {
+    // Lotus petals, a fan of five rounded petals opening upward.
+    const petalCount = 5;
+    for (let i = 0; i < petalCount; i++) {
+      const t = i / (petalCount - 1);
+      const angle = Math.PI * 0.5 + (t - 0.5) * Math.PI * 0.7;
+      const len = h * (i === Math.floor(petalCount / 2) ? 0.42 : 0.36);
+      const tipX = cx + Math.cos(angle) * len * 0.5;
+      const tipY = petalBaseY - Math.sin(angle) * len;
+      const perpX = Math.cos(angle + Math.PI / 2) * w * 0.05;
+      ctx.beginPath();
+      ctx.moveTo(cx, petalBaseY);
+      ctx.quadraticCurveTo(cx + perpX, (petalBaseY + tipY) / 2, tipX, tipY);
+      ctx.quadraticCurveTo(cx - perpX, (petalBaseY + tipY) / 2, cx, petalBaseY);
+      ctx.closePath();
+      ctx.fill();
+    }
+    // Base/stem.
+    ctx.lineWidth = w * 0.02;
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(cx, petalBaseY);
+    ctx.quadraticCurveTo(cx - w * 0.04, h * 0.84, cx, h * 0.94);
+    ctx.stroke();
+  });
+
+  // Arrow rising through the bloom's centre, echoing the arrow symbol.
+  withGlowFill(ctx, color, w * 0.03, 0.7, () => {
+    ctx.lineWidth = w * 0.012;
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(cx, h * 0.86);
+    ctx.lineTo(cx, h * 0.16);
+    ctx.stroke();
+    // Arrowhead at the top, rising above the petals.
+    ctx.beginPath();
+    ctx.moveTo(cx, h * 0.08);
+    ctx.lineTo(cx - w * 0.04, h * 0.18);
+    ctx.lineTo(cx + w * 0.04, h * 0.18);
+    ctx.closePath();
+    ctx.fill();
+    // Fletching near the base.
+    ctx.beginPath();
+    ctx.moveTo(cx, h * 0.86);
+    ctx.lineTo(cx - w * 0.05, h * 0.8);
+    ctx.moveTo(cx, h * 0.86);
+    ctx.lineTo(cx + w * 0.05, h * 0.8);
+    ctx.stroke();
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
  * Dhruva: the young boy in penance, seated in meditation with hands
  * folded, a faint halo marking the boon that fixed him as the pole star --
  * see docs/research/dhruva-figure-sources.md.

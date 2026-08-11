@@ -86,4 +86,28 @@ export const ASTERISMS: Asterism[] = [
     starIds: ["sigma-scorpii", "antares", "tau-scorpii"],
     nodeId: "jyeshtha",
   },
+  // Third batch: Ardra, Punarvasu, Pushya. Ardra is deliberately absent
+  // here -- confirmed with the project owner that it stays a single-star
+  // nakshatra (no traditional companion stars to draw a line between),
+  // see docs/research/ardra-asterism-sources.md.
+  {
+    id: "punarvasu",
+    name: "Punarvasu",
+    // The simplest possible shape again: a single line between the twin
+    // stars, Pollux (yogatara) and Castor. See
+    // docs/research/punarvasu-asterism-sources.md.
+    starIds: ["pollux", "castor"],
+    nodeId: "punarvasu",
+  },
+  {
+    id: "pushya",
+    name: "Pushya",
+    // Closed triangle (same treatment as Mrigashira's "deer head"):
+    // Theta Cancri and Asellus Australis sit at nearly the same
+    // declination with Asellus Borealis well north of both, so the real
+    // positions naturally form an arrowhead/triangle rather than a
+    // straight line. See docs/research/pushya-asterism-sources.md.
+    starIds: ["theta-cancri", "asellus-borealis", "asellus-australis", "theta-cancri"],
+    nodeId: "pushya",
+  },
 ];
