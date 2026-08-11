@@ -3,7 +3,15 @@ import { Billboard, Text } from "@react-three/drei";
 import { DoubleSide } from "three";
 import { altAzToVector3 } from "../../utils/astronomy";
 import { makeGroundGlowTexture } from "./groundTexture";
-import { DOME_RADIUS } from "./constants";
+import { makeCurvedGroundGeometry, makeCurvedRingGeometry } from "./curvedGround";
+import { DOME_RADIUS, GROUND_CURVE_RADIUS } from "./constants";
+
+// Same sagitta approximation used to build the curved ground geometry
+// (see curvedGround.ts) — used here just to drop the compass labels down
+// to rest visually on the now-curved rim instead of floating above it.
+function curveDrop(distance: number): number {
+  return (distance * distance) / (2 * GROUND_CURVE_RADIUS);
+}
 
 const DIRECTIONS: Array<{ label: string; az: number }> = [
   { label: "N", az: 0 },
@@ -27,9 +35,26 @@ const DIRECTIONS: Array<{ label: string; az: number }> = [
  * <Html>: Html doesn't get frustum-culled the same way, so a label
  * directly behind the camera (e.g. "S" when facing north) was projecting
  * to a garbled position near screen-centre instead of just disappearing.
+ *
+ * ADR0003: the ground disc and its glow ring are no longer flat — both
+ * use makeCurvedGroundGeometry/makeCurvedRingGeometry, which radially
+ * droop the mesh away from y=0 with distance (a stylized "standing on a
+ * sphere" curve, magnitude set by the single GROUND_CURVE_RADIUS
+ * constant). Compass labels are nudged down by the same curve amount at
+ * their radius so they still read as sitting on the rim, not floating
+ * above it.
  */
 export function Horizon() {
   const groundTexture = useMemo(() => makeGroundGlowTexture("#020208", "#7fa3dd"), []);
+  const groundGeometry = useMemo(
+    () => makeCurvedGroundGeometry(DOME_RADIUS + 5, GROUND_CURVE_RADIUS),
+    [],
+  );
+  const ringGeometry = useMemo(
+    () => makeCurvedRingGeometry(DOME_RADIUS - 9, DOME_RADIUS + 3, GROUND_CURVE_RADIUS),
+    [],
+  );
+  const labelDrop = useMemo(() => curveDrop(DOME_RADIUS + 2), []);
 
   return (
     <group>
@@ -37,8 +62,7 @@ export function Horizon() {
           part that sits right at the visual horizon), instead of a flat
           color plus a separate hard-edged ring. depthWrite is on so this
           genuinely occludes anything below the horizon. */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, 0]}>
-        <circleGeometry args={[DOME_RADIUS + 5, 64]} />
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, 0]} geometry={groundGeometry}>
         <meshBasicMaterial map={groundTexture} depthWrite />
       </mesh>
 
@@ -46,15 +70,14 @@ export function Horizon() {
           to SkyGradient's horizon glow band so the ground-side and
           sky-side glow read as one continuous ring, not two different
           effects meeting at a seam. */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]}>
-        <ringGeometry args={[DOME_RADIUS - 9, DOME_RADIUS + 3, 64]} />
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]} geometry={ringGeometry}>
         <meshBasicMaterial color="#7fa3dd" transparent opacity={0.4} depthWrite={false} side={DoubleSide} />
       </mesh>
 
       {DIRECTIONS.map(({ label, az }) => {
         const pos = altAzToVector3(0, az, DOME_RADIUS + 2);
         return (
-          <Billboard key={label} position={[pos.x, 0.4, pos.z]}>
+          <Billboard key={label} position={[pos.x, 0.4 - labelDrop, pos.z]}>
             <Text fontSize={1.1} color="#ffffff" fillOpacity={0.4} anchorX="center" anchorY="middle">
               {label}
             </Text>
