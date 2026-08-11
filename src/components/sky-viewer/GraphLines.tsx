@@ -29,8 +29,10 @@ export function GraphLines({ stars }: GraphLinesProps) {
     const map = new Map<string, [number, number, number]>();
     for (const star of stars) {
       if (!star.nodeId) continue;
+      // No altitude filtering — consistent with the rest of the sky
+      // viewer, below-horizon endpoints are occluded by the ground disc
+      // rather than dropped from the graph entirely.
       const { alt, az } = raDecToAltAz(star.ra, star.dec, selectedCity.lat, selectedCity.lon, currentDate);
-      if (alt < -5) continue;
       const v = altAzToVector3(alt, az, DOME_RADIUS);
       map.set(star.nodeId, [v.x, v.y, v.z]);
     }

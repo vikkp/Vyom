@@ -28,7 +28,10 @@ export function AsterismLines({ asterisms, stars }: AsterismLinesProps) {
         if (!fromStar || !toStar) continue;
         const fromAltAz = raDecToAltAz(fromStar.ra, fromStar.dec, selectedCity.lat, selectedCity.lon, currentDate);
         const toAltAz = raDecToAltAz(toStar.ra, toStar.dec, selectedCity.lat, selectedCity.lon, currentDate);
-        if (fromAltAz.alt < -5 || toAltAz.alt < -5) continue;
+        // No horizon filtering here either — a partially-set asterism should
+        // draw its full shape and let the ground disc occlude the buried
+        // part, not vanish a whole line segment the moment one endpoint
+        // crosses an arbitrary altitude threshold.
         const from = altAzToVector3(fromAltAz.alt, fromAltAz.az, DOME_RADIUS);
         const to = altAzToVector3(toAltAz.alt, toAltAz.az, DOME_RADIUS);
         result.push({ id: `${asterism.id}-${i}`, points: [[from.x, from.y, from.z], [to.x, to.y, to.z]] });

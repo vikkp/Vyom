@@ -29,7 +29,12 @@ export function SkyViewer() {
       <ambientLight intensity={0.1} />
 
       <SkyGradient />
-      <Stars radius={DOME_RADIUS + 15} depth={25} count={5000} factor={1.4} saturation={0} fade speed={0.15} />
+      {/* Dense background starfield (unnamed, unclickable field stars —
+          distinct from the ~60 catalog stars in StarField, which carry
+          the real Indian names/mythology). Pushed well up from the
+          original 5000 so the sky reads as genuinely dense/realistic
+          rather than sparse and empty. */}
+      <Stars radius={DOME_RADIUS + 20} depth={40} count={20000} factor={2.2} saturation={0} fade speed={0.15} />
 
       <group onPointerMissed={() => select(null)}>
         <StarField stars={STAR_CATALOG} />

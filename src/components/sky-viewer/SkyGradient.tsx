@@ -23,7 +23,7 @@ void main() {
     float t = pow(1.0 - h, exponent);
     color = mix(zenithColor, horizonColor, t);
   } else {
-    float t = pow(clamp(-h * 4.0, 0.0, 1.0), 0.6);
+    float t = pow(clamp(-h * 2.2, 0.0, 1.0), 0.55);
     color = mix(horizonColor, groundColor, t);
   }
   gl_FragColor = vec4(color, 1.0);
@@ -41,9 +41,9 @@ export function SkyGradient() {
   const uniforms = useMemo(
     () => ({
       zenithColor: { value: new Color("#050a1c") },
-      horizonColor: { value: new Color("#2a4d8a") },
+      horizonColor: { value: new Color("#335e9e") },
       groundColor: { value: new Color("#020208") },
-      exponent: { value: 1.6 },
+      exponent: { value: 1.4 },
     }),
     [],
   );

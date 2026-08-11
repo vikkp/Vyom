@@ -8,6 +8,7 @@ import { useGraphStore } from "../../store/useGraphStore";
 import { useSkyViewerStore } from "../../store/skyViewerStore";
 import { makeGlowTexture } from "../sky/glowTexture";
 import { useOptionalTexture } from "../sky/useOptionalTexture";
+import { makeRishiSilhouetteTexture } from "./rishiSilhouette";
 import { DOME_RADIUS } from "./constants";
 
 const RISHI_GLOW_COLOR = "#ffcf8a";
@@ -26,21 +27,31 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
 
   const isActive = star.nodeId != null && selectedId === star.nodeId;
   const glowTexture = useMemo(() => makeGlowTexture(RISHI_GLOW_COLOR), []);
+  // Real character art, once dropped into public/rishis/<nodeId>.png, is
+  // picked up automatically here and takes priority. Until then,
+  // silhouetteTexture is a procedural stand-in (head + robed body,
+  // soft-blurred) so the overlay reads as "a vague painted figure" rather
+  // than a flat glowing circle — still not the real requested artwork,
+  // just a less ugly placeholder for it.
   const figureTexture = useOptionalTexture(star.nodeId ? `/rishis/${star.nodeId}.png` : "");
+  const silhouetteTexture = useMemo(() => makeRishiSilhouetteTexture(RISHI_GLOW_COLOR), []);
+  const displayTexture = figureTexture ?? silhouetteTexture;
 
   const position = useMemo(() => altAzToVector3(alt, az, DOME_RADIUS - 1), [alt, az]);
 
   useFrame(({ clock }) => {
-    const breathe = 0.4 + Math.sin(clock.elapsedTime * 0.6 + star.ra) * 0.06;
+    const breathe = 0.22 + Math.sin(clock.elapsedTime * 0.6 + star.ra) * 0.05;
     const glowMaterial = glowRef.current?.material as { opacity: number } | undefined;
-    if (glowMaterial) glowMaterial.opacity = figureTexture ? (isActive ? 0.5 : 0.28) : isActive ? 0.75 : breathe;
+    if (glowMaterial) glowMaterial.opacity = isActive ? 0.45 : breathe;
     const figureMaterial = figureRef.current?.material as { opacity: number } | undefined;
-    if (figureMaterial) figureMaterial.opacity = isActive ? 0.85 : 0.55;
+    if (figureMaterial) figureMaterial.opacity = isActive ? 0.85 : 0.62;
   });
 
   // Large, semi-transparent, sitting over the whole star rather than a
   // tight badge next to it — closer to how SkyGuide overlays a
-  // constellation figure across the stars it belongs to.
+  // constellation figure across the stars it belongs to. The glow plane
+  // is now a soft ambient backdrop behind the figure shape, not the whole
+  // visual by itself.
   return (
     <group
       position={[position.x, position.y + 3.5, position.z]}
@@ -56,24 +67,22 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
       onPointerOut={star.nodeId ? () => (document.body.style.cursor = "auto") : undefined}
     >
       <Billboard>
-        <mesh ref={glowRef} position={[0, 0, -0.01]}>
-          <planeGeometry args={[figureTexture ? 9 : 6.5, figureTexture ? 10.5 : 8.5]} />
+        <mesh ref={glowRef} position={[0, 0, -0.02]}>
+          <planeGeometry args={[9, 10.5]} />
           <meshBasicMaterial
             map={glowTexture}
             color={isActive ? "#ffe6b8" : RISHI_GLOW_COLOR}
             transparent
-            opacity={0.4}
+            opacity={0.28}
             depthWrite={false}
             toneMapped={false}
           />
         </mesh>
-        {figureTexture && (
-          <mesh ref={figureRef}>
-            <planeGeometry args={[7, 7]} />
-            <meshBasicMaterial map={figureTexture} transparent opacity={0.55} depthWrite={false} toneMapped={false} />
-          </mesh>
-        )}
-        <Html position={[0, figureTexture ? -5.5 : -4.8, 0]} distanceFactor={40} center style={{ pointerEvents: "none" }}>
+        <mesh ref={figureRef} position={[0, 0, -0.01]}>
+          <planeGeometry args={figureTexture ? [7, 7] : [6, 7.8]} />
+          <meshBasicMaterial map={displayTexture} transparent opacity={0.62} depthWrite={false} toneMapped={false} />
+        </mesh>
+        <Html position={[0, -5.5, 0]} distanceFactor={40} center style={{ pointerEvents: "none" }}>
           <div className="whitespace-nowrap text-xs tracking-wide text-amber-100/85">{star.indianName}</div>
         </Html>
       </Billboard>
@@ -90,13 +99,14 @@ export function RishiOverlays({ stars }: RishiOverlaysProps) {
   const selectedCity = useSkyViewerStore((s) => s.selectedCity);
   const currentDate = useSkyViewerStore((s) => s.currentDate);
 
+  // No altitude filtering — same reasoning as StarField/AsterismLines: let
+  // the depth-writing ground disc in Horizon.tsx occlude figures whose
+  // stars have set, instead of an arbitrary cutoff popping them in/out.
   const visible = useMemo(() => {
-    return stars
-      .map((star) => {
-        const { alt, az } = raDecToAltAz(star.ra, star.dec, selectedCity.lat, selectedCity.lon, currentDate);
-        return { star, alt, az };
-      })
-      .filter(({ alt }) => alt > -5);
+    return stars.map((star) => {
+      const { alt, az } = raDecToAltAz(star.ra, star.dec, selectedCity.lat, selectedCity.lon, currentDate);
+      return { star, alt, az };
+    });
   }, [stars, selectedCity, currentDate]);
 
   if (!visibleLayers.has("overlays")) return null;

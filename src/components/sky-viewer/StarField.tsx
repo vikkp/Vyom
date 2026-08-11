@@ -102,13 +102,17 @@ export function StarField({ stars }: StarFieldProps) {
   const selectedCity = useSkyViewerStore((s) => s.selectedCity);
   const currentDate = useSkyViewerStore((s) => s.currentDate);
 
+  // No altitude filtering: stars below the horizon are naturally hidden by
+  // the opaque, depth-writing ground disc in Horizon.tsx (real occlusion,
+  // like an actual horizon), instead of abruptly popping in/out at an
+  // arbitrary altitude cutoff. This is also what keeps a partially-set
+  // asterism (see AsterismLines) looking like a constellation dipping
+  // below the horizon rather than an incomplete shape.
   const visible = useMemo(() => {
-    return stars
-      .map((star) => {
-        const { alt, az } = raDecToAltAz(star.ra, star.dec, selectedCity.lat, selectedCity.lon, currentDate);
-        return { star, alt, az };
-      })
-      .filter(({ alt }) => alt > -5); // only render stars above (or near) the horizon
+    return stars.map((star) => {
+      const { alt, az } = raDecToAltAz(star.ra, star.dec, selectedCity.lat, selectedCity.lon, currentDate);
+      return { star, alt, az };
+    });
   }, [stars, selectedCity, currentDate]);
 
   if (!visibleLayers.has("stars")) return null;
