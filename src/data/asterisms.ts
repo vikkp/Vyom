@@ -34,4 +34,13 @@ export const ASTERISMS: Asterism[] = [
     starIds: ["epsilon-tauri", "delta1-tauri", "gamma-tauri", "theta2-tauri", "aldebaran"],
     nodeId: "rohini",
   },
+  {
+    id: "krittika",
+    name: "Krittika",
+    // The naked-eye Pleiades cluster shape, zigzagging through the six
+    // brightest stars rather than a straight line — see
+    // docs/research/krittika-asterism-sources.md.
+    starIds: ["merope", "electra", "taygeta", "maia", "alcyone", "atlas"],
+    nodeId: "krittika",
+  },
 ];

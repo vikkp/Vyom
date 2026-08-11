@@ -90,6 +90,18 @@ export const HYADES_EXTRA_STARS: SkyCatalogStar[] = [
   { id: "theta2-tauri", ra: 4.4777, dec: 15.8709, mag: 3.4, indianName: "Rohini", westernName: "Theta² Tauri", nodeId: "rohini", constellation: "Nakshatra" },
 ];
 
+// ADR0003 priority #4: the rest of the naked-eye Pleiades, completing
+// Krittika beyond its single Alcyone yogatara. See
+// docs/research/krittika-asterism-sources.md. All share nodeId
+// "krittika" with Alcyone, same reasoning as Mrigashira/Rohini.
+export const PLEIADES_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "electra", ra: 3.7479, dec: 24.1133, mag: 3.7, indianName: "Krittika", westernName: "Electra (17 Tauri)", nodeId: "krittika", constellation: "Nakshatra" },
+  { id: "taygeta", ra: 3.7535, dec: 24.4673, mag: 4.29, indianName: "Krittika", westernName: "Taygeta (19 Tauri)", nodeId: "krittika", constellation: "Nakshatra" },
+  { id: "maia", ra: 3.7638, dec: 24.3678, mag: 3.87, indianName: "Krittika", westernName: "Maia (20 Tauri)", nodeId: "krittika", constellation: "Nakshatra" },
+  { id: "merope", ra: 3.7721, dec: 23.9484, mag: 4.17, indianName: "Krittika", westernName: "Merope (23 Tauri)", nodeId: "krittika", constellation: "Nakshatra" },
+  { id: "atlas", ra: 3.8456, dec: 24.1328, mag: 3.63, indianName: "Krittika", westernName: "Atlas (27 Tauri)", nodeId: "krittika", constellation: "Nakshatra" },
+];
+
 export const BRIGHT_STARS: SkyCatalogStar[] = [
   { id: "sirius", ra: 6.753, dec: -16.716, mag: -1.46, westernName: "Sirius" },
   { id: "canopus", ra: 6.399, dec: -52.696, mag: -0.74, westernName: "Canopus" },
@@ -124,5 +136,6 @@ export const STAR_CATALOG: SkyCatalogStar[] = [
   ...NAKSHATRA_STARS,
   ...MRIGASHIRA_EXTRA_STARS,
   ...HYADES_EXTRA_STARS,
+  ...PLEIADES_EXTRA_STARS,
   ...BRIGHT_STARS,
 ];
