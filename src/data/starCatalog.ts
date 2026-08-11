@@ -102,6 +102,25 @@ export const PLEIADES_EXTRA_STARS: SkyCatalogStar[] = [
   { id: "atlas", ra: 3.8456, dec: 24.1328, mag: 3.63, indianName: "Krittika", westernName: "Atlas (27 Tauri)", nodeId: "krittika", constellation: "Nakshatra" },
 ];
 
+// ADR0003 priority #5: "Dhruva context" — the rest of Ursa Minor (the
+// Little Dipper) around Polaris. Deliberately no nodeId, unlike the
+// nakshatra asterisms above: Polaris/Dhruva already has its own correct
+// node (dhruva-tara), and these six stars are the surrounding
+// constellation's shape, not additional facets of that specific node —
+// there's no existing "Ursa Minor" graph node to attach them to, and
+// creating one is graph content, which is out of scope for this pass
+// (see docs/research/dhruva-context-sources.md). Names are Western-only
+// for the same reason BRIGHT_STARS are: no sourced traditional Sanskrit
+// name for each individual star, only for Dhruva Tārā itself.
+export const URSA_MINOR_CONTEXT_STARS: SkyCatalogStar[] = [
+  { id: "yildun", ra: 17.5369, dec: 86.5865, mag: 4.35, westernName: "Yildun (δ UMi)", constellation: "Ursa Minor" },
+  { id: "epsilon-umi", ra: 16.7662, dec: 82.0373, mag: 4.19, westernName: "ε Ursae Minoris", constellation: "Ursa Minor" },
+  { id: "zeta-umi", ra: 15.7343, dec: 77.7945, mag: 4.29, westernName: "ζ Ursae Minoris", constellation: "Ursa Minor" },
+  { id: "eta-umi", ra: 16.2917, dec: 75.7553, mag: 4.95, westernName: "η Ursae Minoris", constellation: "Ursa Minor" },
+  { id: "pherkad", ra: 15.3455, dec: 71.834, mag: 3.05, westernName: "Pherkad (γ UMi)", constellation: "Ursa Minor" },
+  { id: "kochab", ra: 14.8451, dec: 74.1555, mag: 2.08, westernName: "Kochab (β UMi)", constellation: "Ursa Minor" },
+];
+
 export const BRIGHT_STARS: SkyCatalogStar[] = [
   { id: "sirius", ra: 6.753, dec: -16.716, mag: -1.46, westernName: "Sirius" },
   { id: "canopus", ra: 6.399, dec: -52.696, mag: -0.74, westernName: "Canopus" },
@@ -137,5 +156,6 @@ export const STAR_CATALOG: SkyCatalogStar[] = [
   ...MRIGASHIRA_EXTRA_STARS,
   ...HYADES_EXTRA_STARS,
   ...PLEIADES_EXTRA_STARS,
+  ...URSA_MINOR_CONTEXT_STARS,
   ...BRIGHT_STARS,
 ];

@@ -43,4 +43,14 @@ export const ASTERISMS: Asterism[] = [
     starIds: ["merope", "electra", "taygeta", "maia", "alcyone", "atlas"],
     nodeId: "krittika",
   },
+  {
+    id: "ursa-minor",
+    name: "Ursa Minor (Dhruva context)",
+    // The Little Dipper: handle from Polaris out to the bowl, then the
+    // bowl itself closed back to zeta. See
+    // docs/research/dhruva-context-sources.md. No nodeId — see the
+    // comment above URSA_MINOR_CONTEXT_STARS in starCatalog.ts for why.
+    starIds: ["polaris", "yildun", "epsilon-umi", "zeta-umi", "eta-umi", "pherkad", "kochab", "zeta-umi"],
+    nodeId: undefined,
+  },
 ];
