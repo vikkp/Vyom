@@ -47,14 +47,16 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
     if (figureMaterial) figureMaterial.opacity = isActive ? 0.88 : 0.7;
   });
 
-  // Large, semi-transparent, sitting over the whole star rather than a
-  // tight badge next to it — closer to how SkyGuide overlays a
-  // constellation figure across the stars it belongs to. The glow plane
-  // is now a soft ambient backdrop behind the figure shape, not the whole
-  // visual by itself.
+  // Sized against the real sky, not guessed: the seven Big Dipper stars
+  // sit only ~2.2-4.0 units apart from each other at DOME_RADIUS (verified
+  // numerically from their actual RA/Dec). A figure any bigger than that
+  // gap piles all seven into an indistinguishable heap — which is exactly
+  // what was happening before this fix. Each figure is now sized to sit
+  // at its own star and just touch its neighbours, like a row of
+  // individually-painted constellation figures, not one fused blob.
   return (
     <group
-      position={[position.x, position.y + 4.2, position.z]}
+      position={[position.x, position.y + 1.3, position.z]}
       onClick={
         star.nodeId
           ? (e) => {
@@ -68,7 +70,7 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
     >
       <Billboard>
         <mesh ref={glowRef} position={[0, 0, -0.02]}>
-          <planeGeometry args={[9, 10.5]} />
+          <planeGeometry args={[2.9, 3.6]} />
           <meshBasicMaterial
             map={glowTexture}
             color={isActive ? "#ffe6b8" : RISHI_GLOW_COLOR}
@@ -82,10 +84,10 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
           {/* Real character art is a 900x1338 portrait crop (~0.673
               aspect); match that here instead of forcing it into a
               square, which would squash the figures. */}
-          <planeGeometry args={figureTexture ? [6.3, 9.4] : [6, 7.8]} />
+          <planeGeometry args={figureTexture ? [2.0, 2.97] : [1.9, 2.47]} />
           <meshBasicMaterial map={displayTexture} transparent opacity={0.7} depthWrite={false} toneMapped={false} />
         </mesh>
-        <Html position={[0, -5.5, 0]} distanceFactor={40} center style={{ pointerEvents: "none" }}>
+        <Html position={[0, -1.7, 0]} distanceFactor={40} center style={{ pointerEvents: "none" }}>
           <div className="whitespace-nowrap text-xs tracking-wide text-amber-100/85">{star.indianName}</div>
         </Html>
       </Billboard>

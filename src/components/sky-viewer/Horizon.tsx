@@ -29,7 +29,7 @@ const DIRECTIONS: Array<{ label: string; az: number }> = [
  * to a garbled position near screen-centre instead of just disappearing.
  */
 export function Horizon() {
-  const groundTexture = useMemo(() => makeGroundGlowTexture("#020208", "#22406f"), []);
+  const groundTexture = useMemo(() => makeGroundGlowTexture("#020208", "#3f6bab"), []);
 
   return (
     <group>
@@ -46,7 +46,7 @@ export function Horizon() {
           so it blends rather than hard-edges against the sky. */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]}>
         <ringGeometry args={[DOME_RADIUS - 8, DOME_RADIUS + 3, 64]} />
-        <meshBasicMaterial color="#2a4d8a" transparent opacity={0.18} depthWrite={false} side={DoubleSide} />
+        <meshBasicMaterial color="#3f6bab" transparent opacity={0.32} depthWrite={false} side={DoubleSide} />
       </mesh>
 
       {DIRECTIONS.map(({ label, az }) => {

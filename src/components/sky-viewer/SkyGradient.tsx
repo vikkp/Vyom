@@ -41,9 +41,9 @@ export function SkyGradient() {
   const uniforms = useMemo(
     () => ({
       zenithColor: { value: new Color("#050a1c") },
-      horizonColor: { value: new Color("#335e9e") },
+      horizonColor: { value: new Color("#4a74b8") },
       groundColor: { value: new Color("#020208") },
-      exponent: { value: 1.4 },
+      exponent: { value: 1.2 },
     }),
     [],
   );

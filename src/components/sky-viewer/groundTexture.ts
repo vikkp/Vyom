@@ -22,8 +22,8 @@ export function makeGroundGlowTexture(groundColor: string, glowColor: string, si
 
   const gradient = ctx.createRadialGradient(cx, cy, r * 0.5, cx, cy, r);
   gradient.addColorStop(0, groundColor);
-  gradient.addColorStop(0.68, groundColor);
-  gradient.addColorStop(0.86, glowColor);
+  gradient.addColorStop(0.48, groundColor);
+  gradient.addColorStop(0.8, glowColor);
   gradient.addColorStop(1, glowColor);
 
   ctx.fillStyle = gradient;
