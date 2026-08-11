@@ -29,7 +29,7 @@ const DIRECTIONS: Array<{ label: string; az: number }> = [
  * to a garbled position near screen-centre instead of just disappearing.
  */
 export function Horizon() {
-  const groundTexture = useMemo(() => makeGroundGlowTexture("#020208", "#3f6bab"), []);
+  const groundTexture = useMemo(() => makeGroundGlowTexture("#020208", "#7fa3dd"), []);
 
   return (
     <group>
@@ -42,11 +42,13 @@ export function Horizon() {
         <meshBasicMaterial map={groundTexture} depthWrite />
       </mesh>
 
-      {/* A little extra soft glow right at the boundary itself, additive
-          so it blends rather than hard-edges against the sky. */}
+      {/* A little extra soft glow right at the boundary itself, matched
+          to SkyGradient's horizon glow band so the ground-side and
+          sky-side glow read as one continuous ring, not two different
+          effects meeting at a seam. */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]}>
-        <ringGeometry args={[DOME_RADIUS - 8, DOME_RADIUS + 3, 64]} />
-        <meshBasicMaterial color="#3f6bab" transparent opacity={0.32} depthWrite={false} side={DoubleSide} />
+        <ringGeometry args={[DOME_RADIUS - 9, DOME_RADIUS + 3, 64]} />
+        <meshBasicMaterial color="#7fa3dd" transparent opacity={0.4} depthWrite={false} side={DoubleSide} />
       </mesh>
 
       {DIRECTIONS.map(({ label, az }) => {

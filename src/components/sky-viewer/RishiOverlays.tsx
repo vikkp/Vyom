@@ -40,32 +40,31 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
   const position = useMemo(() => altAzToVector3(alt, az, DOME_RADIUS - 1), [alt, az]);
 
   useFrame(({ clock }) => {
-    const breathe = 0.22 + Math.sin(clock.elapsedTime * 0.6 + star.ra) * 0.05;
+    const breathe = 0.16 + Math.sin(clock.elapsedTime * 0.6 + star.ra) * 0.04;
     const glowMaterial = glowRef.current?.material as { opacity: number } | undefined;
-    if (glowMaterial) glowMaterial.opacity = isActive ? 0.45 : breathe;
+    if (glowMaterial) glowMaterial.opacity = isActive ? 0.4 : breathe;
     const figureMaterial = figureRef.current?.material as { opacity: number } | undefined;
-    if (figureMaterial) figureMaterial.opacity = isActive ? 0.88 : 0.7;
+    if (figureMaterial) figureMaterial.opacity = isActive ? 0.62 : 0.42;
   });
 
-  // Sized against the real sky, not guessed: the seven Big Dipper stars
-  // sit only ~2.2-4.0 units apart from each other at DOME_RADIUS (verified
-  // numerically from their actual RA/Dec). A figure any bigger than that
-  // gap piles all seven into an indistinguishable heap — which is exactly
-  // what was happening before this fix. Each figure is now sized to sit
-  // at its own star and just touch its neighbours, like a row of
-  // individually-painted constellation figures, not one fused blob.
+  // Sized larger than the tight per-star gap on purpose: these are meant
+  // to read as large, ghostly constellation artwork layered across the
+  // sky (like SkyGuide's constellation figures) rather than small icons
+  // sitting next to their star. Neighbouring rishis now overlap somewhat
+  // -- that's fine and expected, because the low opacity (0.42 baseline,
+  // 0.62 when selected) lets overlaps blend softly instead of stacking
+  // into solid shapes. The individual per-star positioning from the
+  // previous pass is unchanged, only the size/opacity got bigger/softer.
   //
-  // The vertical anchor (+0.93) is also measured, not guessed: across all
-  // seven processed portraits, the visible (non-transparent) content
-  // bottoms out at ~81% of the image height on average. That's where the
-  // seated figure's base/lap actually is, so the star should land there
-  // -- not at the plane's geometric center, which would put the star
-  // floating in the empty margin above the head, and not near the very
-  // bottom edge either, which (before this fix) put it below the figure
-  // entirely, in transparent space past their feet.
+  // The vertical anchor is measured, not guessed: after fading out each
+  // portrait's glowing base platform (see the alpha-fade step in the
+  // image processing — a deliberate "let them float free" edit), the
+  // remaining visible content bottoms out at ~65% of image height on
+  // average. That's roughly the seated figure's lap/base, so the star
+  // lands there.
   return (
     <group
-      position={[position.x, position.y + 0.93, position.z]}
+      position={[position.x, position.y + 0.94, position.z]}
       onClick={
         star.nodeId
           ? (e) => {
@@ -79,12 +78,12 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
     >
       <Billboard>
         <mesh ref={glowRef} position={[0, 0, -0.02]}>
-          <planeGeometry args={[2.9, 3.6]} />
+          <planeGeometry args={[5.6, 7.0]} />
           <meshBasicMaterial
             map={glowTexture}
             color={isActive ? "#ffe6b8" : RISHI_GLOW_COLOR}
             transparent
-            opacity={0.28}
+            opacity={0.22}
             depthWrite={false}
             toneMapped={false}
           />
@@ -93,10 +92,10 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
           {/* Real character art is a 900x1338 portrait crop (~0.673
               aspect); match that here instead of forcing it into a
               square, which would squash the figures. */}
-          <planeGeometry args={figureTexture ? [2.0, 2.97] : [1.9, 2.47]} />
-          <meshBasicMaterial map={displayTexture} transparent opacity={0.7} depthWrite={false} toneMapped={false} />
+          <planeGeometry args={figureTexture ? [4.2, 6.24] : [4.0, 5.2]} />
+          <meshBasicMaterial map={displayTexture} transparent opacity={0.42} depthWrite={false} toneMapped={false} />
         </mesh>
-        <Html position={[0, -1.7, 0]} distanceFactor={40} center style={{ pointerEvents: "none" }}>
+        <Html position={[0, -3.4, 0]} distanceFactor={40} center style={{ pointerEvents: "none" }}>
           <div className="whitespace-nowrap text-xs tracking-wide text-amber-100/85">{star.indianName}</div>
         </Html>
       </Billboard>

@@ -31,10 +31,13 @@ export function SkyViewer() {
       <SkyGradient />
       {/* Dense background starfield (unnamed, unclickable field stars —
           distinct from the ~60 catalog stars in StarField, which carry
-          the real Indian names/mythology). Pushed well up from the
-          original 5000 so the sky reads as genuinely dense/realistic
-          rather than sparse and empty. */}
-      <Stars radius={DOME_RADIUS + 20} depth={40} count={20000} factor={2.2} saturation={0} fade speed={0.15} />
+          the real Indian names/mythology). Two layers instead of one,
+          so magnitude actually varies: a very dense field of small faint
+          points for texture, plus a sparser layer of bigger, brighter
+          ones standing out above it — a single uniform layer reads flat
+          no matter how high the count goes. */}
+      <Stars radius={DOME_RADIUS + 20} depth={45} count={55000} factor={1.1} saturation={0} fade speed={0.12} />
+      <Stars radius={DOME_RADIUS + 15} depth={35} count={7000} factor={3.0} saturation={0} fade speed={0.18} />
 
       <group onPointerMissed={() => select(null)}>
         <StarField stars={STAR_CATALOG} />
