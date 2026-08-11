@@ -121,6 +121,37 @@ export const URSA_MINOR_CONTEXT_STARS: SkyCatalogStar[] = [
   { id: "kochab", ra: 14.8451, dec: 74.1555, mag: 2.08, westernName: "Kochab (β UMi)", constellation: "Ursa Minor" },
 ];
 
+// Second asterism batch: Ashwini, Magha, Jyeshtha built out from single
+// yogatara points into real multi-star shapes, same pattern as the
+// Mrigashira/Rohini/Krittika batch above (share nodeId with the existing
+// yogatara star, since these are that nakshatra's own visual form).
+
+// Ashwini: the classical symbol is explicitly "the stars β and γ Arietis" —
+// Sheratan (already the yogatara) plus Mesarthim. See
+// docs/research/ashwini-asterism-sources.md.
+export const ASHWINI_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "mesarthim", ra: 1.8922, dec: 19.2939, mag: 3.86, indianName: "Ashwini", westernName: "Mesarthim (γ Arietis)", nodeId: "ashwini", constellation: "Nakshatra" },
+];
+
+// Magha: Regulus (yogatara) plus five fainter stars documented as its
+// surrounding asterism — a distinct shape from the Western "Sickle of
+// Leo." See docs/research/magha-asterism-sources.md.
+export const MAGHA_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "algieba", ra: 10.3329, dec: 19.8415, mag: 2.08, indianName: "Magha", westernName: "Algieba (γ Leonis)", nodeId: "magha", constellation: "Nakshatra" },
+  { id: "eta-leonis", ra: 10.1222, dec: 16.7627, mag: 3.486, indianName: "Magha", westernName: "Al Jabhah (η Leonis)", nodeId: "magha", constellation: "Nakshatra" },
+  { id: "omicron-leonis", ra: 9.6858, dec: 9.8923, mag: 3.52, indianName: "Magha", westernName: "Subra (ο Leonis)", nodeId: "magha", constellation: "Nakshatra" },
+  { id: "31-leonis", ra: 10.1317, dec: 9.9975, mag: 4.39, indianName: "Magha", westernName: "31 Leonis", nodeId: "magha", constellation: "Nakshatra" },
+  { id: "rho-leonis", ra: 10.5469, dec: 9.3066, mag: 3.85, indianName: "Magha", westernName: "Rho Leonis", nodeId: "magha", constellation: "Nakshatra" },
+];
+
+// Jyeshtha: Antares (yogatara) plus Tau and Sigma Scorpii — documented as
+// "three stars in a row" forming the traditional earring/umbrella shape.
+// See docs/research/jyeshtha-asterism-sources.md.
+export const JYESHTHA_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "sigma-scorpii", ra: 16.3531, dec: -25.5928, mag: 2.88, indianName: "Jyeshtha", westernName: "Sigma Scorpii", nodeId: "jyeshtha", constellation: "Nakshatra" },
+  { id: "tau-scorpii", ra: 16.5981, dec: -28.216, mag: 2.82, indianName: "Jyeshtha", westernName: "Tau Scorpii", nodeId: "jyeshtha", constellation: "Nakshatra" },
+];
+
 export const BRIGHT_STARS: SkyCatalogStar[] = [
   { id: "sirius", ra: 6.753, dec: -16.716, mag: -1.46, westernName: "Sirius" },
   { id: "canopus", ra: 6.399, dec: -52.696, mag: -0.74, westernName: "Canopus" },
@@ -157,5 +188,8 @@ export const STAR_CATALOG: SkyCatalogStar[] = [
   ...HYADES_EXTRA_STARS,
   ...PLEIADES_EXTRA_STARS,
   ...URSA_MINOR_CONTEXT_STARS,
+  ...ASHWINI_EXTRA_STARS,
+  ...MAGHA_EXTRA_STARS,
+  ...JYESHTHA_EXTRA_STARS,
   ...BRIGHT_STARS,
 ];

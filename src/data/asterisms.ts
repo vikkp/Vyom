@@ -57,4 +57,33 @@ export const ASTERISMS: Asterism[] = [
     // right next to it near the pole.
     emphasis: "secondary",
   },
+  {
+    id: "ashwini",
+    name: "Ashwini",
+    // The simplest possible asterism: a single line between the
+    // nakshatra's two classical stars, Sheratan and Mesarthim. See
+    // docs/research/ashwini-asterism-sources.md.
+    starIds: ["sheratan", "mesarthim"],
+    nodeId: "ashwini",
+  },
+  {
+    id: "magha",
+    name: "Magha",
+    // Base (Rho-31 Leonis-Omicron) rising into a tall back through
+    // Regulus-Eta-Algieba -- not the Western "Sickle of Leo" (different
+    // stars), a distinct Hindu-tradition asterism. See
+    // docs/research/magha-asterism-sources.md.
+    starIds: ["rho-leonis", "31-leonis", "omicron-leonis", "regulus", "eta-leonis", "algieba"],
+    nodeId: "magha",
+  },
+  {
+    id: "jyeshtha",
+    name: "Jyeshtha",
+    // "Three stars in a row" (the earring/umbrella shape), an open line
+    // Sigma-Antares-Tau -- the real positions already fall in a near-
+    // straight diagonal, no artistic reordering needed. See
+    // docs/research/jyeshtha-asterism-sources.md.
+    starIds: ["sigma-scorpii", "antares", "tau-scorpii"],
+    nodeId: "jyeshtha",
+  },
 ];
