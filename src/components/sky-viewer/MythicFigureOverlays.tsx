@@ -19,6 +19,8 @@ import {
   makeArdraTeardropSilhouette,
   makePunarvasuBowSilhouette,
   makePushyaLotusSilhouette,
+  makeAshleshaSerpentSilhouette,
+  makeSwatiShootSilhouette,
 } from "./mythicFigureSilhouette";
 import { DOME_RADIUS, sizeForAspect } from "./constants";
 
@@ -212,6 +214,27 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     placeholderSize: [3.7, 4.0],
     realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Pushya",
+  },
+  // Fourth batch: Ashlesha, Swati -- placeholders only, real art pending.
+  // No real PNGs exist yet, so realSize below is a guess from each
+  // silhouette's own canvas aspect, same as every earlier batch's initial
+  // placeholder-only state -- update to measured pixel dimensions once
+  // real art lands.
+  {
+    nodeId: "ashlesha",
+    anchorStarIds: ["epsilon-hydrae", "delta-hydrae", "eta-hydrae", "rho-hydrae", "sigma-hydrae", "zeta-hydrae"],
+    makeTexture: makeAshleshaSerpentSilhouette,
+    placeholderSize: [4.0, 4.3],
+    realSize: sizeForAspect(280 / 300),
+    label: "Ashlesha",
+  },
+  {
+    nodeId: "swati",
+    anchorStarIds: ["arcturus"],
+    makeTexture: makeSwatiShootSilhouette,
+    placeholderSize: [2.9, 4.3],
+    realSize: sizeForAspect(200 / 300),
+    label: "Swati",
   },
 ];
 

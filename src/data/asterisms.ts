@@ -110,4 +110,18 @@ export const ASTERISMS: Asterism[] = [
     starIds: ["theta-cancri", "asellus-borealis", "asellus-australis", "theta-cancri"],
     nodeId: "pushya",
   },
+  // Fourth batch: Ashlesha, Swati. Swati is deliberately absent here --
+  // same reasoning as Ardra, no traditional companion stars to draw a
+  // line between. See docs/research/swati-asterism-sources.md.
+  {
+    id: "ashlesha",
+    name: "Ashlesha",
+    // Closed six-star loop, the real "ring" shape Hydra's head forms --
+    // ordering chosen to avoid any segment passing close to an
+    // unconnected star (an earlier candidate ordering had the closing
+    // segment nearly overlap Rho Hydrae). See
+    // docs/research/ashlesha-asterism-sources.md.
+    starIds: ["delta-hydrae", "sigma-hydrae", "eta-hydrae", "epsilon-hydrae", "zeta-hydrae", "rho-hydrae", "delta-hydrae"],
+    nodeId: "ashlesha",
+  },
 ];

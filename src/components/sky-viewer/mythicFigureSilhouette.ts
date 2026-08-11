@@ -674,6 +674,147 @@ export function makePushyaLotusSilhouette(color: string, w = 260, h = 280): Canv
 }
 
 /**
+ * Ashlesha: the nakshatra's own symbol -- a coiled serpent (Naga),
+ * matching both the "hidden power/kundalini" reading and the real compact
+ * ring shape its six stars form. See
+ * docs/research/ashlesha-asterism-sources.md.
+ */
+export function makeAshleshaSerpentSilhouette(color: string, w = 280, h = 300): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const cx = w / 2;
+  const cy = h * 0.55;
+
+  auraBackdrop(ctx, cx, cy, w * 0.62, color);
+
+  withGlowFill(ctx, color, w * 0.04, 0.6, () => {
+    // Coiled body: a spiral traced with a tapering stroke, thick near the
+    // head and thinning toward the tail's centre.
+    ctx.strokeStyle = color;
+    ctx.lineCap = "round";
+    const turns = 2.3;
+    const maxR = w * 0.34;
+    const steps = 120;
+    for (let i = 0; i < steps; i++) {
+      const t0 = i / steps;
+      const t1 = (i + 1) / steps;
+      const a0 = t0 * turns * Math.PI * 2;
+      const a1 = t1 * turns * Math.PI * 2;
+      const r0 = maxR * (1 - t0) + w * 0.02;
+      const r1 = maxR * (1 - t1) + w * 0.02;
+      ctx.lineWidth = w * (0.06 - 0.045 * t0);
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(a0) * r0, cy + Math.sin(a0) * r0 * 0.85);
+      ctx.lineTo(cx + Math.cos(a1) * r1, cy + Math.sin(a1) * r1 * 0.85);
+      ctx.stroke();
+    }
+
+    // Raised hood/head at the coil's outer end, cobra-like, facing outward.
+    const headA = 0;
+    const headR = maxR + w * 0.02;
+    const hx = cx + Math.cos(headA) * headR;
+    const hy = cy + Math.sin(headA) * headR * 0.85;
+    ctx.beginPath();
+    ctx.moveTo(hx - w * 0.03, hy - h * 0.1);
+    ctx.quadraticCurveTo(hx + w * 0.09, hy - h * 0.14, hx + w * 0.1, hy - h * 0.02);
+    ctx.quadraticCurveTo(hx + w * 0.1, hy + h * 0.08, hx + w * 0.02, hy + h * 0.06);
+    ctx.quadraticCurveTo(hx - w * 0.04, hy + h * 0.02, hx - w * 0.03, hy - h * 0.1);
+    ctx.closePath();
+    ctx.fill();
+
+    // Small triangular head at the hood's tip.
+    ctx.beginPath();
+    ctx.moveTo(hx + w * 0.1, hy - h * 0.02);
+    ctx.lineTo(hx + w * 0.19, hy - h * 0.01);
+    ctx.lineTo(hx + w * 0.1, hy + h * 0.04);
+    ctx.closePath();
+    ctx.fill();
+  });
+
+  // Twin eye glints on the hood.
+  withGlowFill(ctx, color, w * 0.02, 0.9, () => {
+    const headR = w * 0.34 + w * 0.02;
+    const hx = cx + headR;
+    const hy = cy;
+    ctx.beginPath();
+    ctx.arc(hx + w * 0.13, hy - h * 0.015, w * 0.012, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
+ * Swati: the nakshatra's own symbol -- a young plant shoot bent by the
+ * wind (Vayu), matching its single-star (Arcturus) simplicity with a
+ * correspondingly simple, single-form figure -- same treatment as Ardra's
+ * teardrop. See docs/research/swati-asterism-sources.md.
+ */
+export function makeSwatiShootSilhouette(color: string, w = 200, h = 300): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const cx = w / 2;
+  const groundY = h * 0.92;
+
+  auraBackdrop(ctx, cx, h * 0.55, w * 0.75, color);
+
+  // Faint wind-streak lines, Vayu's presence, flowing past the shoot.
+  withGlowFill(ctx, color, w * 0.03, 0.2, () => {
+    ctx.lineWidth = w * 0.008;
+    ctx.strokeStyle = color;
+    for (const t of [0.28, 0.42, 0.58]) {
+      ctx.beginPath();
+      ctx.moveTo(w * 0.06, h * t);
+      ctx.quadraticCurveTo(w * 0.4, h * (t - 0.04), w * 0.82, h * (t + 0.03));
+      ctx.stroke();
+    }
+  });
+
+  withGlowFill(ctx, color, w * 0.05, 0.65, () => {
+    // Stem, curved as if bent by wind from the left.
+    ctx.lineWidth = w * 0.035;
+    ctx.strokeStyle = color;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(cx, groundY);
+    ctx.quadraticCurveTo(cx + w * 0.14, h * 0.6, cx + w * 0.02, h * 0.34);
+    ctx.quadraticCurveTo(cx - w * 0.08, h * 0.16, cx + w * 0.12, h * 0.06);
+    ctx.stroke();
+
+    // Two young leaves bending off the stem, same wind-swept direction.
+    // Leaf 1 (lower).
+    const l1x = cx + w * 0.07;
+    const l1y = h * 0.56;
+    ctx.beginPath();
+    ctx.moveTo(l1x, l1y);
+    ctx.quadraticCurveTo(l1x + w * 0.22, l1y - h * 0.02, l1x + w * 0.3, l1y - h * 0.12);
+    ctx.quadraticCurveTo(l1x + w * 0.16, l1y - h * 0.07, l1x, l1y);
+    ctx.closePath();
+    ctx.fill();
+
+    // Leaf 2 (upper, smaller).
+    const l2x = cx - w * 0.02;
+    const l2y = h * 0.24;
+    ctx.beginPath();
+    ctx.moveTo(l2x, l2y);
+    ctx.quadraticCurveTo(l2x + w * 0.18, l2y - h * 0.02, l2x + w * 0.24, l2y - h * 0.1);
+    ctx.quadraticCurveTo(l2x + w * 0.12, l2y - h * 0.05, l2x, l2y);
+    ctx.closePath();
+    ctx.fill();
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
  * Dhruva: the young boy in penance, seated in meditation with hands
  * folded, a faint halo marking the boon that fixed him as the pole star --
  * see docs/research/dhruva-figure-sources.md.

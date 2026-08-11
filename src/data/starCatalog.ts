@@ -176,6 +176,23 @@ export const PUSHYA_EXTRA_STARS: SkyCatalogStar[] = [
   { id: "theta-cancri", ra: 8.5266, dec: 18.0944, mag: 5.32, indianName: "Pushya", westernName: "Theta Cancri", nodeId: "pushya", constellation: "Nakshatra" },
 ];
 
+// Fourth asterism batch: Ashlesha, Swati. Swati is a deliberate exception,
+// same reasoning as Ardra in the previous batch: it stays a single-star
+// nakshatra (its classical symbol is a single wind-blown shoot, with no
+// traditionally sourced companion stars), so there's no
+// SWATI_EXTRA_STARS group; see docs/research/swati-asterism-sources.md.
+
+// Ashlesha: the existing yogatara Epsilon Hydrae plus the five other stars
+// of the compact "ring" forming Hydra's head -- Delta, Eta, Rho, Sigma,
+// Zeta Hydrae. See docs/research/ashlesha-asterism-sources.md.
+export const ASHLESHA_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "delta-hydrae", ra: 8.6276, dec: 5.7038, mag: 4.15, indianName: "Ashlesha", westernName: "Delta Hydrae", nodeId: "ashlesha", constellation: "Nakshatra" },
+  { id: "eta-hydrae", ra: 8.7204, dec: 3.3986, mag: 4.29, indianName: "Ashlesha", westernName: "Eta Hydrae", nodeId: "ashlesha", constellation: "Nakshatra" },
+  { id: "rho-hydrae", ra: 8.8072, dec: 5.8378, mag: 4.34, indianName: "Ashlesha", westernName: "Rho Hydrae", nodeId: "ashlesha", constellation: "Nakshatra" },
+  { id: "sigma-hydrae", ra: 8.646, dec: 3.3414, mag: 4.48, indianName: "Ashlesha", westernName: "Sigma Hydrae", nodeId: "ashlesha", constellation: "Nakshatra" },
+  { id: "zeta-hydrae", ra: 8.9232, dec: 5.9456, mag: 3.1, indianName: "Ashlesha", westernName: "Zeta Hydrae", nodeId: "ashlesha", constellation: "Nakshatra" },
+];
+
 export const BRIGHT_STARS: SkyCatalogStar[] = [
   { id: "sirius", ra: 6.753, dec: -16.716, mag: -1.46, westernName: "Sirius" },
   { id: "canopus", ra: 6.399, dec: -52.696, mag: -0.74, westernName: "Canopus" },
@@ -216,5 +233,6 @@ export const STAR_CATALOG: SkyCatalogStar[] = [
   ...JYESHTHA_EXTRA_STARS,
   ...PUNARVASU_EXTRA_STARS,
   ...PUSHYA_EXTRA_STARS,
+  ...ASHLESHA_EXTRA_STARS,
   ...BRIGHT_STARS,
 ];
