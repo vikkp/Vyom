@@ -32,6 +32,55 @@ const LANDSCAPE_ASPECT = 1168 / 784; // Rohini, Krittika
 
 const FIGURE_GLOW_COLOR = "#ffcf8a";
 
+// Minimum world-unit distance kept between any two figures' anchor points
+// after decluttering (see declutterPositions below) -- roughly matched to
+// a real-art plane's half-diagonal at FIGURE_TARGET_AREA (a portrait plane
+// there is ~5.2 x 7.7, half-diagonal ~4.6), with a little headroom so two
+// adjacent figures end up legibly apart rather than just barely not
+// touching.
+const MIN_FIGURE_SEPARATION = 6;
+
+/**
+ * Betelgeuse (Ardra) and Meissa (Mrigashira) are genuinely only ~5.5
+ * degrees apart in the real sky -- close enough that at DOME_RADIUS their
+ * centroid points land under 3 world units apart, well inside either
+ * figure's own plane. Real star/centroid positions are never adjusted
+ * (see the vyom-dev-workflow skill's "real astronomy is non-negotiable"
+ * rule) -- but the illustrative art hovering near an asterism was never
+ * meant to sit at the literal centroid pixel-for-pixel either (compare
+ * realAnchorFrac, which already shifts art within its own plane for
+ * off-centre compositions). This applies the same idea between figures:
+ * a few relaxation passes push any pair of figures closer than
+ * MIN_FIGURE_SEPARATION apart symmetrically along the line connecting
+ * them, then re-normalises each back onto the DOME_RADIUS-1 sphere. Cheap
+ * at this figure count (O(n^2) over ~10 items, a few iterations) and
+ * generalises to any future nakshatra pair that ends up this close --
+ * not just Ardra/Mrigashira.
+ */
+function declutterPositions(placed: { def: MythicFigureDef; position: Vector3 }[]): { def: MythicFigureDef; position: Vector3 }[] {
+  const positions = placed.map((p) => p.position.clone());
+  const iterations = 4;
+  for (let iter = 0; iter < iterations; iter++) {
+    for (let i = 0; i < positions.length; i++) {
+      for (let j = i + 1; j < positions.length; j++) {
+        const a = positions[i];
+        const b = positions[j];
+        const dist = a.distanceTo(b);
+        if (dist > 1e-4 && dist < MIN_FIGURE_SEPARATION) {
+          const push = (MIN_FIGURE_SEPARATION - dist) / 2;
+          const dir = a.clone().sub(b).normalize();
+          a.addScaledVector(dir, push);
+          b.addScaledVector(dir, -push);
+        }
+      }
+    }
+  }
+  return placed.map((p, i) => ({
+    def: p.def,
+    position: positions[i].normalize().multiplyScalar(DOME_RADIUS - 1),
+  }));
+}
+
 interface MythicFigureDef {
   /** Graph node id -- clicking the figure selects this node, same as a star. */
   nodeId: string;
@@ -282,11 +331,17 @@ export function MythicFigureOverlays({ stars }: MythicFigureOverlaysProps) {
     }).filter((v): v is { def: MythicFigureDef; position: Vector3 } => v !== null);
   }, [starsById, selectedCity, currentDate]);
 
+  // Nudge any figures that landed too close together (see
+  // declutterPositions above) -- most pairs are naturally far enough
+  // apart that this is a no-op; it only kicks in for genuinely close
+  // neighbours like Ardra/Mrigashira.
+  const declutteredPlaced = useMemo(() => declutterPositions(placed), [placed]);
+
   if (!visibleLayers.has("overlays")) return null;
 
   return (
     <group>
-      {placed.map(({ def, position }) => (
+      {declutteredPlaced.map(({ def, position }) => (
         <MythicFigure key={def.nodeId} def={def} position={position} />
       ))}
     </group>
