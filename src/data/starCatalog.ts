@@ -77,6 +77,19 @@ export const MRIGASHIRA_EXTRA_STARS: SkyCatalogStar[] = [
   { id: "phi2-orionis", ra: 5.6151, dec: 9.2907, mag: 4.08, indianName: "Mrigashira", westernName: "Phi² Orionis", nodeId: "mrigashira", constellation: "Nakshatra" },
 ];
 
+// ADR0003 priority #3: the rest of the Hyades "V", completing Rohini
+// beyond its single Aldebaran yogatara. Aldebaran itself isn't a
+// physical Hyades member (it's a much closer foreground star along the
+// same line of sight) but is universally included in the visual V
+// asterism — see docs/research/rohini-asterism-sources.md. All four
+// share nodeId "rohini" with Aldebaran, same reasoning as Mrigashira.
+export const HYADES_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "gamma-tauri", ra: 4.3299, dec: 15.6276, mag: 3.65, indianName: "Rohini", westernName: "Gamma Tauri (Prima Hyadum)", nodeId: "rohini", constellation: "Nakshatra" },
+  { id: "delta1-tauri", ra: 4.3823, dec: 17.5425, mag: 3.77, indianName: "Rohini", westernName: "Delta¹ Tauri (Secunda Hyadum)", nodeId: "rohini", constellation: "Nakshatra" },
+  { id: "epsilon-tauri", ra: 4.4769, dec: 19.1804, mag: 3.53, indianName: "Rohini", westernName: "Epsilon Tauri (Ain)", nodeId: "rohini", constellation: "Nakshatra" },
+  { id: "theta2-tauri", ra: 4.4777, dec: 15.8709, mag: 3.4, indianName: "Rohini", westernName: "Theta² Tauri", nodeId: "rohini", constellation: "Nakshatra" },
+];
+
 export const BRIGHT_STARS: SkyCatalogStar[] = [
   { id: "sirius", ra: 6.753, dec: -16.716, mag: -1.46, westernName: "Sirius" },
   { id: "canopus", ra: 6.399, dec: -52.696, mag: -0.74, westernName: "Canopus" },
@@ -110,5 +123,6 @@ export const STAR_CATALOG: SkyCatalogStar[] = [
   ...SAPTARISHI_STARS,
   ...NAKSHATRA_STARS,
   ...MRIGASHIRA_EXTRA_STARS,
+  ...HYADES_EXTRA_STARS,
   ...BRIGHT_STARS,
 ];

@@ -25,4 +25,13 @@ export const ASTERISMS: Asterism[] = [
     starIds: ["meissa", "phi1-orionis", "phi2-orionis", "meissa"],
     nodeId: "mrigashira",
   },
+  {
+    id: "rohini",
+    name: "Rohini",
+    // The Hyades "V": open (not closed back to start), converging at
+    // Gamma Tauri (the vertex/nose) with Epsilon Tauri and Aldebaran as
+    // the two open tips. See docs/research/rohini-asterism-sources.md.
+    starIds: ["epsilon-tauri", "delta1-tauri", "gamma-tauri", "theta2-tauri", "aldebaran"],
+    nodeId: "rohini",
+  },
 ];
