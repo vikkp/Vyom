@@ -12,6 +12,10 @@ import type { SkyCatalogStar } from "../types/skyViewer";
 //    (Varahamihira, 6th c.) — nodeId points directly at the matching
 //    nakshatra node in graph.json.
 // 4. ~25 additional bright naked-eye stars for sky realism, no nodeId.
+// 5. MRIGASHIRA_EXTRA_STARS (ADR0003): Phi-1/Phi-2 Orionis, added
+//    alongside the existing Meissa yogatara to complete Mrigashira as a
+//    real 3-star "deer head" asterism rather than a single point — see
+//    docs/research/mrigashira-asterism-sources.md.
 
 export const DHRUVA_STAR: SkyCatalogStar = {
   id: "polaris",
@@ -63,6 +67,16 @@ export const NAKSHATRA_STARS: SkyCatalogStar[] = [
   { id: "zeta-piscium", ra: 1.229, dec: 7.575, mag: 5.28, indianName: "Revati", westernName: "ζ Piscium", nodeId: "revati", constellation: "Nakshatra" },
 ];
 
+// ADR0003: the other two stars of the Mrigashira "deer head" triangle.
+// Share nodeId "mrigashira" with Meissa (the yogatara) rather than each
+// getting a distinct node — unlike Saptarishi's seven separate sage
+// nodes, Mrigashira is one nakshatra/deity node, and all three stars are
+// just its shape, not distinct characters.
+export const MRIGASHIRA_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "phi1-orionis", ra: 5.5804, dec: 9.4896, mag: 4.42, indianName: "Mrigashira", westernName: "Phi¹ Orionis", nodeId: "mrigashira", constellation: "Nakshatra" },
+  { id: "phi2-orionis", ra: 5.6151, dec: 9.2907, mag: 4.08, indianName: "Mrigashira", westernName: "Phi² Orionis", nodeId: "mrigashira", constellation: "Nakshatra" },
+];
+
 export const BRIGHT_STARS: SkyCatalogStar[] = [
   { id: "sirius", ra: 6.753, dec: -16.716, mag: -1.46, westernName: "Sirius" },
   { id: "canopus", ra: 6.399, dec: -52.696, mag: -0.74, westernName: "Canopus" },
@@ -91,4 +105,10 @@ export const BRIGHT_STARS: SkyCatalogStar[] = [
   { id: "peacock", ra: 20.428, dec: -56.735, mag: 1.94, westernName: "Peacock" },
 ];
 
-export const STAR_CATALOG: SkyCatalogStar[] = [DHRUVA_STAR, ...SAPTARISHI_STARS, ...NAKSHATRA_STARS, ...BRIGHT_STARS];
+export const STAR_CATALOG: SkyCatalogStar[] = [
+  DHRUVA_STAR,
+  ...SAPTARISHI_STARS,
+  ...NAKSHATRA_STARS,
+  ...MRIGASHIRA_EXTRA_STARS,
+  ...BRIGHT_STARS,
+];
