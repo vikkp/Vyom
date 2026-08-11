@@ -13,6 +13,9 @@ import {
   makeOxCartSilhouette,
   makeKrittikaSilhouette,
   makeDhruvaSilhouette,
+  makeAshwiniKumarasSilhouette,
+  makeMaghaThroneSilhouette,
+  makeJyeshthaTalismanSilhouette,
 } from "./mythicFigureSilhouette";
 import { DOME_RADIUS, sizeForAspect } from "./constants";
 
@@ -98,6 +101,36 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     placeholderSize: [3.0, 3.75],
     realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Dhruva",
+  },
+  // Second batch: Ashwini, Magha, Jyeshtha. Same "stars + lines first"
+  // rule applied earlier -- these three shipped as data before their
+  // figures. realSize below is a best-guess aspect until real art exists
+  // for these three (see docs/research/*-figure-sources.md) -- update it
+  // once actual pixel dimensions are known, same as happened for the
+  // first batch's figures.
+  {
+    nodeId: "ashwini",
+    anchorStarIds: ["sheratan", "mesarthim"],
+    makeTexture: makeAshwiniKumarasSilhouette,
+    placeholderSize: [5.2, 3.6],
+    realSize: sizeForAspect(380 / 260),
+    label: "Ashwini",
+  },
+  {
+    nodeId: "magha",
+    anchorStarIds: ["rho-leonis", "31-leonis", "omicron-leonis", "regulus", "eta-leonis", "algieba"],
+    makeTexture: makeMaghaThroneSilhouette,
+    placeholderSize: [3.6, 4.7],
+    realSize: sizeForAspect(260 / 340),
+    label: "Magha",
+  },
+  {
+    nodeId: "jyeshtha",
+    anchorStarIds: ["sigma-scorpii", "antares", "tau-scorpii"],
+    makeTexture: makeJyeshthaTalismanSilhouette,
+    placeholderSize: [2.9, 3.9],
+    realSize: sizeForAspect(220 / 300),
+    label: "Jyeshtha",
   },
 ];
 
