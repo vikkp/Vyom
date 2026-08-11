@@ -10,6 +10,15 @@
 // per-component size constant.
 export const DOME_RADIUS = 30;
 
+// OrbitControls in SkyViewer.tsx uses this as both minDistance and
+// maxDistance — the camera orbits a fixed, near-zero radius around the
+// origin so dragging changes facing direction, not position (see the
+// comment on <OrbitControls> for why). CameraFocusController.tsx needs
+// this same number to place the camera on that same tiny sphere when
+// animating toward a search result, so it's a shared constant rather than
+// a magic "0.1" repeated in two files that could drift out of sync.
+export const CAMERA_ORBIT_RADIUS = 0.1;
+
 // ADR0003: curvature radius of the stylized "ground planet" — the ground
 // mesh droops away from flat using the standard curvature sagitta
 // approximation (drop = distance^2 / (2 * radius)), so a LARGER value

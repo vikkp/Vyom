@@ -10,7 +10,8 @@ import { MythicFigureOverlays } from "./MythicFigureOverlays";
 import { GraphLines } from "./GraphLines";
 import { SkyGradient } from "./SkyGradient";
 import { CitySkyline } from "./CitySkyline";
-import { DOME_RADIUS } from "./constants";
+import { DOME_RADIUS, CAMERA_ORBIT_RADIUS } from "./constants";
+import { CameraFocusController } from "./CameraFocusController";
 
 /**
  * The real-sky scene content (ADR0002): observer stands at the world
@@ -65,11 +66,12 @@ export function SkyViewer() {
         enableDamping
         dampingFactor={0.08}
         rotateSpeed={0.5}
-        minDistance={0.1}
-        maxDistance={0.1}
+        minDistance={CAMERA_ORBIT_RADIUS}
+        maxDistance={CAMERA_ORBIT_RADIUS}
         minPolarAngle={0.05}
         maxPolarAngle={Math.PI - 0.05}
       />
+      <CameraFocusController />
     </>
   );
 }
