@@ -54,9 +54,18 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
   // what was happening before this fix. Each figure is now sized to sit
   // at its own star and just touch its neighbours, like a row of
   // individually-painted constellation figures, not one fused blob.
+  //
+  // The vertical anchor (+0.93) is also measured, not guessed: across all
+  // seven processed portraits, the visible (non-transparent) content
+  // bottoms out at ~81% of the image height on average. That's where the
+  // seated figure's base/lap actually is, so the star should land there
+  // -- not at the plane's geometric center, which would put the star
+  // floating in the empty margin above the head, and not near the very
+  // bottom edge either, which (before this fix) put it below the figure
+  // entirely, in transparent space past their feet.
   return (
     <group
-      position={[position.x, position.y + 1.3, position.z]}
+      position={[position.x, position.y + 0.93, position.z]}
       onClick={
         star.nodeId
           ? (e) => {
