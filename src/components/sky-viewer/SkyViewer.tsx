@@ -8,6 +8,7 @@ import { AsterismLines } from "./AsterismLines";
 import { RishiOverlays } from "./RishiOverlays";
 import { GraphLines } from "./GraphLines";
 import { SkyGradient } from "./SkyGradient";
+import { CitySkyline } from "./CitySkyline";
 import { DOME_RADIUS } from "./constants";
 
 /**
@@ -47,6 +48,7 @@ export function SkyViewer() {
         <RishiOverlays stars={SAPTARISHI_STARS} />
         <GraphLines stars={STAR_CATALOG} />
         <Horizon />
+        <CitySkyline />
       </group>
 
       <OrbitControls
