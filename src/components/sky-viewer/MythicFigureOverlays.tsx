@@ -33,6 +33,15 @@ interface MythicFigureDef {
    * portraits, rohini/krittika are 1168x784 landscapes).
    */
   realSize: [number, number];
+  /**
+   * Where in the real image (0 = top edge, 0.5 = vertical centre, 1 = bottom
+   * edge) the anchor star should land, for compositions where the subject
+   * isn't centred in its frame. Measured from the actual art, not guessed --
+   * same approach as the Rishi anchor offsets. Defaults to 0.5 (plane
+   * centred on the star) when omitted, which is correct for the other three
+   * figures' more centred compositions.
+   */
+  realAnchorFrac?: number;
   label: string;
 }
 
@@ -50,6 +59,12 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     makeTexture: makeDeerHunterSilhouette,
     placeholderSize: [5.2, 3.7],
     realSize: [4.6, 6.85],
+    // The delivered art is a diagonal leaping pose with the head/antlers
+    // (the "deer's head" the asterism is named for) high in the frame --
+    // measured at ~26% down from the top (row ~300 of 1168px), not centre.
+    // Anchoring on the plane's geometric centre left the head floating well
+    // above Meissa instead of resting on it.
+    realAnchorFrac: 0.26,
     label: "Mrigashira",
   },
   {
@@ -111,6 +126,12 @@ function MythicFigure({ def, position }: MythicFigureProps) {
   });
 
   const [w, h] = figureTexture ? def.realSize : def.placeholderSize;
+  // When a real image supplies a non-centred realAnchorFrac, shift the
+  // whole billboard content vertically so that point in the image (not the
+  // plane's geometric centre) lands on the anchor star. See realAnchorFrac's
+  // doc comment above.
+  const anchorFrac = figureTexture ? (def.realAnchorFrac ?? 0.5) : 0.5;
+  const contentOffsetY = h * (anchorFrac - 0.5);
 
   return (
     <group
@@ -123,7 +144,7 @@ function MythicFigure({ def, position }: MythicFigureProps) {
       onPointerOut={() => (document.body.style.cursor = "auto")}
     >
       <Billboard>
-        <mesh ref={glowRef} position={[0, 0, -0.02]}>
+        <mesh ref={glowRef} position={[0, contentOffsetY, -0.02]}>
           <planeGeometry args={[w * 1.3, h * 1.3]} />
           <meshBasicMaterial
             map={glowTexture}
@@ -134,11 +155,11 @@ function MythicFigure({ def, position }: MythicFigureProps) {
             toneMapped={false}
           />
         </mesh>
-        <mesh ref={figureRef} position={[0, 0, -0.01]}>
+        <mesh ref={figureRef} position={[0, contentOffsetY, -0.01]}>
           <planeGeometry args={[w, h]} />
           <meshBasicMaterial map={displayTexture} transparent opacity={0.35} depthWrite={false} toneMapped={false} />
         </mesh>
-        <Html position={[0, -h * 0.62, 0]} distanceFactor={40} center style={{ pointerEvents: "none" }}>
+        <Html position={[0, contentOffsetY - h * 0.62, 0]} distanceFactor={40} center style={{ pointerEvents: "none" }}>
           <div className="whitespace-nowrap text-xs tracking-wide text-amber-100/85">{def.label}</div>
         </Html>
       </Billboard>
