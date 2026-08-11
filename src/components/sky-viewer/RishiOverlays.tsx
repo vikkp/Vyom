@@ -44,7 +44,7 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
     const glowMaterial = glowRef.current?.material as { opacity: number } | undefined;
     if (glowMaterial) glowMaterial.opacity = isActive ? 0.45 : breathe;
     const figureMaterial = figureRef.current?.material as { opacity: number } | undefined;
-    if (figureMaterial) figureMaterial.opacity = isActive ? 0.85 : 0.62;
+    if (figureMaterial) figureMaterial.opacity = isActive ? 0.88 : 0.7;
   });
 
   // Large, semi-transparent, sitting over the whole star rather than a
@@ -54,7 +54,7 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
   // visual by itself.
   return (
     <group
-      position={[position.x, position.y + 3.5, position.z]}
+      position={[position.x, position.y + 4.2, position.z]}
       onClick={
         star.nodeId
           ? (e) => {
@@ -79,8 +79,11 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
           />
         </mesh>
         <mesh ref={figureRef} position={[0, 0, -0.01]}>
-          <planeGeometry args={figureTexture ? [7, 7] : [6, 7.8]} />
-          <meshBasicMaterial map={displayTexture} transparent opacity={0.62} depthWrite={false} toneMapped={false} />
+          {/* Real character art is a 900x1338 portrait crop (~0.673
+              aspect); match that here instead of forcing it into a
+              square, which would squash the figures. */}
+          <planeGeometry args={figureTexture ? [6.3, 9.4] : [6, 7.8]} />
+          <meshBasicMaterial map={displayTexture} transparent opacity={0.7} depthWrite={false} toneMapped={false} />
         </mesh>
         <Html position={[0, -5.5, 0]} distanceFactor={40} center style={{ pointerEvents: "none" }}>
           <div className="whitespace-nowrap text-xs tracking-wide text-amber-100/85">{star.indianName}</div>
