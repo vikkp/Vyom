@@ -6,6 +6,7 @@ import { Horizon } from "./Horizon";
 import { StarField } from "./StarField";
 import { AsterismLines } from "./AsterismLines";
 import { RishiOverlays } from "./RishiOverlays";
+import { MythicFigureOverlays } from "./MythicFigureOverlays";
 import { GraphLines } from "./GraphLines";
 import { SkyGradient } from "./SkyGradient";
 import { CitySkyline } from "./CitySkyline";
@@ -46,6 +47,7 @@ export function SkyViewer() {
         <StarField stars={STAR_CATALOG} />
         <AsterismLines asterisms={ASTERISMS} stars={STAR_CATALOG} />
         <RishiOverlays stars={SAPTARISHI_STARS} />
+        <MythicFigureOverlays stars={STAR_CATALOG} />
         <GraphLines stars={STAR_CATALOG} />
         <Horizon />
         <CitySkyline />
