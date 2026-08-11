@@ -24,14 +24,23 @@ interface MythicFigureDef {
   /** Stars averaged together (in 3D) to place the figure near its asterism. */
   anchorStarIds: string[];
   makeTexture: (color: string) => ReturnType<typeof makeDeerHunterSilhouette>;
-  /** World-unit plane size, matching each silhouette's canvas aspect. */
-  size: [number, number];
+  /** World-unit plane size for the procedural placeholder (its own aspect). */
+  placeholderSize: [number, number];
+  /**
+   * World-unit plane size for the real PNG at public/mythic-figures/<nodeId>.png,
+   * matched to that image's actual aspect ratio so it doesn't stretch --
+   * measured from the delivered art (mrigashira/dhruva-tara are 784x1168
+   * portraits, rohini/krittika are 1168x784 landscapes).
+   */
+  realSize: [number, number];
   label: string;
 }
 
-// ADR0003 priority table's "Figure Direction" column, built as the same
-// kind of procedural placeholder art the Rishis used before real portraits
-// existed -- see docs/research/*-figure-sources.md for each figure's
+// ADR0003 priority table's "Figure Direction" column. Each figure now has
+// real character art (public/mythic-figures/<nodeId>.png, chroma-keyed from
+// a green-screen source the same way the Rishi PNGs were dropped in); the
+// procedural makeTexture() drawings remain as the fallback if that file is
+// ever missing. See docs/research/*-figure-sources.md for each figure's
 // mythological basis and the ADR0003 clarification on Rohini's symbol
 // (traditional ox-cart, not literally a cow).
 const MYTHIC_FIGURES: MythicFigureDef[] = [
@@ -39,28 +48,32 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     nodeId: "mrigashira",
     anchorStarIds: ["meissa", "phi1-orionis", "phi2-orionis"],
     makeTexture: makeDeerHunterSilhouette,
-    size: [5.2, 3.7],
+    placeholderSize: [5.2, 3.7],
+    realSize: [4.6, 6.85],
     label: "Mrigashira",
   },
   {
     nodeId: "rohini",
     anchorStarIds: ["epsilon-tauri", "delta1-tauri", "gamma-tauri", "theta2-tauri", "aldebaran"],
     makeTexture: makeOxCartSilhouette,
-    size: [5.6, 3.36],
+    placeholderSize: [5.6, 3.36],
+    realSize: [6.2, 4.16],
     label: "Rohini",
   },
   {
     nodeId: "krittika",
     anchorStarIds: ["merope", "electra", "taygeta", "maia", "alcyone", "atlas"],
     makeTexture: makeKrittikaSilhouette,
-    size: [3.6, 4.08],
+    placeholderSize: [3.6, 4.08],
+    realSize: [6.2, 4.16],
     label: "Krittika",
   },
   {
     nodeId: "dhruva-tara",
     anchorStarIds: ["polaris"],
     makeTexture: makeDhruvaSilhouette,
-    size: [3.0, 3.75],
+    placeholderSize: [3.0, 3.75],
+    realSize: [3.4, 5.07],
     label: "Dhruva",
   },
 ];
@@ -85,15 +98,19 @@ function MythicFigure({ def, position }: MythicFigureProps) {
   const silhouetteTexture = useMemo(() => def.makeTexture(FIGURE_GLOW_COLOR), [def]);
   const displayTexture = figureTexture ?? silhouetteTexture;
 
+  // Baseline opacity matches the Rishi portraits (0.35/0.52) now that real
+  // character art exists here too -- the earlier, dimmer "quiet accent"
+  // treatment was calibrated for the crude procedural placeholder, not for
+  // finished artwork.
   useFrame(({ clock }) => {
-    const breathe = 0.1 + Math.sin(clock.elapsedTime * 0.55 + position.x) * 0.025;
+    const breathe = 0.13 + Math.sin(clock.elapsedTime * 0.55 + position.x) * 0.03;
     const glowMaterial = glowRef.current?.material as { opacity: number } | undefined;
-    if (glowMaterial) glowMaterial.opacity = isActive ? 0.3 : breathe;
+    if (glowMaterial) glowMaterial.opacity = isActive ? 0.34 : breathe;
     const figureMaterial = figureRef.current?.material as { opacity: number } | undefined;
-    if (figureMaterial) figureMaterial.opacity = isActive ? 0.5 : 0.3;
+    if (figureMaterial) figureMaterial.opacity = isActive ? 0.52 : 0.35;
   });
 
-  const [w, h] = def.size;
+  const [w, h] = figureTexture ? def.realSize : def.placeholderSize;
 
   return (
     <group
@@ -112,14 +129,14 @@ function MythicFigure({ def, position }: MythicFigureProps) {
             map={glowTexture}
             color={isActive ? "#ffe6b8" : FIGURE_GLOW_COLOR}
             transparent
-            opacity={0.18}
+            opacity={0.2}
             depthWrite={false}
             toneMapped={false}
           />
         </mesh>
         <mesh ref={figureRef} position={[0, 0, -0.01]}>
           <planeGeometry args={[w, h]} />
-          <meshBasicMaterial map={displayTexture} transparent opacity={0.3} depthWrite={false} toneMapped={false} />
+          <meshBasicMaterial map={displayTexture} transparent opacity={0.35} depthWrite={false} toneMapped={false} />
         </mesh>
         <Html position={[0, -h * 0.62, 0]} distanceFactor={40} center style={{ pointerEvents: "none" }}>
           <div className="whitespace-nowrap text-xs tracking-wide text-amber-100/85">{def.label}</div>
@@ -139,9 +156,9 @@ interface MythicFigureOverlaysProps {
  * asterism by averaging the 3D positions of that asterism's member stars --
  * a simple, correct-enough approximation of a spherical centroid for
  * clusters this angularly small. Rendered on the same "overlays" layer as
- * the Rishis, at lower baseline opacity, so they read as quiet accents
- * around the smaller/newer asterisms rather than competing with the
- * Saptarishi as the sky's visual centrepiece.
+ * the Rishis, with matching opacity now that both have real character art --
+ * see the plane-size comment above for why placeholder and real art use
+ * different sizes.
  */
 export function MythicFigureOverlays({ stars }: MythicFigureOverlaysProps) {
   const visibleLayers = useSkyViewerStore((s) => s.visibleLayers);
