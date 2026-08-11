@@ -9,9 +9,21 @@ import { useSkyViewerStore } from "../../store/skyViewerStore";
 import { makeGlowTexture } from "../sky/glowTexture";
 import { useOptionalTexture } from "../sky/useOptionalTexture";
 import { makeRishiSilhouetteTexture } from "./rishiSilhouette";
-import { DOME_RADIUS } from "./constants";
+import { DOME_RADIUS, sizeForAspect } from "./constants";
 
 const RISHI_GLOW_COLOR = "#ffcf8a";
+
+// Real character art is a 900x1338 portrait crop (~0.673 aspect); solved
+// against the shared FIGURE_TARGET_AREA (see constants.ts) so the Rishis
+// occupy the same visual footprint as the mythic figures instead of each
+// figure set using its own raw-pixel-derived size.
+const REAL_SIZE = sizeForAspect(900 / 1338);
+const PLACEHOLDER_SIZE: [number, number] = [4.8, 6.2];
+// The old fixed +1.12 vertical anchor offset was tuned for the old 7.43-
+// unit-tall plane (visible content bottoms out ~65% down the image,
+// unchanged since); scaled here to match the new plane height so the star
+// still lands in the same *relative* spot on each rishi.
+const ANCHOR_OFFSET = 1.12 * (REAL_SIZE[1] / 7.43);
 
 interface RishiFigureProps {
   star: SkyCatalogStar;
@@ -39,12 +51,17 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
 
   const position = useMemo(() => altAzToVector3(alt, az, DOME_RADIUS - 1), [alt, az]);
 
+  // Visual polish pass: figure opacity raised into the 0.65-0.75 range
+  // (was 0.35 baseline) so the portraits read as present, elegant
+  // constellation artwork rather than a faint ghost of themselves. The
+  // glow aura underneath is a separate, deliberately subtler element and
+  // is unchanged.
   useFrame(({ clock }) => {
     const breathe = 0.13 + Math.sin(clock.elapsedTime * 0.6 + star.ra) * 0.03;
     const glowMaterial = glowRef.current?.material as { opacity: number } | undefined;
     if (glowMaterial) glowMaterial.opacity = isActive ? 0.34 : breathe;
     const figureMaterial = figureRef.current?.material as { opacity: number } | undefined;
-    if (figureMaterial) figureMaterial.opacity = isActive ? 0.52 : 0.35;
+    if (figureMaterial) figureMaterial.opacity = isActive ? 0.85 : 0.7;
   });
 
   // Sized larger than the tight per-star gap on purpose: these are meant
@@ -67,7 +84,7 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
   // both unchanged from the last pass.
   return (
     <group
-      position={[position.x, position.y + 1.12, position.z]}
+      position={[position.x, position.y + ANCHOR_OFFSET, position.z]}
       onClick={
         star.nodeId
           ? (e) => {
@@ -81,7 +98,7 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
     >
       <Billboard>
         <mesh ref={glowRef} position={[0, 0, -0.02]}>
-          <planeGeometry args={[6.7, 8.3]} />
+          <planeGeometry args={figureTexture ? [REAL_SIZE[0] * 1.3, REAL_SIZE[1] * 1.3] : [PLACEHOLDER_SIZE[0] * 1.3, PLACEHOLDER_SIZE[1] * 1.3]} />
           <meshBasicMaterial
             map={glowTexture}
             color={isActive ? "#ffe6b8" : RISHI_GLOW_COLOR}
@@ -93,12 +110,13 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
         </mesh>
         <mesh ref={figureRef} position={[0, 0, -0.01]}>
           {/* Real character art is a 900x1338 portrait crop (~0.673
-              aspect); match that here instead of forcing it into a
-              square, which would squash the figures. */}
-          <planeGeometry args={figureTexture ? [5.0, 7.43] : [4.8, 6.2]} />
-          <meshBasicMaterial map={displayTexture} transparent opacity={0.35} depthWrite={false} toneMapped={false} />
+              aspect); sizeForAspect solves the plane at the shared target
+              area so this matches the mythic figures' footprint instead of
+              forcing the raw pixel proportions into an unrelated size. */}
+          <planeGeometry args={figureTexture ? REAL_SIZE : PLACEHOLDER_SIZE} />
+          <meshBasicMaterial map={displayTexture} transparent opacity={0.7} depthWrite={false} toneMapped={false} />
         </mesh>
-        <Html position={[0, -4.0, 0]} distanceFactor={40} center style={{ pointerEvents: "none" }}>
+        <Html position={[0, -4.0 * (REAL_SIZE[1] / 7.43), 0]} distanceFactor={40} center style={{ pointerEvents: "none" }}>
           <div className="whitespace-nowrap text-xs tracking-wide text-amber-100/85">{star.indianName}</div>
         </Html>
       </Billboard>

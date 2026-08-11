@@ -45,7 +45,7 @@ const DIRECTIONS: Array<{ label: string; az: number }> = [
  * above it.
  */
 export function Horizon() {
-  const groundTexture = useMemo(() => makeGroundGlowTexture("#020208", "#7fa3dd"), []);
+  const groundTexture = useMemo(() => makeGroundGlowTexture("#020208", "#86a8dd"), []);
   const groundGeometry = useMemo(
     () => makeCurvedGroundGeometry(DOME_RADIUS + 5, GROUND_CURVE_RADIUS),
     [],
@@ -70,8 +70,11 @@ export function Horizon() {
           to SkyGradient's horizon glow band so the ground-side and
           sky-side glow read as one continuous ring, not two different
           effects meeting at a seam. */}
+      {/* Visual polish pass: stronger horizon glow (was 0.4 opacity,
+          #7fa3dd) to match SkyGradient's strengthened glow band so the
+          two read as one continuous, more pronounced ring. */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]} geometry={ringGeometry}>
-        <meshBasicMaterial color="#7fa3dd" transparent opacity={0.4} depthWrite={false} side={DoubleSide} />
+        <meshBasicMaterial color="#86a8dd" transparent opacity={0.55} depthWrite={false} side={DoubleSide} />
       </mesh>
 
       {DIRECTIONS.map(({ label, az }) => {

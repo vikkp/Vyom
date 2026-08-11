@@ -32,8 +32,8 @@ void main() {
   // no matter how bright its endpoint color is; a band that visibly
   // peaks right at h=0 is what actually looks like atmospheric/light-
   // pollution glow hugging the horizon.
-  float band = exp(-pow(h / 0.16, 2.0));
-  vec3 color = mix(base, glowColor, band * 0.72);
+  float band = exp(-pow(h / 0.19, 2.0));
+  vec3 color = mix(base, glowColor, band * 0.85);
   gl_FragColor = vec4(color, 1.0);
 }
 `;
@@ -48,11 +48,16 @@ void main() {
 export function SkyGradient() {
   const uniforms = useMemo(
     () => ({
-      zenithColor: { value: new Color("#02040d") },
-      horizonColor: { value: new Color("#3f6bab") },
+      // Visual polish pass: zenith pushed slightly darker/more neutral
+      // (was #02040d), horizon softened toward a gentler, less saturated
+      // blue, and exponent raised so the zenith-to-horizon transition is
+      // smoother/more gradual rather than concentrating colour change
+      // near the horizon.
+      zenithColor: { value: new Color("#01020a") },
+      horizonColor: { value: new Color("#3a5c8f") },
       groundColor: { value: new Color("#020208") },
-      glowColor: { value: new Color("#7fa3dd") },
-      exponent: { value: 1.35 },
+      glowColor: { value: new Color("#86a8dd") },
+      exponent: { value: 1.55 },
     }),
     [],
   );

@@ -14,7 +14,15 @@ import {
   makeKrittikaSilhouette,
   makeDhruvaSilhouette,
 } from "./mythicFigureSilhouette";
-import { DOME_RADIUS } from "./constants";
+import { DOME_RADIUS, sizeForAspect } from "./constants";
+
+// Real image pixel dimensions (measured from the delivered PNGs), used only
+// to derive an aspect ratio -- sizeForAspect solves the actual world-unit
+// plane size at the shared FIGURE_TARGET_AREA (see constants.ts), so every
+// figure occupies the same visual footprint despite portrait vs. landscape
+// source art.
+const PORTRAIT_ASPECT = 784 / 1168; // Mrigashira, Dhruva
+const LANDSCAPE_ASPECT = 1168 / 784; // Rohini, Krittika
 
 const FIGURE_GLOW_COLOR = "#ffcf8a";
 
@@ -58,7 +66,7 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     anchorStarIds: ["meissa", "phi1-orionis", "phi2-orionis"],
     makeTexture: makeDeerHunterSilhouette,
     placeholderSize: [5.2, 3.7],
-    realSize: [4.6, 6.85],
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
     // The delivered art is a diagonal leaping pose with the head/antlers
     // (the "deer's head" the asterism is named for) high in the frame --
     // measured at ~26% down from the top (row ~300 of 1168px), not centre.
@@ -72,7 +80,7 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     anchorStarIds: ["epsilon-tauri", "delta1-tauri", "gamma-tauri", "theta2-tauri", "aldebaran"],
     makeTexture: makeOxCartSilhouette,
     placeholderSize: [5.6, 3.36],
-    realSize: [6.2, 4.16],
+    realSize: sizeForAspect(LANDSCAPE_ASPECT),
     label: "Rohini",
   },
   {
@@ -80,7 +88,7 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     anchorStarIds: ["merope", "electra", "taygeta", "maia", "alcyone", "atlas"],
     makeTexture: makeKrittikaSilhouette,
     placeholderSize: [3.6, 4.08],
-    realSize: [6.2, 4.16],
+    realSize: sizeForAspect(LANDSCAPE_ASPECT),
     label: "Krittika",
   },
   {
@@ -88,7 +96,7 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     anchorStarIds: ["polaris"],
     makeTexture: makeDhruvaSilhouette,
     placeholderSize: [3.0, 3.75],
-    realSize: [3.4, 5.07],
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Dhruva",
   },
 ];
@@ -113,16 +121,17 @@ function MythicFigure({ def, position }: MythicFigureProps) {
   const silhouetteTexture = useMemo(() => def.makeTexture(FIGURE_GLOW_COLOR), [def]);
   const displayTexture = figureTexture ?? silhouetteTexture;
 
-  // Baseline opacity matches the Rishi portraits (0.35/0.52) now that real
-  // character art exists here too -- the earlier, dimmer "quiet accent"
-  // treatment was calibrated for the crude procedural placeholder, not for
-  // finished artwork.
+  // Visual polish pass: figure opacity raised into the 0.65-0.75 range
+  // (was 0.35 baseline) to match the Rishi treatment -- both figure sets
+  // should read as present, elegant constellation artwork rather than a
+  // faint ghost. The glow aura underneath stays at its previous, more
+  // subtle level.
   useFrame(({ clock }) => {
     const breathe = 0.13 + Math.sin(clock.elapsedTime * 0.55 + position.x) * 0.03;
     const glowMaterial = glowRef.current?.material as { opacity: number } | undefined;
     if (glowMaterial) glowMaterial.opacity = isActive ? 0.34 : breathe;
     const figureMaterial = figureRef.current?.material as { opacity: number } | undefined;
-    if (figureMaterial) figureMaterial.opacity = isActive ? 0.52 : 0.35;
+    if (figureMaterial) figureMaterial.opacity = isActive ? 0.85 : 0.7;
   });
 
   const [w, h] = figureTexture ? def.realSize : def.placeholderSize;
@@ -157,7 +166,7 @@ function MythicFigure({ def, position }: MythicFigureProps) {
         </mesh>
         <mesh ref={figureRef} position={[0, contentOffsetY, -0.01]}>
           <planeGeometry args={[w, h]} />
-          <meshBasicMaterial map={displayTexture} transparent opacity={0.35} depthWrite={false} toneMapped={false} />
+          <meshBasicMaterial map={displayTexture} transparent opacity={0.7} depthWrite={false} toneMapped={false} />
         </mesh>
         <Html position={[0, contentOffsetY - h * 0.62, 0]} distanceFactor={40} center style={{ pointerEvents: "none" }}>
           <div className="whitespace-nowrap text-xs tracking-wide text-amber-100/85">{def.label}</div>

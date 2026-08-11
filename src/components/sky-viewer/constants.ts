@@ -21,3 +21,22 @@ export const DOME_RADIUS = 30;
 // is imperceptible at standing height); this is an artistic exaggeration
 // per ADR0003, kept subtle and tuned via this one constant.
 export const GROUND_CURVE_RADIUS = 420;
+
+// Visual polish pass: a shared target plane *area* (world units^2) for
+// every figure overlay -- the 7 Rishis plus the 4 mythic figures
+// (Mrigashira/Rohini/Krittika/Dhruva). Before this, each figure's plane
+// size was set from its own source image's raw pixel dimensions with no
+// normalisation, so portrait-oriented art (Rishis, Mrigashira, Dhruva)
+// and landscape-oriented art (Rohini, Krittika) ended up wildly
+// different sizes -- Dhruva's plane area was under half of Rishi's.
+// sizeForAspect() below solves for width/height at this fixed area given
+// each image's own aspect ratio, so every figure occupies the same
+// visual footprint regardless of its orientation. The value itself is
+// ~8% above the previous Rishi plane area (5.0*7.43=37.15), a "slightly
+// bigger" bump applied to the whole set rather than to any one figure.
+export const FIGURE_TARGET_AREA = 40;
+
+/** Solve width/height for a fixed plane area at a given aspect (w/h). */
+export function sizeForAspect(aspect: number, area: number = FIGURE_TARGET_AREA): [number, number] {
+  return [Math.sqrt(area * aspect), Math.sqrt(area / aspect)];
+}
