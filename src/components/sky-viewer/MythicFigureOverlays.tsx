@@ -215,17 +215,17 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Pushya",
   },
-  // Fourth batch: Ashlesha, Swati -- placeholders only, real art pending.
-  // No real PNGs exist yet, so realSize below is a guess from each
-  // silhouette's own canvas aspect, same as every earlier batch's initial
-  // placeholder-only state -- update to measured pixel dimensions once
-  // real art lands.
+  // Fourth batch: Ashlesha, Swati. Real art has landed for both (784x1168,
+  // same portrait dimensions as the rest) -- realSize below is measured
+  // from the actual delivered pixels. Both compositions are close to
+  // vertically centred (alpha centroid 0.52-0.55 of frame height), so
+  // neither needs a realAnchorFrac override.
   {
     nodeId: "ashlesha",
     anchorStarIds: ["epsilon-hydrae", "delta-hydrae", "eta-hydrae", "rho-hydrae", "sigma-hydrae", "zeta-hydrae"],
     makeTexture: makeAshleshaSerpentSilhouette,
     placeholderSize: [4.0, 4.3],
-    realSize: sizeForAspect(280 / 300),
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Ashlesha",
   },
   {
@@ -233,7 +233,7 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     anchorStarIds: ["arcturus"],
     makeTexture: makeSwatiShootSilhouette,
     placeholderSize: [2.9, 4.3],
-    realSize: sizeForAspect(200 / 300),
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Swati",
   },
 ];
