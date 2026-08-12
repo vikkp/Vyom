@@ -28,6 +28,10 @@ import {
   makeBhadrapadaFrontLegsSilhouette,
   makeBhadrapadaBackLegsSilhouette,
   makeRevatiFishSilhouette,
+  makeHastaHandSilhouette,
+  makeChitraJewelSilhouette,
+  makeVishakhaArchSilhouette,
+  makePurvaAshadhaFanSilhouette,
 } from "./mythicFigureSilhouette";
 import { DOME_RADIUS, sizeForAspect } from "./constants";
 
@@ -309,6 +313,42 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     placeholderSize: [4.7, 2.9],
     realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Revati",
+  },
+  // Eighth batch: Hasta, Chitra, Vishakha, Purva Ashadha -- placeholders
+  // only, real art pending. No real PNGs exist yet, so realSize below is
+  // a guess from each silhouette's own canvas aspect, same as every
+  // earlier batch's initial placeholder-only state.
+  {
+    nodeId: "hasta",
+    anchorStarIds: ["algorab", "alpha-corvi", "beta-corvi", "gamma-corvi", "epsilon-corvi"],
+    makeTexture: makeHastaHandSilhouette,
+    placeholderSize: [3.4, 3.9],
+    realSize: sizeForAspect(260 / 300),
+    label: "Hasta",
+  },
+  {
+    nodeId: "chitra",
+    anchorStarIds: ["spica"],
+    makeTexture: makeChitraJewelSilhouette,
+    placeholderSize: [2.9, 3.9],
+    realSize: sizeForAspect(220 / 300),
+    label: "Chitra",
+  },
+  {
+    nodeId: "vishakha",
+    anchorStarIds: ["zubenelgenubi", "beta-librae", "gamma-librae", "iota-librae"],
+    makeTexture: makeVishakhaArchSilhouette,
+    placeholderSize: [4.2, 3.4],
+    realSize: sizeForAspect(320 / 260),
+    label: "Vishakha",
+  },
+  {
+    nodeId: "purva-ashadha",
+    anchorStarIds: ["kaus-media", "epsilon-sagittarii", "lambda-sagittarii"],
+    makeTexture: makePurvaAshadhaFanSilhouette,
+    placeholderSize: [3.6, 3.9],
+    realSize: sizeForAspect(280 / 300),
+    label: "Purva Ashadha",
   },
 ];
 

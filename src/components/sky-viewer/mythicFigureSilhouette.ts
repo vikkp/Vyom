@@ -1177,6 +1177,223 @@ export function makeRevatiFishSilhouette(color: string, w = 320, h = 200): Canva
 }
 
 /**
+ * Hasta: the nakshatra's own symbol -- an open hand, matching both the
+ * "golden hands" (hiranya-hasta) Vedic imagery and the real five-star
+ * Corvus cluster it's anchored to. See docs/research/hasta-asterism-sources.md.
+ */
+export function makeHastaHandSilhouette(color: string, w = 260, h = 300): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const cx = w / 2;
+  const palmY = h * 0.62;
+
+  auraBackdrop(ctx, cx, h * 0.5, w * 0.68, color);
+
+  withGlowFill(ctx, color, w * 0.04, 0.6, () => {
+    // Palm, a rounded rectangle.
+    ctx.beginPath();
+    ctx.moveTo(cx - w * 0.2, palmY);
+    ctx.quadraticCurveTo(cx - w * 0.24, h * 0.86, cx - w * 0.12, h * 0.92);
+    ctx.quadraticCurveTo(cx, h * 0.96, cx + w * 0.12, h * 0.92);
+    ctx.quadraticCurveTo(cx + w * 0.24, h * 0.86, cx + w * 0.2, palmY);
+    ctx.closePath();
+    ctx.fill();
+
+    // Five fingers, splayed fan, tapering cylinders from the palm's top edge.
+    const fingers: Array<[number, number, number]> = [
+      [-0.34, 0.24, -0.12], // thumb, shorter, angled out
+      [-0.16, 0.34, -0.03],
+      [0, 0.38, 0],
+      [0.16, 0.34, 0.03],
+      [0.3, 0.27, 0.1],
+    ];
+    for (const [dx, len, tilt] of fingers) {
+      const baseX = cx + w * dx * 0.62;
+      const tipX = baseX + w * tilt;
+      const tipY = palmY - h * len;
+      ctx.beginPath();
+      ctx.moveTo(baseX - w * 0.028, palmY);
+      ctx.quadraticCurveTo(baseX - w * 0.03, palmY - h * len * 0.6, tipX - w * 0.018, tipY);
+      ctx.quadraticCurveTo(tipX, tipY - h * 0.015, tipX + w * 0.018, tipY);
+      ctx.quadraticCurveTo(baseX + w * 0.03, palmY - h * len * 0.6, baseX + w * 0.028, palmY);
+      ctx.closePath();
+      ctx.fill();
+    }
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
+ * Chitra: the nakshatra's own symbol -- a bright jewel/pearl suspended on
+ * a cord, matching its single-star (Spica) simplicity with a
+ * correspondingly simple, single-form figure -- same treatment as Ardra's
+ * teardrop and Shatabhisha's ring. See
+ * docs/research/chitra-asterism-sources.md.
+ */
+export function makeChitraJewelSilhouette(color: string, w = 220, h = 300): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const cx = w / 2;
+  const jewelCy = h * 0.58;
+  const jewelR = w * 0.24;
+
+  auraBackdrop(ctx, cx, jewelCy, w * 0.65, color);
+
+  withGlowFill(ctx, color, w * 0.05, 0.6, () => {
+    // Cord, from the top edge down to the jewel.
+    ctx.lineWidth = w * 0.014;
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(cx, h * 0.06);
+    ctx.lineTo(cx, jewelCy - jewelR);
+    ctx.stroke();
+
+    // A faceted round jewel -- octagon outline, since a perfect circle
+    // reads as flat while facet edges read as "cut gem."
+    const facets = 8;
+    ctx.beginPath();
+    for (let i = 0; i < facets; i++) {
+      const a = (i / facets) * Math.PI * 2 - Math.PI / 2;
+      const px = cx + Math.cos(a) * jewelR;
+      const py = jewelCy + Math.sin(a) * jewelR;
+      if (i === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.fill();
+  });
+
+  // Facet lines and a bright central glint.
+  withGlowFill(ctx, color, w * 0.015, 0.9, () => {
+    ctx.lineWidth = w * 0.006;
+    ctx.strokeStyle = color;
+    for (const a of [0.2, 0.9, 1.7]) {
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(a) * jewelR * 0.15, jewelCy + Math.sin(a) * jewelR * 0.15);
+      ctx.lineTo(cx + Math.cos(a) * jewelR * 0.92, jewelCy + Math.sin(a) * jewelR * 0.92);
+      ctx.stroke();
+    }
+    ctx.beginPath();
+    ctx.arc(cx - jewelR * 0.25, jewelCy - jewelR * 0.25, w * 0.02, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
+ * Vishakha: the nakshatra's own symbol -- a decorated triumphal arch/
+ * gateway, matching the real four-star quadrilateral it's anchored to.
+ * See docs/research/vishakha-asterism-sources.md.
+ */
+export function makeVishakhaArchSilhouette(color: string, w = 320, h = 260): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const groundY = h * 0.88;
+
+  auraBackdrop(ctx, w / 2, h * 0.5, w * 0.62, color);
+
+  withGlowFill(ctx, color, w * 0.04, 0.6, () => {
+    // Two side pillars.
+    for (const px of [w * 0.22, w * 0.78]) {
+      ctx.beginPath();
+      ctx.moveTo(px - w * 0.045, h * 0.2);
+      ctx.lineTo(px + w * 0.045, h * 0.2);
+      ctx.lineTo(px + w * 0.05, groundY);
+      ctx.lineTo(px - w * 0.05, groundY);
+      ctx.closePath();
+      ctx.fill();
+    }
+    // Arch spanning the top, a simple rounded lintel.
+    ctx.beginPath();
+    ctx.moveTo(w * 0.17, h * 0.22);
+    ctx.quadraticCurveTo(w * 0.5, h * 0.04, w * 0.83, h * 0.22);
+    ctx.quadraticCurveTo(w * 0.5, h * 0.13, w * 0.17, h * 0.22);
+    ctx.closePath();
+    ctx.fill();
+    // Leafy garland decoration along the arch, small scallops.
+    for (let i = 0; i < 9; i++) {
+      const t = i / 8;
+      const ax = w * 0.17 + t * (w * 0.66);
+      const ay = h * (0.22 - Math.sin(t * Math.PI) * 0.16);
+      ctx.beginPath();
+      ctx.arc(ax, ay - h * 0.02, w * 0.02, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
+ * Purva Ashadha: the nakshatra's own symbol -- a hand-held fan, matching
+ * the real three-star line (the Archer's bow) it's anchored to. See
+ * docs/research/purva-ashadha-asterism-sources.md.
+ */
+export function makePurvaAshadhaFanSilhouette(color: string, w = 280, h = 300): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const cx = w / 2;
+  const pivotY = h * 0.86;
+
+  auraBackdrop(ctx, cx, h * 0.5, w * 0.65, color);
+
+  withGlowFill(ctx, color, w * 0.04, 0.6, () => {
+    // Handle.
+    ctx.lineWidth = w * 0.035;
+    ctx.strokeStyle = color;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(cx, pivotY);
+    ctx.lineTo(cx, h * 0.98);
+    ctx.stroke();
+
+    // Fan ribs, splaying upward from the pivot -- three main ribs (the
+    // "three Kaus stars") plus connecting fan material between them.
+    const ribs = [-0.62, -0.31, 0, 0.31, 0.62];
+    ctx.beginPath();
+    ctx.moveTo(cx, pivotY);
+    for (const t of ribs) {
+      const a = -Math.PI / 2 + t * (Math.PI * 0.42);
+      const len = h * 0.72;
+      ctx.lineTo(cx + Math.cos(a) * len, pivotY + Math.sin(a) * len);
+    }
+    ctx.closePath();
+    ctx.fill();
+
+    // Rib lines, a touch darker via thin strokes at each rib angle.
+    ctx.lineWidth = w * 0.008;
+    for (const t of ribs) {
+      const a = -Math.PI / 2 + t * (Math.PI * 0.42);
+      const len = h * 0.72;
+      ctx.beginPath();
+      ctx.moveTo(cx, pivotY);
+      ctx.lineTo(cx + Math.cos(a) * len, pivotY + Math.sin(a) * len);
+      ctx.stroke();
+    }
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
  * Dhruva: the young boy in penance, seated in meditation with hands
  * folded, a faint halo marking the boon that fixed him as the pole star --
  * see docs/research/dhruva-figure-sources.md.

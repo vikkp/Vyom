@@ -184,4 +184,36 @@ export const ASTERISMS: Asterism[] = [
     starIds: ["zeta-piscium", "mu-piscium"],
     nodeId: "revati",
   },
+  // Seventh batch: Hasta, Chitra, Vishakha, Purva Ashadha. Chitra is
+  // deliberately absent here, same reasoning as Ardra/Swati/Shatabhisha,
+  // no traditional companion star to draw a line to. See
+  // docs/research/chitra-asterism-sources.md.
+  {
+    id: "hasta",
+    name: "Hasta",
+    // Closed five-star pentagon, the real Corvus "sail" shape --
+    // convex-hull ordering (by angle around the centroid), same approach
+    // used for Dhanishta's quadrilateral. See
+    // docs/research/hasta-asterism-sources.md.
+    starIds: ["algorab", "gamma-corvi", "epsilon-corvi", "alpha-corvi", "beta-corvi", "algorab"],
+    nodeId: "hasta",
+  },
+  {
+    id: "vishakha",
+    name: "Vishakha",
+    // Closed four-star quadrilateral, following the traditional pada
+    // sequence (Alpha-Beta-Gamma-Iota) -- checked against the real
+    // positions for self-intersection and found clean. See
+    // docs/research/vishakha-asterism-sources.md.
+    starIds: ["zubenelgenubi", "beta-librae", "gamma-librae", "iota-librae", "zubenelgenubi"],
+    nodeId: "vishakha",
+  },
+  {
+    id: "purva-ashadha",
+    name: "Purva Ashadha",
+    // Open three-star line, north to south along the real "Kaus" bow
+    // shape. See docs/research/purva-ashadha-asterism-sources.md.
+    starIds: ["lambda-sagittarii", "kaus-media", "epsilon-sagittarii"],
+    nodeId: "purva-ashadha",
+  },
 ];

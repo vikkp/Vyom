@@ -257,6 +257,40 @@ export const REVATI_EXTRA_STARS: SkyCatalogStar[] = [
   { id: "mu-piscium", ra: 1.5031, dec: 6.1439, mag: 4.84, indianName: "Revati", westernName: "Mu Piscium", nodeId: "revati", constellation: "Nakshatra" },
 ];
 
+// Seventh asterism batch: Hasta, Chitra, Vishakha, Purva Ashadha. Chitra
+// is a deliberate exception, same reasoning as Ardra/Swati/Shatabhisha:
+// it's one of the nakshatras explicitly documented as "represented by a
+// single star" with no traditional companion, so there's no
+// CHITRA_EXTRA_STARS group; see docs/research/chitra-asterism-sources.md.
+
+// Hasta: the existing yogatara Algorab plus the rest of the naked-eye
+// Corvus asterism -- Alpha (Alchiba), Beta (Kraz), Gamma (Gienah),
+// Epsilon (Minkar) Corvi, "the five fingers of an open hand." See
+// docs/research/hasta-asterism-sources.md.
+export const HASTA_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "alpha-corvi", ra: 12.1402, dec: -24.7289, mag: 4.03, indianName: "Hasta", westernName: "Alchiba (α Corvi)", nodeId: "hasta", constellation: "Nakshatra" },
+  { id: "beta-corvi", ra: 12.5731, dec: -23.3968, mag: 2.65, indianName: "Hasta", westernName: "Kraz (β Corvi)", nodeId: "hasta", constellation: "Nakshatra" },
+  { id: "gamma-corvi", ra: 12.2634, dec: -17.5419, mag: 2.59, indianName: "Hasta", westernName: "Gienah (γ Corvi)", nodeId: "hasta", constellation: "Nakshatra" },
+  { id: "epsilon-corvi", ra: 12.1687, dec: -22.6198, mag: 3.02, indianName: "Hasta", westernName: "Minkar (ε Corvi)", nodeId: "hasta", constellation: "Nakshatra" },
+];
+
+// Vishakha: the existing yogatara Zubenelgenubi plus Beta, Gamma, and
+// Iota Librae -- the "pylon" of four stars spanning Libra. See
+// docs/research/vishakha-asterism-sources.md.
+export const VISHAKHA_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "beta-librae", ra: 15.2835, dec: -9.3829, mag: 2.61, indianName: "Vishakha", westernName: "Zubeneschamali (β Librae)", nodeId: "vishakha", constellation: "Nakshatra" },
+  { id: "gamma-librae", ra: 15.5921, dec: -14.7896, mag: 3.91, indianName: "Vishakha", westernName: "Zubenelakrab (γ Librae)", nodeId: "vishakha", constellation: "Nakshatra" },
+  { id: "iota-librae", ra: 15.2037, dec: -19.7917, mag: 4.54, indianName: "Vishakha", westernName: "Iota¹ Librae", nodeId: "vishakha", constellation: "Nakshatra" },
+];
+
+// Purva Ashadha: the existing yogatara Kaus Media plus Kaus Borealis
+// (north) and Kaus Australis (south) -- the three "Kaus" stars marking
+// the Archer's bow. See docs/research/purva-ashadha-asterism-sources.md.
+export const PURVA_ASHADHA_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "epsilon-sagittarii", ra: 18.4029, dec: -34.3846, mag: 1.85, indianName: "Purva Ashadha", westernName: "Kaus Australis (ε Sagittarii)", nodeId: "purva-ashadha", constellation: "Nakshatra" },
+  { id: "lambda-sagittarii", ra: 18.4662, dec: -25.4217, mag: 2.81, indianName: "Purva Ashadha", westernName: "Kaus Borealis (λ Sagittarii)", nodeId: "purva-ashadha", constellation: "Nakshatra" },
+];
+
 export const BRIGHT_STARS: SkyCatalogStar[] = [
   { id: "sirius", ra: 6.753, dec: -16.716, mag: -1.46, westernName: "Sirius" },
   { id: "canopus", ra: 6.399, dec: -52.696, mag: -0.74, westernName: "Canopus" },
@@ -304,5 +338,8 @@ export const STAR_CATALOG: SkyCatalogStar[] = [
   ...PURVA_BHADRAPADA_EXTRA_STARS,
   ...UTTARA_BHADRAPADA_EXTRA_STARS,
   ...REVATI_EXTRA_STARS,
+  ...HASTA_EXTRA_STARS,
+  ...VISHAKHA_EXTRA_STARS,
+  ...PURVA_ASHADHA_EXTRA_STARS,
   ...BRIGHT_STARS,
 ];
