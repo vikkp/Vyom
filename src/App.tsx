@@ -8,6 +8,7 @@ import { LocationMenu } from "./components/sky-viewer/LocationMenu";
 import { TimeControls } from "./components/sky-viewer/TimeControls";
 import { SkyLayerToggles } from "./components/sky-viewer/SkyLayerToggles";
 import { Compass } from "./components/Compass";
+import { SatelliteModeBanner } from "./components/SatelliteModeBanner";
 
 // ADR0002: the location-based sky viewer is now the default experience.
 // The old abstract Dhruva-centric graph view (src/scene/CelestialScene.tsx
@@ -39,6 +40,7 @@ function App() {
       <DetailPanel />
       <SkyLayerToggles />
       <Compass />
+      <SatelliteModeBanner />
 
       <footer className="pointer-events-none absolute inset-x-0 bottom-3 z-10 text-center text-[10px] tracking-widest text-white/30">
         DRAG TO LOOK AROUND · CLICK A STAR TO EXPLORE

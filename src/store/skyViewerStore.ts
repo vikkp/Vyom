@@ -49,12 +49,23 @@ interface SkyViewerState {
    * discrete events like focusRequest.
    */
   cameraHeadingDeg: number;
+  /**
+   * ADR0009: "I am a satellite" mode -- when true, SkyViewer.tsx's
+   * OrbitControls drifts the view continuously and slowly (its own
+   * built-in autoRotate) instead of sitting still, while every other
+   * interaction (drag, click-to-select, search, zoom) keeps working
+   * exactly as before. A single boolean rather than an enum/mode-stack:
+   * this app only ever has one "ambient camera behavior" at a time.
+   */
+  satelliteMode: boolean;
   setCity: (city: City) => void;
   setUseGeolocation: (value: boolean) => void;
   setCurrentDate: (date: Date) => void;
   toggleLayer: (layer: SkyViewerLayer) => void;
   requestFocus: (direction: { x: number; y: number; z: number }) => void;
   setCameraHeadingDeg: (heading: number) => void;
+  setSatelliteMode: (value: boolean) => void;
+  toggleSatelliteMode: () => void;
 }
 
 const defaultCity = CITIES.find((c) => c.id === DEFAULT_CITY_ID) ?? CITIES[0];
@@ -66,6 +77,7 @@ export const useSkyViewerStore = create<SkyViewerState>((set, get) => ({
   visibleLayers: new Set(DEFAULT_LAYERS),
   focusRequest: null,
   cameraHeadingDeg: 0,
+  satelliteMode: false,
   setCity: (city) => set({ selectedCity: city, useGeolocation: false }),
   setUseGeolocation: (value) => set({ useGeolocation: value }),
   setCurrentDate: (date) => set({ currentDate: date }),
@@ -77,4 +89,6 @@ export const useSkyViewerStore = create<SkyViewerState>((set, get) => ({
   },
   requestFocus: (direction) => set((s) => ({ focusRequest: { direction, token: s.focusRequest ? s.focusRequest.token + 1 : 1 } })),
   setCameraHeadingDeg: (heading) => set({ cameraHeadingDeg: heading }),
+  setSatelliteMode: (value) => set({ satelliteMode: value }),
+  toggleSatelliteMode: () => set((s) => ({ satelliteMode: !s.satelliteMode })),
 }));

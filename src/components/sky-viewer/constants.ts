@@ -48,6 +48,21 @@ export const FOV_DAMPING = 0.12;
 // per ADR0003, kept subtle and tuned via this one constant.
 export const GROUND_CURVE_RADIUS = 420;
 
+// ADR0009: "I am a satellite" mode's ambient drift speed, in the units
+// three.js's OrbitControls.autoRotateSpeed itself uses (SkyViewer.tsx
+// passes this straight through as the `autoRotateSpeed` prop). Confirmed
+// from three-stdlib's OrbitControls source
+// (getAutoRotationAngle/rotateLeft): drei's <OrbitControls> calls
+// controls.update() with no delta argument every frame, so the angle
+// added per call is a fixed `(2*PI/60/60) * autoRotateSpeed` radians --
+// at a steady ~60fps that works out to `6 * autoRotateSpeed` degrees of
+// drift per second. This value (0.08) targets roughly 0.48 deg/s, a full
+// 360-degree sweep in a little over 12 minutes -- slow and contemplative
+// ("calm, weightless, elegant" per the spec) rather than the library's
+// own default of 2.0 (~12 deg/s, a brisk 30-second lap, which would read
+// as spinning rather than drifting).
+export const SATELLITE_AUTO_ROTATE_SPEED = 0.08;
+
 // Visual polish pass: a shared target plane *area* (world units^2) for
 // every figure overlay -- the 7 Rishis plus the 4 mythic figures
 // (Mrigashira/Rohini/Krittika/Dhruva). Before this, each figure's plane
