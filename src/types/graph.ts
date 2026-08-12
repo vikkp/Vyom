@@ -20,7 +20,8 @@ export type NodeGroup =
   | "nakshatra"
   | "dhruva-family"
   | "story"
-  | "navagraha"; // ADR0005
+  | "navagraha" // ADR0005
+  | "akash-ganga"; // ADR0007
 
 export interface GraphNode {
   id: string;
@@ -30,6 +31,16 @@ export interface GraphNode {
   sanskrit?: string;
   symbol?: string;
   summary: string;
+  /**
+   * ADR0007: an optional longer-form narrative (80-140 words, several
+   * short paragraphs joined by "\n\n") shown in DetailPanel in place of
+   * `summary` when present. Optional rather than replacing `summary`
+   * outright: only ~39 of this app's ~85 nodes have curated story
+   * content so far (the 27 Nakshatras, 9 Navagraha, the 7 star-
+   * represented Saptarishi, and Dhruva Tārā) -- every other node keeps
+   * working exactly as before, falling back to its existing `summary`.
+   */
+  story?: string;
 }
 
 export type EdgeType =

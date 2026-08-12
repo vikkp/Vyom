@@ -14,6 +14,7 @@ import {
 import { raDecToAltAz, altAzToVector3 } from "../../utils/astronomy";
 import { galacticToEquatorial } from "../../utils/galactic";
 import { useSkyViewerStore } from "../../store/skyViewerStore";
+import { useGraphStore } from "../../store/useGraphStore";
 import { makeAkashGangaTexture } from "./akashGangaTexture";
 import { DOME_RADIUS } from "./constants";
 
@@ -147,8 +148,18 @@ function computeGalacticToWorldRotation(lat: number, lon: number, date: Date): Q
  * the true galactic plane, rendered as a full enclosing sphere (see
  * buildSphereGeometry) behind every other layer (Rishis, mythic figures,
  * stars, the Navagraha) so it reads as atmospheric backdrop rather than
- * competing content. Not clickable in this version, per the project
- * owner's spec.
+ * competing content.
+ *
+ * ADR0007: now has a DetailPanel entry (graph.json's "akash-ganga" node),
+ * opened by clicking the "Akash Ganga" label below -- deliberately *not*
+ * by clicking the enclosing sphere mesh itself. That sphere spans the
+ * entire visible dome (BAND_RADIUS, larger than every star/figure shell),
+ * so if it carried its own onClick, raycasting would register a hit on
+ * it for nearly every click anywhere in the sky -- including clicks meant
+ * to hit "empty sky and deselect" (SkyViewer.tsx's onPointerMissed group
+ * handler only fires when a click hits *no* interactive object at all).
+ * The label is a small, deliberate target instead: exactly where a user
+ * would expect to click to learn about it, with none of that risk.
  */
 export function AkashGanga() {
   const meshRef = useRef<Mesh>(null);
@@ -156,6 +167,7 @@ export function AkashGanga() {
   const visibleLayers = useSkyViewerStore((s) => s.visibleLayers);
   const selectedCity = useSkyViewerStore((s) => s.selectedCity);
   const currentDate = useSkyViewerStore((s) => s.currentDate);
+  const select = useGraphStore((s) => s.select);
 
   const texture = useMemo(() => makeAkashGangaTexture(), []);
 
@@ -218,8 +230,20 @@ export function AkashGanga() {
       </mesh>
       {showLabel && (
         <Billboard position={[labelPosition.x, labelPosition.y, labelPosition.z]}>
-          <Html distanceFactor={40} center style={{ pointerEvents: "none" }}>
-            <div className="whitespace-nowrap text-xs tracking-widest text-white/60">Akash Ganga</div>
+          {/* drei's <Html> renders into a real DOM element positioned via
+              CSS, entirely outside the WebGL scene's raycasting system --
+              so a plain onClick here is a normal DOM click, not subject
+              to the "sphere would swallow every click" problem discussed
+              above. pointerEvents flips to "auto" (every other label in
+              this app leaves it "none") specifically so this one small
+              target is clickable. */}
+          <Html distanceFactor={40} center style={{ pointerEvents: "auto" }}>
+            <div
+              onClick={() => select("akash-ganga")}
+              className="cursor-pointer whitespace-nowrap text-xs tracking-widest text-white/60 transition-colors hover:text-white/90"
+            >
+              Akash Ganga
+            </div>
           </Html>
         </Billboard>
       )}

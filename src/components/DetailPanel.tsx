@@ -13,7 +13,7 @@ export function DetailPanel() {
   const neighbors = neighborsOf(selectedId);
 
   return (
-    <aside className="pointer-events-auto absolute right-4 top-24 z-10 w-80 max-w-[85vw] rounded-xl border border-white/10 bg-black/60 p-4 text-white backdrop-blur-md">
+    <aside className="pointer-events-auto absolute right-4 top-24 z-10 flex max-h-[75vh] w-80 max-w-[85vw] flex-col overflow-y-auto rounded-xl border border-white/10 bg-black/60 p-4 text-white backdrop-blur-md">
       <div className="flex items-start justify-between gap-2">
         <div>
           <div
@@ -40,7 +40,19 @@ export function DetailPanel() {
         </div>
       )}
 
-      <p className="mt-3 text-sm leading-relaxed text-white/80">{node.summary}</p>
+      {/* ADR0007: `story` is a longer, curated narrative (80-140 words,
+          several short paragraphs) shown in place of the older one-line
+          `summary` whenever it's present -- currently the 27 Nakshatras,
+          9 Navagraha, the 7 star-represented Saptarishi, Dhruva Tārā, and
+          Akash Ganga. Every other node has no `story` yet and falls back
+          to its existing `summary` exactly as before, so this is
+          additive, not a rewrite of how every node renders.
+          whitespace-pre-line turns the "\n\n" paragraph breaks already
+          baked into the story text into real visual paragraph spacing
+          without needing separate <p> elements per paragraph. */}
+      <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-white/80">
+        {node.story ?? node.summary}
+      </p>
 
       {neighbors.length > 0 && (
         <div className="mt-4 border-t border-white/10 pt-3">
