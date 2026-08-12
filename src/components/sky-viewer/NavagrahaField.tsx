@@ -81,11 +81,22 @@ function NavagrahaPoint({ def, alt, az }: NavagrahaPointProps) {
       {/* Indic name is the primary, always-on label for the Navagraha
           (unlike fixed stars, which gate their label behind the "names"
           layer toggle) -- there are only nine of these, and being able
-          to tell them apart at a glance is the point. */}
+          to tell them apart at a glance is the point.
+          Styled to match every other label in this app (nakshatra
+          figures in MythicFigureOverlays.tsx, Rishi names in
+          RishiOverlays.tsx: plain text, no background pill) rather than
+          the boxed dark badge this used to be -- that badge read as
+          visually inconsistent/cluttered next to the rest of the sky's
+          label style. Each Graha keeps its own per-planet color (from
+          def.color, matching its core/glow) so closely-clustered planets
+          stay distinguishable without a background box; a drop-shadow
+          keeps the text legible against a Graha's own bright glow halo,
+          the one thing the other overlays don't need since they sit on
+          plain dark sky. */}
       <Html distanceFactor={30} center style={{ pointerEvents: "none" }}>
         <div
-          className="whitespace-nowrap rounded px-1.5 py-0.5 text-[11px] font-medium"
-          style={{ background: "rgba(0,0,0,0.55)", color: def.color }}
+          className="whitespace-nowrap text-xs font-medium tracking-wide drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]"
+          style={{ color: def.color }}
         >
           {def.indianName}
         </div>
