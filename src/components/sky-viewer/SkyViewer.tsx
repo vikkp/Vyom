@@ -41,12 +41,16 @@ export function SkyViewer() {
           points, and a sparse layer of a few standout bright ones —
           point sprites are cheap, so pushing the count further here
           costs little. */}
-      {/* Visual polish pass: another noticeable density bump (~1.55x) on
-          top of the earlier density passes -- point sprites stay cheap at
-          this count, so this is a straightforward richness win rather
-          than a performance trade-off. */}
-      <Stars radius={DOME_RADIUS + 20} depth={45} count={140000} factor={1.0} saturation={0} fade speed={0.1} />
-      <Stars radius={DOME_RADIUS + 17} depth={38} count={18000} factor={2.4} saturation={0} fade speed={0.16} />
+      {/* Final visual-polish lock-in pass (post-27-nakshatra): another
+          density bump (~1.3x on the faint/mid layers, on top of the
+          earlier ~1.55x pass) so the field reads richer still without
+          crowding out the bright/named layer's contrast. Left the bright
+          top layer's count untouched -- it's meant to stay a sparse,
+          standout accent, not get denser along with the fill layers.
+          Point sprites remain cheap at this count (verified: build and
+          preview both stay fast, see commit). */}
+      <Stars radius={DOME_RADIUS + 20} depth={45} count={182000} factor={1.0} saturation={0} fade speed={0.1} />
+      <Stars radius={DOME_RADIUS + 17} depth={38} count={23000} factor={2.4} saturation={0} fade speed={0.16} />
       <Stars radius={DOME_RADIUS + 14} depth={30} count={2000} factor={4.2} saturation={0} fade speed={0.2} />
 
       <group onPointerMissed={() => select(null)}>

@@ -1,7 +1,7 @@
 import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Billboard, Html } from "@react-three/drei";
-import type { Mesh } from "three";
+import { Vector3, type Mesh } from "three";
 import type { SkyCatalogStar } from "../../types/skyViewer";
 import { raDecToAltAz, altAzToVector3 } from "../../utils/astronomy";
 import { useGraphStore } from "../../store/useGraphStore";
@@ -10,6 +10,7 @@ import { makeGlowTexture } from "../sky/glowTexture";
 import { useOptionalTexture } from "../sky/useOptionalTexture";
 import { makeRishiSilhouetteTexture } from "./rishiSilhouette";
 import { DOME_RADIUS, sizeForAspect } from "./constants";
+import { declutterPositions } from "./figureDeclutter";
 
 const RISHI_GLOW_COLOR = "#ffcf8a";
 
@@ -27,11 +28,12 @@ const ANCHOR_OFFSET = 1.12 * (REAL_SIZE[1] / 7.43);
 
 interface RishiFigureProps {
   star: SkyCatalogStar;
-  alt: number;
-  az: number;
+  /** Already-decluttered anchor position (see RishiOverlays below) --
+   * ANCHOR_OFFSET is applied here, on top of it. */
+  position: Vector3;
 }
 
-function RishiFigure({ star, alt, az }: RishiFigureProps) {
+function RishiFigure({ star, position }: RishiFigureProps) {
   const glowRef = useRef<Mesh>(null);
   const figureRef = useRef<Mesh>(null);
   const select = useGraphStore((s) => s.select);
@@ -49,8 +51,6 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
   const silhouetteTexture = useMemo(() => makeRishiSilhouetteTexture(RISHI_GLOW_COLOR), []);
   const displayTexture = figureTexture ?? silhouetteTexture;
 
-  const position = useMemo(() => altAzToVector3(alt, az, DOME_RADIUS - 1), [alt, az]);
-
   // Visual polish pass: figure opacity raised into the 0.65-0.75 range
   // (was 0.35 baseline) so the portraits read as present, elegant
   // constellation artwork rather than a faint ghost of themselves. The
@@ -67,10 +67,16 @@ function RishiFigure({ star, alt, az }: RishiFigureProps) {
   // Sized larger than the tight per-star gap on purpose: these are meant
   // to read as large, ghostly constellation artwork layered across the
   // sky (like SkyGuide's constellation figures) rather than small icons
-  // sitting next to their star. Neighbouring rishis overlap somewhat --
-  // that's fine and expected, because the low opacity (0.35 baseline,
-  // 0.52 when selected) lets overlaps blend softly instead of stacking
-  // into solid shapes.
+  // sitting next to their star. Saptarishi's 7 stars sit close together by
+  // real astronomy (that's the point -- it's a tight, recognisable
+  // dipper), so their portraits go through the same declutter pass
+  // (figureDeclutter.ts) as the nakshatra symbols in
+  // MythicFigureOverlays.tsx -- see RishiOverlays below. That pass used to
+  // be unnecessary here because the old 0.35 baseline opacity let
+  // overlapping portraits blend softly; once opacity was later raised to
+  // 0.65-0.75 to match the mythic figures, overlap started reading as
+  // muddy stacked shapes instead, so decluttering here now matters the
+  // same way it does for the nakshatra set.
   //
   // The vertical anchor is measured, not guessed, and recomputed here to
   // match the new size: after fading out each portrait's glowing base
@@ -136,19 +142,27 @@ export function RishiOverlays({ stars }: RishiOverlaysProps) {
   // No altitude filtering — same reasoning as StarField/AsterismLines: let
   // the depth-writing ground disc in Horizon.tsx occlude figures whose
   // stars have set, instead of an arbitrary cutoff popping them in/out.
-  const visible = useMemo(() => {
+  const placed = useMemo(() => {
     return stars.map((star) => {
       const { alt, az } = raDecToAltAz(star.ra, star.dec, selectedCity.lat, selectedCity.lon, currentDate);
-      return { star, alt, az };
+      return { item: star, position: altAzToVector3(alt, az, DOME_RADIUS - 1) };
     });
   }, [stars, selectedCity, currentDate]);
+
+  // Same shared declutter pass MythicFigureOverlays.tsx uses -- pulls
+  // apart any Rishi portraits whose real stars sit closer than
+  // MIN_FIGURE_SEPARATION (Saptarishi's 7 stars, a real tight dipper
+  // shape, land several pairs well inside that threshold). See the
+  // comment above RishiFigure for why this now matters at the current
+  // opacity level.
+  const declutteredPlaced = useMemo(() => declutterPositions(placed), [placed]);
 
   if (!visibleLayers.has("overlays")) return null;
 
   return (
     <group>
-      {visible.map(({ star, alt, az }) => (
-        <RishiFigure key={star.id} star={star} alt={alt} az={az} />
+      {declutteredPlaced.map(({ item: star, position }) => (
+        <RishiFigure key={star.id} star={star} position={position} />
       ))}
     </group>
   );
