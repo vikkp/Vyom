@@ -291,6 +291,45 @@ export const PURVA_ASHADHA_EXTRA_STARS: SkyCatalogStar[] = [
   { id: "lambda-sagittarii", ra: 18.4662, dec: -25.4217, mag: 2.81, indianName: "Purva Ashadha", westernName: "Kaus Borealis (λ Sagittarii)", nodeId: "purva-ashadha", constellation: "Nakshatra" },
 ];
 
+// Ninth (final) asterism batch: Bharani, Purva Phalguni, Uttara Phalguni,
+// Anuradha, Uttara Ashadha -- completes all 27 nakshatras. Requested
+// alongside Ardra/Punarvasu/Pushya, which were already done in an
+// earlier batch (see git log) -- this batch is only the genuinely
+// remaining gaps.
+
+// Bharani: the existing yogatara 41 Arietis plus 35 and 39 Arietis, the
+// real three-star triangle. See docs/research/bharani-asterism-sources.md.
+export const BHARANI_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "35-arietis", ra: 2.7242, dec: 27.7071, mag: 4.64, indianName: "Bharani", westernName: "35 Arietis", nodeId: "bharani", constellation: "Nakshatra" },
+  { id: "39-arietis", ra: 2.7985, dec: 29.2471, mag: 4.51, indianName: "Bharani", westernName: "39 Arietis", nodeId: "bharani", constellation: "Nakshatra" },
+];
+
+// Purva Phalguni: the existing yogatara Zosma plus Theta Leonis
+// (Chertan). See docs/research/purva-phalguni-asterism-sources.md.
+export const PURVA_PHALGUNI_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "theta-leonis", ra: 11.2373, dec: 15.4296, mag: 3.32, indianName: "Purva Phalguni", westernName: "Chertan (θ Leonis)", nodeId: "purva-phalguni", constellation: "Nakshatra" },
+];
+
+// Uttara Phalguni: the existing yogatara Denebola plus 93 Leonis. See
+// docs/research/uttara-phalguni-asterism-sources.md.
+export const UTTARA_PHALGUNI_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "93-leonis", ra: 11.7998, dec: 20.2189, mag: 4.52, indianName: "Uttara Phalguni", westernName: "93 Leonis", nodeId: "uttara-phalguni", constellation: "Nakshatra" },
+];
+
+// Anuradha: the existing yogatara Dschubba flanked by Beta Scorpii
+// (north) and Pi Scorpii (south) -- the real three-star "staff" line.
+// See docs/research/anuradha-asterism-sources.md.
+export const ANURADHA_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "beta-scorpii", ra: 16.0906, dec: -19.8055, mag: 2.62, indianName: "Anuradha", westernName: "Graffias / Acrab (β Scorpii)", nodeId: "anuradha", constellation: "Nakshatra" },
+  { id: "pi-scorpii", ra: 15.9808, dec: -26.1141, mag: 2.89, indianName: "Anuradha", westernName: "π Scorpii", nodeId: "anuradha", constellation: "Nakshatra" },
+];
+
+// Uttara Ashadha: the existing yogatara Nunki plus Ascella. See
+// docs/research/uttara-ashadha-asterism-sources.md.
+export const UTTARA_ASHADHA_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "zeta-sagittarii", ra: 19.0435, dec: -29.8801, mag: 2.59, indianName: "Uttara Ashadha", westernName: "Ascella (ζ Sagittarii)", nodeId: "uttara-ashadha", constellation: "Nakshatra" },
+];
+
 export const BRIGHT_STARS: SkyCatalogStar[] = [
   { id: "sirius", ra: 6.753, dec: -16.716, mag: -1.46, westernName: "Sirius" },
   { id: "canopus", ra: 6.399, dec: -52.696, mag: -0.74, westernName: "Canopus" },
@@ -341,5 +380,10 @@ export const STAR_CATALOG: SkyCatalogStar[] = [
   ...HASTA_EXTRA_STARS,
   ...VISHAKHA_EXTRA_STARS,
   ...PURVA_ASHADHA_EXTRA_STARS,
+  ...BHARANI_EXTRA_STARS,
+  ...PURVA_PHALGUNI_EXTRA_STARS,
+  ...UTTARA_PHALGUNI_EXTRA_STARS,
+  ...ANURADHA_EXTRA_STARS,
+  ...UTTARA_ASHADHA_EXTRA_STARS,
   ...BRIGHT_STARS,
 ];

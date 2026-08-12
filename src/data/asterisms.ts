@@ -216,4 +216,47 @@ export const ASTERISMS: Asterism[] = [
     starIds: ["lambda-sagittarii", "kaus-media", "epsilon-sagittarii"],
     nodeId: "purva-ashadha",
   },
+  // Ninth (final) batch: Bharani, Purva Phalguni, Uttara Phalguni,
+  // Anuradha, Uttara Ashadha -- completes all 27 nakshatras.
+  {
+    id: "bharani",
+    name: "Bharani",
+    // Closed three-star triangle -- three points always form a valid
+    // non-self-intersecting shape, no convex-hull check needed. See
+    // docs/research/bharani-asterism-sources.md.
+    starIds: ["39-arietis", "35-arietis", "41-arietis", "39-arietis"],
+    nodeId: "bharani",
+  },
+  {
+    id: "purva-phalguni",
+    name: "Purva Phalguni",
+    // Simple two-star line. See
+    // docs/research/purva-phalguni-asterism-sources.md.
+    starIds: ["zosma", "theta-leonis"],
+    nodeId: "purva-phalguni",
+  },
+  {
+    id: "uttara-phalguni",
+    name: "Uttara Phalguni",
+    // Simple two-star line. See
+    // docs/research/uttara-phalguni-asterism-sources.md.
+    starIds: ["denebola", "93-leonis"],
+    nodeId: "uttara-phalguni",
+  },
+  {
+    id: "anuradha",
+    name: "Anuradha",
+    // Open three-star line, north to south -- the real "staff" shape
+    // above Antares. See docs/research/anuradha-asterism-sources.md.
+    starIds: ["beta-scorpii", "dschubba", "pi-scorpii"],
+    nodeId: "anuradha",
+  },
+  {
+    id: "uttara-ashadha",
+    name: "Uttara Ashadha",
+    // Simple two-star line. See
+    // docs/research/uttara-ashadha-asterism-sources.md.
+    starIds: ["nunki", "zeta-sagittarii"],
+    nodeId: "uttara-ashadha",
+  },
 ];

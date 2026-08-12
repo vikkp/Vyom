@@ -32,6 +32,11 @@ import {
   makeChitraJewelSilhouette,
   makeVishakhaArchSilhouette,
   makePurvaAshadhaFanSilhouette,
+  makeBharaniVesselSilhouette,
+  makePhalguniFrontLegsSilhouette,
+  makePhalguniBackLegsSilhouette,
+  makeAnuradhaStaffSilhouette,
+  makeUttaraAshadhaTuskSilhouette,
 } from "./mythicFigureSilhouette";
 import { DOME_RADIUS, sizeForAspect } from "./constants";
 
@@ -351,6 +356,51 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     placeholderSize: [3.6, 3.9],
     realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Purva Ashadha",
+  },
+  // Ninth (final) batch: Bharani, Purva Phalguni, Uttara Phalguni,
+  // Anuradha, Uttara Ashadha -- completes all 27 nakshatras. Placeholder
+  // silhouettes only for now; realSize is a provisional guess at the
+  // now-universal 784x1168 portrait aspect every prior real-art delivery
+  // has used, to be corrected if a delivered PNG ever differs.
+  {
+    nodeId: "bharani",
+    anchorStarIds: ["41-arietis", "35-arietis", "39-arietis"],
+    makeTexture: makeBharaniVesselSilhouette,
+    placeholderSize: [3.3, 3.55],
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
+    label: "Bharani",
+  },
+  {
+    nodeId: "purva-phalguni",
+    anchorStarIds: ["zosma", "theta-leonis"],
+    makeTexture: makePhalguniFrontLegsSilhouette,
+    placeholderSize: [4.2, 3.1],
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
+    label: "Purva Phalguni",
+  },
+  {
+    nodeId: "uttara-phalguni",
+    anchorStarIds: ["denebola", "93-leonis"],
+    makeTexture: makePhalguniBackLegsSilhouette,
+    placeholderSize: [4.2, 3.1],
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
+    label: "Uttara Phalguni",
+  },
+  {
+    nodeId: "anuradha",
+    anchorStarIds: ["beta-scorpii", "dschubba", "pi-scorpii"],
+    makeTexture: makeAnuradhaStaffSilhouette,
+    placeholderSize: [2.5, 4.0],
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
+    label: "Anuradha",
+  },
+  {
+    nodeId: "uttara-ashadha",
+    anchorStarIds: ["nunki", "zeta-sagittarii"],
+    makeTexture: makeUttaraAshadhaTuskSilhouette,
+    placeholderSize: [2.75, 4.0],
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
+    label: "Uttara Ashadha",
   },
 ];
 

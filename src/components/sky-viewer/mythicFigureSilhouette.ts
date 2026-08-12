@@ -1394,6 +1394,264 @@ export function makePurvaAshadhaFanSilhouette(color: string, w = 280, h = 300): 
 }
 
 /**
+ * Bharani: the nakshatra's own symbol -- a stylised clay pot/vessel,
+ * matching the real three-star triangle it's anchored to and echoing the
+ * "opening of the womb" reading sources give that triangle shape without
+ * requiring literal anatomical imagery. See
+ * docs/research/bharani-asterism-sources.md.
+ */
+export function makeBharaniVesselSilhouette(color: string, w = 260, h = 280): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const cx = w / 2;
+  const rimY = h * 0.32;
+  const baseY = h * 0.84;
+
+  auraBackdrop(ctx, cx, h * 0.55, w * 0.62, color);
+
+  withGlowFill(ctx, color, w * 0.04, 0.6, () => {
+    // Rounded pot body, narrow neck opening to a wide belly and a
+    // narrower base.
+    ctx.beginPath();
+    ctx.moveTo(cx - w * 0.16, rimY);
+    ctx.quadraticCurveTo(cx - w * 0.34, h * 0.5, cx - w * 0.24, h * 0.68);
+    ctx.quadraticCurveTo(cx - w * 0.18, baseY, cx, baseY + h * 0.02);
+    ctx.quadraticCurveTo(cx + w * 0.18, baseY, cx + w * 0.24, h * 0.68);
+    ctx.quadraticCurveTo(cx + w * 0.34, h * 0.5, cx + w * 0.16, rimY);
+    ctx.closePath();
+    ctx.fill();
+
+    // Rim, an open ellipse at the top (the "opening").
+    ctx.lineWidth = w * 0.02;
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.ellipse(cx, rimY, w * 0.16, h * 0.035, 0, 0, Math.PI * 2);
+    ctx.stroke();
+  });
+
+  // A few decorative horizontal bands around the belly.
+  withGlowFill(ctx, color, w * 0.015, 0.4, () => {
+    ctx.lineWidth = w * 0.008;
+    ctx.strokeStyle = color;
+    for (const t of [0.5, 0.6, 0.7]) {
+      const bw = w * (0.24 + (0.7 - t) * 0.3);
+      ctx.beginPath();
+      ctx.ellipse(cx, h * t, bw, h * 0.012, 0, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
+ * Purva Phalguni: the nakshatra's own symbol -- the front legs of a
+ * day-bed/divan, matching the real two-star line it's anchored to.
+ * Deliberately paired visually with Uttara Phalguni's back-legs
+ * placeholder (same piece of furniture). See
+ * docs/research/purva-phalguni-asterism-sources.md.
+ */
+export function makePhalguniFrontLegsSilhouette(color: string, w = 300, h = 220): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const deckY = h * 0.36;
+
+  auraBackdrop(ctx, w / 2, h * 0.5, w * 0.6, color);
+
+  withGlowFill(ctx, color, w * 0.04, 0.6, () => {
+    // Mattress/deck, a soft rounded slab.
+    ctx.beginPath();
+    ctx.moveTo(w * 0.14, deckY);
+    ctx.quadraticCurveTo(w * 0.14, deckY - h * 0.08, w * 0.24, deckY - h * 0.08);
+    ctx.lineTo(w * 0.76, deckY - h * 0.08);
+    ctx.quadraticCurveTo(w * 0.86, deckY - h * 0.08, w * 0.86, deckY);
+    ctx.lineTo(w * 0.86, deckY + h * 0.06);
+    ctx.lineTo(w * 0.14, deckY + h * 0.06);
+    ctx.closePath();
+    ctx.fill();
+
+    // Two front legs, turned/carved posts.
+    for (const lx of [w * 0.24, w * 0.76]) {
+      ctx.beginPath();
+      ctx.moveTo(lx - w * 0.03, deckY + h * 0.06);
+      ctx.lineTo(lx + w * 0.03, deckY + h * 0.06);
+      ctx.lineTo(lx + w * 0.025, h * 0.9);
+      ctx.lineTo(lx - w * 0.025, h * 0.9);
+      ctx.closePath();
+      ctx.fill();
+      // Turned bulge partway down the leg.
+      ctx.beginPath();
+      ctx.ellipse(lx, deckY + h * 0.22, w * 0.028, h * 0.025, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
+ * Uttara Phalguni: the nakshatra's own symbol -- the back legs of the
+ * same day-bed/divan, deliberately matching Purva Phalguni's placeholder
+ * motif so the pair reads as related. See
+ * docs/research/uttara-phalguni-asterism-sources.md.
+ */
+export function makePhalguniBackLegsSilhouette(color: string, w = 300, h = 220): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const deckY = h * 0.34;
+
+  auraBackdrop(ctx, w / 2, h * 0.5, w * 0.6, color);
+
+  withGlowFill(ctx, color, w * 0.04, 0.6, () => {
+    // Mattress/deck, slightly taller backrest edge to read as "the other
+    // end" of the same day-bed.
+    ctx.beginPath();
+    ctx.moveTo(w * 0.16, deckY);
+    ctx.quadraticCurveTo(w * 0.16, deckY - h * 0.12, w * 0.26, deckY - h * 0.12);
+    ctx.lineTo(w * 0.74, deckY - h * 0.12);
+    ctx.quadraticCurveTo(w * 0.84, deckY - h * 0.12, w * 0.84, deckY);
+    ctx.lineTo(w * 0.84, deckY + h * 0.06);
+    ctx.lineTo(w * 0.16, deckY + h * 0.06);
+    ctx.closePath();
+    ctx.fill();
+
+    // Two back legs.
+    for (const lx of [w * 0.26, w * 0.74]) {
+      ctx.beginPath();
+      ctx.moveTo(lx - w * 0.03, deckY + h * 0.06);
+      ctx.lineTo(lx + w * 0.03, deckY + h * 0.06);
+      ctx.lineTo(lx + w * 0.025, h * 0.86);
+      ctx.lineTo(lx - w * 0.025, h * 0.86);
+      ctx.closePath();
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(lx, deckY + h * 0.2, w * 0.028, h * 0.025, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
+ * Anuradha: the nakshatra's own symbol -- a ceremonial staff, matching
+ * the real three-star straight-line shape most directly, topped with a
+ * small lotus accent nodding to the secondary lotus symbol. See
+ * docs/research/anuradha-asterism-sources.md.
+ */
+export function makeAnuradhaStaffSilhouette(color: string, w = 200, h = 320): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const cx = w / 2;
+
+  auraBackdrop(ctx, cx, h * 0.5, w * 0.75, color);
+
+  withGlowFill(ctx, color, w * 0.04, 0.6, () => {
+    // Staff shaft.
+    ctx.lineWidth = w * 0.045;
+    ctx.strokeStyle = color;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(cx, h * 0.22);
+    ctx.lineTo(cx, h * 0.92);
+    ctx.stroke();
+
+    // Small lotus bloom capping the top.
+    const petalCount = 5;
+    const petalBaseY = h * 0.2;
+    for (let i = 0; i < petalCount; i++) {
+      const t = i / (petalCount - 1);
+      const angle = Math.PI * 0.5 + (t - 0.5) * Math.PI * 0.9;
+      const len = h * 0.16;
+      const tipX = cx + Math.cos(angle) * len * 0.6;
+      const tipY = petalBaseY - Math.sin(angle) * len;
+      ctx.beginPath();
+      ctx.moveTo(cx, petalBaseY);
+      ctx.quadraticCurveTo(cx + Math.cos(angle + 0.3) * len * 0.4, (petalBaseY + tipY) / 2, tipX, tipY);
+      ctx.quadraticCurveTo(cx + Math.cos(angle - 0.3) * len * 0.4, (petalBaseY + tipY) / 2, cx, petalBaseY);
+      ctx.closePath();
+      ctx.fill();
+    }
+  });
+
+  // Two decorative rings partway down the shaft.
+  withGlowFill(ctx, color, w * 0.02, 0.5, () => {
+    ctx.lineWidth = w * 0.012;
+    ctx.strokeStyle = color;
+    for (const t of [0.42, 0.68]) {
+      ctx.beginPath();
+      ctx.ellipse(cx, h * t, w * 0.06, h * 0.012, 0, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
+ * Uttara Ashadha: the nakshatra's own symbol -- a curved elephant tusk,
+ * deliberately echoing Purva Ashadha's tusk placeholder (both nakshatras
+ * share this symbol in the tradition), distinguished by a small bed/cot
+ * accent at the base per Uttara Ashadha's own secondary symbol. See
+ * docs/research/uttara-ashadha-asterism-sources.md.
+ */
+export function makeUttaraAshadhaTuskSilhouette(color: string, w = 220, h = 320): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+
+  auraBackdrop(ctx, w * 0.5, h * 0.45, w * 0.75, color);
+
+  withGlowFill(ctx, color, w * 0.04, 0.6, () => {
+    // Curved tusk, base at bottom-left tapering to a point upper-right.
+    ctx.beginPath();
+    ctx.moveTo(w * 0.28, h * 0.86);
+    ctx.quadraticCurveTo(w * 0.14, h * 0.5, w * 0.42, h * 0.16);
+    ctx.quadraticCurveTo(w * 0.5, h * 0.06, w * 0.58, h * 0.05);
+    ctx.quadraticCurveTo(w * 0.56, h * 0.1, w * 0.48, h * 0.22);
+    ctx.quadraticCurveTo(w * 0.28, h * 0.52, w * 0.44, h * 0.84);
+    ctx.closePath();
+    ctx.fill();
+  });
+
+  // A small bed/cot resting at the tusk's base, the secondary symbol.
+  withGlowFill(ctx, color, w * 0.02, 0.45, () => {
+    const bx = w * 0.36;
+    const by = h * 0.92;
+    ctx.beginPath();
+    ctx.moveTo(bx - w * 0.16, by);
+    ctx.lineTo(bx + w * 0.16, by);
+    ctx.lineTo(bx + w * 0.13, by + h * 0.05);
+    ctx.lineTo(bx - w * 0.13, by + h * 0.05);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillRect(bx - w * 0.14, by + h * 0.05, w * 0.02, h * 0.035);
+    ctx.fillRect(bx + w * 0.12, by + h * 0.05, w * 0.02, h * 0.035);
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
  * Dhruva: the young boy in penance, seated in meditation with hands
  * folded, a faint halo marking the boon that fixed him as the pole star --
  * see docs/research/dhruva-figure-sources.md.
