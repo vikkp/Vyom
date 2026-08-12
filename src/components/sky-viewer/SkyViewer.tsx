@@ -4,6 +4,7 @@ import { STAR_CATALOG, SAPTARISHI_STARS } from "../../data/starCatalog";
 import { ASTERISMS } from "../../data/asterisms";
 import { Horizon } from "./Horizon";
 import { StarField } from "./StarField";
+import { NavagrahaField } from "./NavagrahaField";
 import { AsterismLines } from "./AsterismLines";
 import { RishiOverlays } from "./RishiOverlays";
 import { MythicFigureOverlays } from "./MythicFigureOverlays";
@@ -55,6 +56,10 @@ export function SkyViewer() {
 
       <group onPointerMissed={() => select(null)}>
         <StarField stars={STAR_CATALOG} />
+        {/* ADR0005: the Navagraha -- unlike every star above, these move
+            night to night, so they're computed fresh (planetaryPositions.ts)
+            rather than looked up from the fixed catalog. */}
+        <NavagrahaField />
         <AsterismLines asterisms={ASTERISMS} stars={STAR_CATALOG} />
         <RishiOverlays stars={SAPTARISHI_STARS} />
         <MythicFigureOverlays stars={STAR_CATALOG} />

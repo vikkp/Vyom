@@ -7,7 +7,8 @@ export type NodeType =
   | "deity" // Trimurti, Adityas, Nakshatra-presiding deities
   | "sage" // Saptarishi and other rishis/progenitors
   | "character" // Dhruva family and other story characters
-  | "story-event"; // major story events (e.g. Dhruva's Penance)
+  | "story-event" // major story events (e.g. Dhruva's Penance)
+  | "graha"; // ADR0005: the Navagraha (Surya, Chandra, and the 7 others)
 
 export type NodeGroup =
   | "center"
@@ -18,7 +19,8 @@ export type NodeGroup =
   | "nakshatra-deity"
   | "nakshatra"
   | "dhruva-family"
-  | "story";
+  | "story"
+  | "navagraha"; // ADR0005
 
 export interface GraphNode {
   id: string;

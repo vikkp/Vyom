@@ -7,6 +7,11 @@ export const NODE_COLORS: Record<NodeType, string> = {
   sage: "#c084fc",
   character: "#fb7185",
   "story-event": "#4ade80",
+  // ADR0005: distinct from "deity" (amber) so the Navagraha read as their
+  // own category in DetailPanel's type label, even though several are
+  // also worshipped as deities -- a warm gold/orange keyed to Surya, the
+  // chief Graha.
+  graha: "#f59e0b",
 };
 
 export const NODE_SIZES: Record<NodeType, number> = {
@@ -16,4 +21,5 @@ export const NODE_SIZES: Record<NodeType, number> = {
   sage: 0.24,
   character: 0.22,
   "story-event": 0.26,
+  graha: 0.3,
 };
