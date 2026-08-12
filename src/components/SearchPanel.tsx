@@ -38,14 +38,17 @@ function rankMatch(node: GraphNode, q: string): RankedMatch | null {
   return null;
 }
 
-// ADR0009: "I am a satellite" isn't a graph node -- there's nothing to
-// select or open a story for, it's an action that toggles the ambient
-// camera drift. Matched against a short list of phrases someone might
-// plausibly type (not just the exact literal string), so "sat", "orbit",
-// or "drift" all find it too. Whenever it matches at all, it's pushed
-// into the results list *before* any ranked node match -- per the spec,
-// it must always appear at the very top, not merely win ties within the
-// normal name/alias ranking.
+// ADR0009 (revised): "I am a satellite" isn't a graph node -- there's
+// nothing to select or open a story for, it's an action that toggles
+// between the ambient auto-rotation's normal speed and a faster
+// "satellite" speed (auto-rotation itself now always runs -- this used
+// to switch it on/off from a standstill, see SkyViewer.tsx). Matched
+// against a short list of phrases someone might plausibly type (not just
+// the exact literal string), so "sat", "orbit", or "drift" all find it
+// too. Whenever it matches at all, it's pushed into the results list
+// *before* any ranked node match -- per the spec, it must always appear
+// at the very top, not merely win ties within the normal name/alias
+// ranking.
 const SATELLITE_TRIGGERS = ["i am a satellite", "satellite", "orbit", "drift", "fly"];
 
 function matchesSatelliteTrigger(q: string): boolean {
@@ -160,7 +163,7 @@ export function SearchPanel() {
                   >
                     <span>I am a satellite</span>
                     <span className="ml-2 shrink-0 text-xs text-white/40">
-                      {satelliteMode ? "exit mode" : "enter mode"}
+                      {satelliteMode ? "back to normal drift" : "speed up the drift"}
                     </span>
                   </button>
                 </li>

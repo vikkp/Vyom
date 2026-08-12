@@ -48,19 +48,33 @@ export const FOV_DAMPING = 0.12;
 // per ADR0003, kept subtle and tuned via this one constant.
 export const GROUND_CURVE_RADIUS = 420;
 
-// ADR0009: "I am a satellite" mode's ambient drift speed, in the units
-// three.js's OrbitControls.autoRotateSpeed itself uses (SkyViewer.tsx
-// passes this straight through as the `autoRotateSpeed` prop). Confirmed
-// from three-stdlib's OrbitControls source
-// (getAutoRotationAngle/rotateLeft): drei's <OrbitControls> calls
+// ADR0009 (revised): ambient auto-rotation is now a standard, always-on
+// part of normal viewing -- not something gated entirely behind "I am a
+// satellite" mode. "I am a satellite" now just speeds this same rotation
+// up, rather than switching it on from a standstill. Both constants are
+// in the units three.js's OrbitControls.autoRotateSpeed itself uses
+// (SkyViewer.tsx passes one or the other straight through as the
+// `autoRotateSpeed` prop). Confirmed from three-stdlib's OrbitControls
+// source (getAutoRotationAngle/rotateLeft): drei's <OrbitControls> calls
 // controls.update() with no delta argument every frame, so the angle
 // added per call is a fixed `(2*PI/60/60) * autoRotateSpeed` radians --
 // at a steady ~60fps that works out to `6 * autoRotateSpeed` degrees of
-// drift per second. This value (0.08) targets roughly 0.48 deg/s, a full
-// 360-degree sweep in a little over 12 minutes -- slow and contemplative
-// ("calm, weightless, elegant" per the spec) rather than the library's
-// own default of 2.0 (~12 deg/s, a brisk 30-second lap, which would read
-// as spinning rather than drifting).
+// drift per second.
+//
+// AMBIENT_AUTO_ROTATE_SPEED (0.02, ~0.12 deg/s, a full 360-degree sweep
+// in about 50 minutes) is deliberately subtle -- present enough that the
+// sky never feels perfectly frozen, but slow enough to stay out of the
+// way of normal use (reading a story in DetailPanel, aiming a click at a
+// specific star).
+//
+// SATELLITE_AUTO_ROTATE_SPEED (0.08, ~0.48 deg/s, a full sweep in a
+// little over 12 minutes -- 4x the ambient rate) is the same "slow and
+// contemplative" speed this mode originally launched with, now reframed
+// as a *boost* over the ambient rate rather than the only speed that
+// ever applies. Still well under the library's own default of 2.0
+// (~12 deg/s, a brisk 30-second lap, which would read as spinning rather
+// than drifting).
+export const AMBIENT_AUTO_ROTATE_SPEED = 0.02;
 export const SATELLITE_AUTO_ROTATE_SPEED = 0.08;
 
 // Visual polish pass: a shared target plane *area* (world units^2) for

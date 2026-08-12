@@ -1,8 +1,20 @@
 # ADR0009 – "I Am A Satellite" Mode
 
-Status: Accepted
+Status: Accepted (revised same day)
 Date: 2026-08-12
 Deciders: Project owner + senior consultant
+
+**Revision note:** the mode originally shipped with auto-rotation gated
+entirely behind `satelliteMode` (off during normal viewing, on only in
+satellite mode). After hands-on testing, the project owner asked a
+direct follow-up ("why does autorotate not always work under normal
+viewing?") and then requested a design change: make the ambient
+auto-rotation a standard, always-on part of normal viewing, and have
+satellite mode simply speed the same rotation up rather than switching
+it on from a standstill. This document has been updated in place to
+describe that revised (and now current) design, rather than left
+describing the original one — see the Decision and Technical Approach
+sections below, both updated, plus the git history for the exact diff.
 
 ## Context
 
@@ -23,23 +35,32 @@ today.
   per-frame rotation controller. This was a close look at the library's
   actual source before deciding, not an assumption — see Technical
   Approach.
-- Add `satelliteMode: boolean` to `skyViewerStore` (`setSatelliteMode`,
-  `toggleSatelliteMode`); `SkyViewer.tsx` passes it straight through as
-  `autoRotate={satelliteMode}`.
+- **(Revised)** `autoRotate` is unconditionally `true` at all times —
+  ambient drift is now a standard part of normal viewing, not something
+  gated behind a mode toggle. `satelliteMode: boolean` in
+  `skyViewerStore` (`setSatelliteMode`, `toggleSatelliteMode`) now only
+  selects *which speed* applies: `SkyViewer.tsx` passes
+  `autoRotateSpeed={satelliteMode ? SATELLITE_AUTO_ROTATE_SPEED :
+  AMBIENT_AUTO_ROTATE_SPEED}`. The original version instead gated
+  `autoRotate` itself on `satelliteMode` (drift only during satellite
+  mode, none otherwise) — changed same-day after direct testing
+  feedback.
 - "I am a satellite" is a pseudo search result, not a graph node — it has
   no story, nothing to select. It matches a short list of plausible
   trigger words (not just the literal exact phrase) and, whenever it
   matches at all, is always inserted at the very top of the results list,
   ahead of every ranked node match — a hard rule, not just a favorable
   rank within the existing ADR0008 ranking.
-- Selecting it toggles the mode (on again turns it off, matching the
-  spec's "selecting it again turns the mode off").
+- Selecting it toggles between the two speeds (selecting it again returns
+  to the normal ambient rate, matching the spec's "selecting it again
+  turns the mode off" — "off" now means "back to ambient speed" rather
+  than "no rotation").
 - A small "Exit Satellite Mode" pill (`SatelliteModeBanner.tsx`) is shown
-  top-center only while the mode is active, as a second, always-visible
-  way to turn it off.
-- Speed is deliberately very slow — see Technical Approach for the
+  top-center only while the faster speed is active, as a second,
+  always-visible way to drop back to the ambient rate.
+- Both speeds are deliberately slow — see Technical Approach for the
   derivation — aiming for "calm, weightless, elegant" over anything that
-  reads as spinning.
+  reads as spinning, even at the boosted satellite rate.
 
 ## Technical Approach
 
@@ -95,10 +116,24 @@ one that actually runs — at a steady ~60fps that's `(2π/60/60) ×
 autoRotateSpeed` radians per call × 60 calls/sec = `6 × autoRotateSpeed`
 degrees per second. The library's own default (`autoRotateSpeed = 2.0`)
 works out to ~12°/s — a full lap in 30 seconds, which reads as spinning,
-not drifting. `SATELLITE_AUTO_ROTATE_SPEED = 0.08` (`constants.ts`)
-targets ~0.48°/s — a full 360° sweep takes a little over 12 minutes.
-Over a typical minute or two of viewing that's a gentle few-degree shift,
-enough to feel alive without ever feeling fast.
+not drifting.
+
+**(Revised)** Two speeds now exist, both in `constants.ts`:
+
+- `AMBIENT_AUTO_ROTATE_SPEED = 0.02` (~0.12°/s, a full 360° sweep in
+  about 50 minutes) — the standard, always-on rate during normal
+  viewing. Deliberately subtle: present enough that the sky never feels
+  perfectly frozen, but slow enough to stay out of the way of reading a
+  `DetailPanel` story or aiming a click at a specific star.
+- `SATELLITE_AUTO_ROTATE_SPEED = 0.08` (~0.48°/s, a full sweep in a
+  little over 12 minutes, 4x the ambient rate) — unchanged from the
+  original version's only speed, now reframed as the *boost* "I am a
+  satellite" applies on top of the ambient rate rather than the only
+  speed that ever applies.
+
+Both stay well under the library's own default (2.0, ~12°/s) — even the
+"fast" satellite speed remains slow and contemplative by that
+comparison.
 
 ### Direction
 
@@ -165,10 +200,16 @@ own deliberate "mode banner" rather than crowding an existing cluster.
   visually confirmed (see Technical Approach) — needs a live check, with
   a documented one-line fix if it's backward.
 - `autoRotate` briefly composes with an in-flight ADR0008 fly-to
-  animation if a user searches for an object while satellite mode is
-  active (both write to the camera within the same ~900ms window) — an
+  animation if a user searches for an object while auto-rotation is
+  running (both write to the camera within the same ~900ms window) — an
   accepted minor edge case, not specifically suppressed, since both
-  motions are already small and smooth and the interaction is brief.
+  motions are already small and smooth and the interaction is brief. Now
+  more frequently in play than before, since ambient drift always runs
+  rather than only during satellite mode -- still judged acceptable for
+  the same reason.
+- The sky is never perfectly still now, even outside satellite mode --
+  an explicit, deliberate tradeoff per the revised spec, at a speed
+  chosen specifically to stay unobtrusive (see Speed above).
 
 ## Follow-up
 

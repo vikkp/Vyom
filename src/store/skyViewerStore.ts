@@ -50,12 +50,13 @@ interface SkyViewerState {
    */
   cameraHeadingDeg: number;
   /**
-   * ADR0009: "I am a satellite" mode -- when true, SkyViewer.tsx's
-   * OrbitControls drifts the view continuously and slowly (its own
-   * built-in autoRotate) instead of sitting still, while every other
+   * ADR0009 (revised): "I am a satellite" mode -- SkyViewer.tsx's
+   * OrbitControls now always drifts the view slowly (its own built-in
+   * autoRotate); this flag just switches that drift from its normal
+   * ambient speed to a faster "satellite" speed, while every other
    * interaction (drag, click-to-select, search, zoom) keeps working
    * exactly as before. A single boolean rather than an enum/mode-stack:
-   * this app only ever has one "ambient camera behavior" at a time.
+   * this app only ever has one auto-rotation speed active at a time.
    */
   satelliteMode: boolean;
   setCity: (city: City) => void;

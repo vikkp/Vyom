@@ -13,7 +13,7 @@ import { MythicFigureOverlays } from "./MythicFigureOverlays";
 import { GraphLines } from "./GraphLines";
 import { SkyGradient } from "./SkyGradient";
 import { CitySkyline } from "./CitySkyline";
-import { DOME_RADIUS, CAMERA_ORBIT_RADIUS, SATELLITE_AUTO_ROTATE_SPEED } from "./constants";
+import { DOME_RADIUS, CAMERA_ORBIT_RADIUS, AMBIENT_AUTO_ROTATE_SPEED, SATELLITE_AUTO_ROTATE_SPEED } from "./constants";
 import { CameraFocusController } from "./CameraFocusController";
 import { FovZoomController } from "./FovZoomController";
 import { CompassHeadingTracker } from "./CompassHeadingTracker";
@@ -94,15 +94,17 @@ export function SkyViewer() {
         maxDistance={CAMERA_ORBIT_RADIUS}
         minPolarAngle={0.05}
         maxPolarAngle={Math.PI - 0.05}
-        // ADR0009: "I am a satellite" mode reuses OrbitControls' own
-        // autoRotate rather than a hand-rolled per-frame rotation --
-        // three-stdlib's implementation already skips the auto-rotation
-        // step while the user is actively dragging (state !== NONE), so
-        // "look around while the drift continues" works for free: a drag
-        // takes over immediately, and the slow drift resumes on release
+        // ADR0009 (revised): ambient auto-rotation is always on now, not
+        // just during "I am a satellite" mode -- the mode only speeds the
+        // same rotation up. Reuses OrbitControls' own autoRotate rather
+        // than a hand-rolled per-frame rotation -- three-stdlib's
+        // implementation already skips the auto-rotation step while the
+        // user is actively dragging (state !== NONE), so "look around
+        // while the drift continues" works for free at either speed: a
+        // drag takes over immediately, and the drift resumes on release
         // without any extra state to manage here.
-        autoRotate={satelliteMode}
-        autoRotateSpeed={SATELLITE_AUTO_ROTATE_SPEED}
+        autoRotate
+        autoRotateSpeed={satelliteMode ? SATELLITE_AUTO_ROTATE_SPEED : AMBIENT_AUTO_ROTATE_SPEED}
       />
       <CameraFocusController />
       <FovZoomController />
