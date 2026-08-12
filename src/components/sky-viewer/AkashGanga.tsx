@@ -52,16 +52,32 @@ const LABEL_FACING_THRESHOLD = Math.cos(25 * DEG);
  * rotation (see useAkashGangaRotation below), not by recomputing vertex
  * positions.
  */
+// Reported as a sharp, hard-edged diagonal streak cutting through the
+// band (Sydney sky screenshot) -- this was a UV-seam bug in this
+// function, not a texture issue. The original version reused column 0's
+// vertex (u=0) for the wraparound edge at col=LON_SEGMENTS via `%
+// LON_SEGMENTS`, so the seam triangles spanned UV u=(LON_SEGMENTS-1)/LON_SEGMENTS
+// (~0.99) to u=0 directly. GPU UV interpolation is linear/unaware of the
+// texture's wraparound, so across that one thin geometric sliver it swept
+// through nearly the *entire* 0..1 texture width instead of wrapping --
+// invisible while the texture was low-contrast/heavily blurred, but a
+// sharp bright/dark streak once the softening-regression fix (1059427)
+// restored more contrast. Fixed by giving the sphere a genuine extra
+// column of vertices at u=1.0 (geometrically identical position to u=0,
+// since l=360deg=0deg) instead of reusing the u=0 vertex -- every seam
+// triangle now interpolates a normal, narrow UV range like every other
+// triangle on the sphere.
 function buildSphereGeometry(): BufferGeometry {
   const positions: number[] = [];
   const uvs: number[] = [];
+  const lonSteps = LON_SEGMENTS + 1;
 
   for (let row = 0; row <= LAT_SEGMENTS; row++) {
     const v = row / LAT_SEGMENTS;
     const bDeg = 90 - v * 180;
     const b = bDeg * DEG;
 
-    for (let col = 0; col < LON_SEGMENTS; col++) {
+    for (let col = 0; col <= LON_SEGMENTS; col++) {
       const u = col / LON_SEGMENTS;
       const l = u * 360 * DEG;
       const x = Math.cos(b) * Math.cos(l) * BAND_RADIUS;
@@ -79,10 +95,10 @@ function buildSphereGeometry(): BufferGeometry {
   const indices: number[] = [];
   for (let row = 0; row < LAT_SEGMENTS; row++) {
     for (let col = 0; col < LON_SEGMENTS; col++) {
-      const a = row * LON_SEGMENTS + col;
-      const b2 = row * LON_SEGMENTS + ((col + 1) % LON_SEGMENTS);
-      const c = (row + 1) * LON_SEGMENTS + col;
-      const d = (row + 1) * LON_SEGMENTS + ((col + 1) % LON_SEGMENTS);
+      const a = row * lonSteps + col;
+      const b2 = row * lonSteps + col + 1;
+      const c = (row + 1) * lonSteps + col;
+      const d = (row + 1) * lonSteps + col + 1;
       indices.push(a, c, b2, b2, c, d);
     }
   }
