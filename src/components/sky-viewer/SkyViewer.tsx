@@ -4,6 +4,7 @@ import { STAR_CATALOG, SAPTARISHI_STARS } from "../../data/starCatalog";
 import { ASTERISMS } from "../../data/asterisms";
 import { Horizon } from "./Horizon";
 import { StarField } from "./StarField";
+import { AkashGanga } from "./AkashGanga";
 import { NavagrahaField } from "./NavagrahaField";
 import { AsterismLines } from "./AsterismLines";
 import { RishiOverlays } from "./RishiOverlays";
@@ -53,6 +54,12 @@ export function SkyViewer() {
       <Stars radius={DOME_RADIUS + 20} depth={45} count={182000} factor={1.0} saturation={0} fade speed={0.1} />
       <Stars radius={DOME_RADIUS + 17} depth={38} count={23000} factor={2.4} saturation={0} fade speed={0.16} />
       <Stars radius={DOME_RADIUS + 14} depth={30} count={2000} factor={4.2} saturation={0} fade speed={0.2} />
+
+      {/* ADR0006: Akash Ganga, the Milky Way -- a soft galactic-plane
+          glow rendered behind every named layer below (Rishis, mythic
+          figures, stars, the Navagraha), so it reads as backdrop rather
+          than competing content. */}
+      <AkashGanga />
 
       <group onPointerMissed={() => select(null)}>
         <StarField stars={STAR_CATALOG} />
