@@ -15,6 +15,7 @@ import { CitySkyline } from "./CitySkyline";
 import { DOME_RADIUS, CAMERA_ORBIT_RADIUS } from "./constants";
 import { CameraFocusController } from "./CameraFocusController";
 import { FovZoomController } from "./FovZoomController";
+import { CompassHeadingTracker } from "./CompassHeadingTracker";
 
 /**
  * The real-sky scene content (ADR0002): observer stands at the world
@@ -94,6 +95,7 @@ export function SkyViewer() {
       />
       <CameraFocusController />
       <FovZoomController />
+      <CompassHeadingTracker />
     </>
   );
 }

@@ -37,11 +37,24 @@ interface SkyViewerState {
   currentDate: Date;
   visibleLayers: Set<SkyViewerLayer>;
   focusRequest: FocusRequest | null;
+  /**
+   * The camera's current compass heading in degrees (0=North, 90=East,
+   * matching astronomy.ts's az convention) -- written every frame by
+   * CompassHeadingTracker (mounted inside the R3F <Canvas>, see
+   * SkyViewer.tsx) and read by the top-right Compass HUD widget
+   * (Compass.tsx), which lives outside the Canvas and has no direct
+   * camera access. This is the one piece of camera state this store
+   * tracks continuously rather than on request, since the compass needs
+   * to redraw every time the user drags to look around, not just on
+   * discrete events like focusRequest.
+   */
+  cameraHeadingDeg: number;
   setCity: (city: City) => void;
   setUseGeolocation: (value: boolean) => void;
   setCurrentDate: (date: Date) => void;
   toggleLayer: (layer: SkyViewerLayer) => void;
   requestFocus: (direction: { x: number; y: number; z: number }) => void;
+  setCameraHeadingDeg: (heading: number) => void;
 }
 
 const defaultCity = CITIES.find((c) => c.id === DEFAULT_CITY_ID) ?? CITIES[0];
@@ -52,6 +65,7 @@ export const useSkyViewerStore = create<SkyViewerState>((set, get) => ({
   currentDate: new Date(),
   visibleLayers: new Set(DEFAULT_LAYERS),
   focusRequest: null,
+  cameraHeadingDeg: 0,
   setCity: (city) => set({ selectedCity: city, useGeolocation: false }),
   setUseGeolocation: (value) => set({ useGeolocation: value }),
   setCurrentDate: (date) => set({ currentDate: date }),
@@ -62,4 +76,5 @@ export const useSkyViewerStore = create<SkyViewerState>((set, get) => ({
     set({ visibleLayers: next });
   },
   requestFocus: (direction) => set((s) => ({ focusRequest: { direction, token: s.focusRequest ? s.focusRequest.token + 1 : 1 } })),
+  setCameraHeadingDeg: (heading) => set({ cameraHeadingDeg: heading }),
 }));
