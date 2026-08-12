@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Billboard, Html } from "@react-three/drei";
-import { AdditiveBlending, BufferGeometry, Float32BufferAttribute, Vector3, type Mesh } from "three";
+import { AdditiveBlending, BufferGeometry, DoubleSide, Float32BufferAttribute, Vector3, type Mesh } from "three";
 import { raDecToAltAz, altAzToVector3 } from "../../utils/astronomy";
 import { galacticToEquatorial } from "../../utils/galactic";
 import { useSkyViewerStore } from "../../store/skyViewerStore";
@@ -125,6 +125,13 @@ export function AkashGanga() {
           blending={AdditiveBlending}
           toneMapped={false}
           opacity={0.55}
+          // The ring's per-vertex winding isn't globally consistent from
+          // every possible camera angle inside the dome (unlike an
+          // outward-viewed sphere, this is viewed from the centre) --
+          // DoubleSide guarantees the band never partially disappears or
+          // shows a backface gap depending on which way the camera is
+          // looking.
+          side={DoubleSide}
         />
       </mesh>
       {showLabel && (

@@ -24,15 +24,38 @@ function longitudeBrightness(lDeg: number): number {
   return Math.max(0, Math.min(1, base + core + carina - dip));
 }
 
+/** Half-width of the rendered band, in galactic latitude degrees -- must match AkashGanga.tsx's BAND_HALF_WIDTH_DEG. */
+export const AKASH_GANGA_BAND_HALF_WIDTH_DEG = 16;
+
+/**
+ * Forces brightness to exactly 0 at the mesh's geometric edge (b = +-
+ * AKASH_GANGA_BAND_HALF_WIDTH_DEG). Without this, the two Gaussian layers
+ * below are still ~0.08 (not ~0) at the edge -- invisible when the band
+ * is viewed face-on (it just reads as "a bit less soft"), but a glaring
+ * hard-edged rectangular seam when the band is viewed nearly edge-on
+ * (looking along its length), because at that viewing angle the mesh's
+ * fixed-width geometric boundary itself becomes visible as two long
+ * parallel lines rather than fading away with the rest of the glow. A
+ * smooth parabolic window, 1 at the centre and exactly 0 at the edge,
+ * removes that boundary regardless of viewing angle.
+ */
+function edgeWindow(bDeg: number, halfWidthDeg: number): number {
+  const t = Math.min(1, Math.abs(bDeg) / halfWidthDeg);
+  return Math.max(0, 1 - t * t);
+}
+
 /**
  * Brightness across the band's width (galactic latitude): a narrow
  * bright core plus a broader, fainter halo -- two Gaussians rather than
- * one, so the edge reads as a soft feather rather than a clean falloff.
+ * one, so the edge reads as a soft feather rather than a clean falloff --
+ * windowed to guarantee it reaches exactly 0 at the band's geometric
+ * edge (see edgeWindow above).
  */
 function latitudeBrightness(bDeg: number): number {
   const coreLayer = 0.72 * Math.exp(-((bDeg / 4.5) ** 2));
   const haloLayer = 0.45 * Math.exp(-((bDeg / 12) ** 2));
-  return Math.max(0, Math.min(1, coreLayer + haloLayer));
+  const raw = Math.max(0, Math.min(1, coreLayer + haloLayer));
+  return raw * edgeWindow(bDeg, AKASH_GANGA_BAND_HALF_WIDTH_DEG);
 }
 
 /** Tiny deterministic PRNG (mulberry32) so the mottling is stable across renders. */
@@ -46,9 +69,6 @@ function mulberry32(seed: number): () => number {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
-
-/** Half-width of the rendered band, in galactic latitude degrees -- must match AkashGanga.tsx's BAND_HALF_WIDTH_DEG. */
-export const AKASH_GANGA_BAND_HALF_WIDTH_DEG = 16;
 
 /**
  * Procedurally generates the Akash Ganga band's cross-section texture:
