@@ -967,6 +967,216 @@ export function makeDhanishtaDamaruSilhouette(color: string, w = 260, h = 220): 
 }
 
 /**
+ * Shatabhisha: the nakshatra's own symbol -- an empty circle, evoking
+ * "a hundred stars/healers" and Varuna's vast cosmic waters, matching its
+ * single-star simplicity with a correspondingly simple, single-form
+ * figure. See docs/research/shatabhisha-asterism-sources.md.
+ */
+export function makeShatabhishaCircleSilhouette(color: string, w = 260, h = 260): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const cx = w / 2;
+  const cy = h / 2;
+  const outerR = w * 0.38;
+
+  auraBackdrop(ctx, cx, cy, w * 0.7, color);
+
+  // The outer ring itself -- an "empty circle," deliberately hollow.
+  withGlowFill(ctx, color, w * 0.05, 0.65, () => {
+    ctx.lineWidth = w * 0.028;
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.arc(cx, cy, outerR, 0, Math.PI * 2);
+    ctx.stroke();
+  });
+
+  // A scatter of ~100 small dots along and just inside/outside the ring,
+  // "a hundred stars" -- deterministic placement (not Math.random) so the
+  // texture is stable across re-renders.
+  withGlowFill(ctx, color, w * 0.015, 0.8, () => {
+    const dotCount = 100;
+    for (let i = 0; i < dotCount; i++) {
+      const a = (i / dotCount) * Math.PI * 2;
+      // Pseudo-random-looking radial jitter from a deterministic
+      // trig-based sequence, so dots feel scattered rather than perfectly
+      // ringed without needing an RNG.
+      const jitter = Math.sin(i * 12.9898) * 0.5 + 0.5;
+      const r = outerR * (0.82 + jitter * 0.36);
+      const dotR = w * (0.006 + 0.006 * (1 - jitter));
+      ctx.beginPath();
+      ctx.arc(cx + Math.cos(a) * r, cy + Math.sin(a) * r, dotR, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
+ * Purva Bhadrapada: the nakshatra's own symbol -- the front two legs of a
+ * funeral cot/bier, matching the real two-star line it's anchored to.
+ * See docs/research/purva-bhadrapada-asterism-sources.md.
+ */
+export function makeBhadrapadaFrontLegsSilhouette(color: string, w = 300, h = 240): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const cy = h * 0.32;
+
+  auraBackdrop(ctx, w / 2, h * 0.5, w * 0.62, color);
+
+  withGlowFill(ctx, color, w * 0.04, 0.6, () => {
+    // Cot frame's front cross-rail.
+    ctx.lineWidth = w * 0.022;
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(w * 0.22, cy);
+    ctx.lineTo(w * 0.78, cy);
+    ctx.stroke();
+    // Two front legs, straight and tapered, ending in simple feet.
+    for (const lx of [w * 0.26, w * 0.74]) {
+      ctx.beginPath();
+      ctx.moveTo(lx, cy);
+      ctx.lineTo(lx, h * 0.86);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.ellipse(lx, h * 0.88, w * 0.035, h * 0.02, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    // A few woven cross-strands between the legs, cot-frame detail.
+    ctx.lineWidth = w * 0.008;
+    for (const t of [0.35, 0.55]) {
+      ctx.beginPath();
+      ctx.moveTo(w * 0.26, cy + h * t * 0.5);
+      ctx.lineTo(w * 0.74, cy + h * t * 0.5 - h * 0.03);
+      ctx.stroke();
+    }
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
+ * Uttara Bhadrapada: the nakshatra's own symbol -- the back two legs of
+ * the same funeral cot, deliberately matching Purva Bhadrapada's
+ * placeholder motif (front vs. back legs of one cot) so the two read as a
+ * related pair, plus a faint serpent coil (Ahir Budhnya). See
+ * docs/research/uttara-bhadrapada-asterism-sources.md.
+ */
+export function makeBhadrapadaBackLegsSilhouette(color: string, w = 300, h = 240): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const cy = h * 0.32;
+
+  auraBackdrop(ctx, w / 2, h * 0.5, w * 0.62, color);
+
+  withGlowFill(ctx, color, w * 0.04, 0.6, () => {
+    // Cot frame's back cross-rail, slightly taller/further than the
+    // front-legs figure to read as "the other end" of the same cot.
+    ctx.lineWidth = w * 0.022;
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(w * 0.2, cy);
+    ctx.lineTo(w * 0.8, cy);
+    ctx.stroke();
+    // Two back legs.
+    for (const lx of [w * 0.24, w * 0.76]) {
+      ctx.beginPath();
+      ctx.moveTo(lx, cy);
+      ctx.lineTo(lx, h * 0.82);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.ellipse(lx, h * 0.84, w * 0.035, h * 0.02, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
+
+  // A faint serpent coiling around the base, Ahir Budhnya, "serpent of
+  // the deep waters" -- kept subtle so it doesn't compete with the
+  // cot-legs' own clarity.
+  withGlowFill(ctx, color, w * 0.03, 0.3, () => {
+    ctx.lineWidth = w * 0.015;
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(w * 0.15, h * 0.86);
+    ctx.quadraticCurveTo(w * 0.35, h * 0.94, w * 0.5, h * 0.86);
+    ctx.quadraticCurveTo(w * 0.65, h * 0.78, w * 0.85, h * 0.86);
+    ctx.stroke();
+    // Small serpent head at one end.
+    ctx.beginPath();
+    ctx.arc(w * 0.87, h * 0.86, w * 0.02, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
+ * Revati: the nakshatra's own symbol -- a swimming fish, matching the
+ * real two-star line (yogatara to its documented near neighbour) as a
+ * simple head-to-tail shape. See docs/research/revati-asterism-sources.md.
+ */
+export function makeRevatiFishSilhouette(color: string, w = 320, h = 200): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const cy = h * 0.52;
+
+  auraBackdrop(ctx, w / 2, cy, w * 0.55, color);
+
+  withGlowFill(ctx, color, w * 0.04, 0.62, () => {
+    // Body, a simple tapered fish silhouette swimming right.
+    ctx.beginPath();
+    ctx.moveTo(w * 0.2, cy);
+    ctx.quadraticCurveTo(w * 0.35, cy - h * 0.22, w * 0.62, cy - h * 0.1);
+    ctx.quadraticCurveTo(w * 0.74, cy - h * 0.04, w * 0.78, cy);
+    ctx.quadraticCurveTo(w * 0.74, cy + h * 0.04, w * 0.62, cy + h * 0.1);
+    ctx.quadraticCurveTo(w * 0.35, cy + h * 0.22, w * 0.2, cy);
+    ctx.closePath();
+    ctx.fill();
+
+    // Tail fin, forked.
+    ctx.beginPath();
+    ctx.moveTo(w * 0.2, cy);
+    ctx.lineTo(w * 0.04, cy - h * 0.14);
+    ctx.lineTo(w * 0.12, cy);
+    ctx.lineTo(w * 0.04, cy + h * 0.14);
+    ctx.closePath();
+    ctx.fill();
+
+    // Dorsal fin.
+    ctx.beginPath();
+    ctx.moveTo(w * 0.42, cy - h * 0.14);
+    ctx.quadraticCurveTo(w * 0.5, cy - h * 0.3, w * 0.58, cy - h * 0.14);
+    ctx.closePath();
+    ctx.fill();
+  });
+
+  // Eye.
+  withGlowFill(ctx, color, w * 0.015, 0.9, () => {
+    ctx.beginPath();
+    ctx.arc(w * 0.68, cy - h * 0.02, w * 0.012, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
  * Dhruva: the young boy in penance, seated in meditation with hands
  * folded, a faint halo marking the boon that fixed him as the pole star --
  * see docs/research/dhruva-figure-sources.md.

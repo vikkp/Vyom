@@ -154,4 +154,34 @@ export const ASTERISMS: Asterism[] = [
     starIds: ["rotanev", "delta-delphini", "gamma-delphini", "alpha-delphini", "rotanev"],
     nodeId: "dhanishta",
   },
+  // Sixth (final) batch: Shatabhisha, Purva Bhadrapada, Uttara
+  // Bhadrapada, Revati -- completes all 27 nakshatras. Shatabhisha is
+  // deliberately absent here, same reasoning as Ardra/Swati, no
+  // traditional companion star to draw a line to. See
+  // docs/research/shatabhisha-asterism-sources.md.
+  {
+    id: "purva-bhadrapada",
+    name: "Purva Bhadrapada",
+    // Simple two-star line, the western pair of corners of the Great
+    // Square of Pegasus. See
+    // docs/research/purva-bhadrapada-asterism-sources.md.
+    starIds: ["markab", "scheat"],
+    nodeId: "purva-bhadrapada",
+  },
+  {
+    id: "uttara-bhadrapada",
+    name: "Uttara Bhadrapada",
+    // Simple two-star line, the eastern pair of corners of the same
+    // Great Square. See docs/research/uttara-bhadrapada-asterism-sources.md.
+    starIds: ["algenib", "alpheratz"],
+    nodeId: "uttara-bhadrapada",
+  },
+  {
+    id: "revati",
+    name: "Revati",
+    // Simple two-star line to Zeta Piscium's documented near neighbour.
+    // See docs/research/revati-asterism-sources.md.
+    starIds: ["zeta-piscium", "mu-piscium"],
+    nodeId: "revati",
+  },
 ];

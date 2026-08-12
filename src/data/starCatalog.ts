@@ -227,6 +227,36 @@ export const DHANISHTA_EXTRA_STARS: SkyCatalogStar[] = [
   { id: "delta-delphini", ra: 20.7243, dec: 15.0746, mag: 4.43, indianName: "Dhanishta", westernName: "Delta Delphini", nodeId: "dhanishta", constellation: "Nakshatra" },
 ];
 
+// Sixth (final) asterism batch: Shatabhisha, Purva Bhadrapada, Uttara
+// Bhadrapada, Revati -- this completes all 27 nakshatras. Shatabhisha is
+// a deliberate exception, same reasoning as Ardra/Swati: its classical
+// symbol is an abstract "hundred stars/empty circle" with no traditionally
+// documented small companion grouping, so there's no
+// SHATABHISHA_EXTRA_STARS group; see
+// docs/research/shatabhisha-asterism-sources.md.
+
+// Purva Bhadrapada: the existing yogatara Markab plus Scheat -- the
+// western pair of corners of the Great Square of Pegasus. See
+// docs/research/purva-bhadrapada-asterism-sources.md.
+export const PURVA_BHADRAPADA_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "scheat", ra: 23.0629, dec: 28.0828, mag: 2.42, indianName: "Purva Bhadrapada", westernName: "Scheat (β Pegasi)", nodeId: "purva-bhadrapada", constellation: "Nakshatra" },
+];
+
+// Uttara Bhadrapada: the existing yogatara Algenib plus Alpheratz -- the
+// eastern pair of corners of the same Great Square of Pegasus (split
+// across these two adjacent nakshatras). See
+// docs/research/uttara-bhadrapada-asterism-sources.md.
+export const UTTARA_BHADRAPADA_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "alpheratz", ra: 0.1398, dec: 29.0904, mag: 2.06, indianName: "Uttara Bhadrapada", westernName: "Alpheratz (α Andromedae)", nodeId: "uttara-bhadrapada", constellation: "Nakshatra" },
+];
+
+// Revati: the existing yogatara Zeta Piscium plus its documented near
+// neighbour Mu Piscium, at the end of the western fish's tail. See
+// docs/research/revati-asterism-sources.md.
+export const REVATI_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "mu-piscium", ra: 1.5031, dec: 6.1439, mag: 4.84, indianName: "Revati", westernName: "Mu Piscium", nodeId: "revati", constellation: "Nakshatra" },
+];
+
 export const BRIGHT_STARS: SkyCatalogStar[] = [
   { id: "sirius", ra: 6.753, dec: -16.716, mag: -1.46, westernName: "Sirius" },
   { id: "canopus", ra: 6.399, dec: -52.696, mag: -0.74, westernName: "Canopus" },
@@ -271,5 +301,8 @@ export const STAR_CATALOG: SkyCatalogStar[] = [
   ...MULA_EXTRA_STARS,
   ...SHRAVANA_EXTRA_STARS,
   ...DHANISHTA_EXTRA_STARS,
+  ...PURVA_BHADRAPADA_EXTRA_STARS,
+  ...UTTARA_BHADRAPADA_EXTRA_STARS,
+  ...REVATI_EXTRA_STARS,
   ...BRIGHT_STARS,
 ];

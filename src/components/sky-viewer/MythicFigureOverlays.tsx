@@ -24,6 +24,10 @@ import {
   makeMulaRootsSilhouette,
   makeShravanaFootprintsSilhouette,
   makeDhanishtaDamaruSilhouette,
+  makeShatabhishaCircleSilhouette,
+  makeBhadrapadaFrontLegsSilhouette,
+  makeBhadrapadaBackLegsSilhouette,
+  makeRevatiFishSilhouette,
 } from "./mythicFigureSilhouette";
 import { DOME_RADIUS, sizeForAspect } from "./constants";
 
@@ -267,6 +271,43 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     placeholderSize: [3.7, 3.1],
     realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Dhanishta",
+  },
+  // Sixth (final) batch: Shatabhisha, Purva Bhadrapada, Uttara
+  // Bhadrapada, Revati -- completes all 27 nakshatras. Placeholders only,
+  // real art pending. No real PNGs exist yet, so realSize below is a
+  // guess from each silhouette's own canvas aspect, same as every earlier
+  // batch's initial placeholder-only state.
+  {
+    nodeId: "shatabhisha",
+    anchorStarIds: ["lambda-aquarii"],
+    makeTexture: makeShatabhishaCircleSilhouette,
+    placeholderSize: [3.4, 3.4],
+    realSize: sizeForAspect(1),
+    label: "Shatabhisha",
+  },
+  {
+    nodeId: "purva-bhadrapada",
+    anchorStarIds: ["markab", "scheat"],
+    makeTexture: makeBhadrapadaFrontLegsSilhouette,
+    placeholderSize: [4.1, 3.3],
+    realSize: sizeForAspect(300 / 240),
+    label: "Purva Bhadrapada",
+  },
+  {
+    nodeId: "uttara-bhadrapada",
+    anchorStarIds: ["algenib", "alpheratz"],
+    makeTexture: makeBhadrapadaBackLegsSilhouette,
+    placeholderSize: [4.1, 3.3],
+    realSize: sizeForAspect(300 / 240),
+    label: "Uttara Bhadrapada",
+  },
+  {
+    nodeId: "revati",
+    anchorStarIds: ["zeta-piscium", "mu-piscium"],
+    makeTexture: makeRevatiFishSilhouette,
+    placeholderSize: [4.7, 2.9],
+    realSize: sizeForAspect(320 / 200),
+    label: "Revati",
   },
 ];
 
