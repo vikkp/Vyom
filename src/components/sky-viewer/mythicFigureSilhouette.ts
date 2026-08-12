@@ -815,6 +815,158 @@ export function makeSwatiShootSilhouette(color: string, w = 200, h = 300): Canva
 }
 
 /**
+ * Mula: the nakshatra's own symbol -- a tied bundle of roots, matching
+ * both "the Root" meaning and the real curved tail-shape asterism it's
+ * anchored to. See docs/research/mula-asterism-sources.md.
+ */
+export function makeMulaRootsSilhouette(color: string, w = 260, h = 320): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const cx = w / 2;
+  const tieY = h * 0.3;
+
+  auraBackdrop(ctx, cx, h * 0.5, w * 0.65, color);
+
+  withGlowFill(ctx, color, w * 0.04, 0.6, () => {
+    // A fan of tapering root strands, gathered at a tie point and
+    // splaying downward and outward.
+    const roots = [-0.32, -0.22, -0.1, 0.02, 0.14, 0.26, 0.36];
+    for (const dx of roots) {
+      const endX = cx + w * dx * 1.5;
+      const endY = h * (0.82 + Math.abs(dx) * 0.25);
+      const midX = cx + w * dx * 0.6;
+      const midY = h * 0.56;
+      ctx.lineWidth = w * (0.045 - Math.abs(dx) * 0.05);
+      ctx.strokeStyle = color;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(cx, tieY);
+      ctx.quadraticCurveTo(midX, midY, endX, endY);
+      ctx.stroke();
+      // Small root hairs branching off partway down.
+      ctx.lineWidth = w * 0.012;
+      ctx.beginPath();
+      ctx.moveTo(midX, midY);
+      ctx.lineTo(midX + w * dx * 0.3, midY + h * 0.08);
+      ctx.stroke();
+    }
+
+    // Tie/knot binding the roots together at the top.
+    ctx.beginPath();
+    ctx.ellipse(cx, tieY, w * 0.09, h * 0.035, 0, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
+ * Shravana: the nakshatra's own symbol -- three footprints in a row
+ * (Vishnu's Vamana strides across the three worlds), matching the real
+ * three-star line it's anchored to. See
+ * docs/research/shravana-asterism-sources.md.
+ */
+export function makeShravanaFootprintsSilhouette(color: string, w = 340, h = 220): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const cy = h * 0.55;
+
+  auraBackdrop(ctx, w / 2, cy, w * 0.6, color);
+
+  function footprint(fx: number, fy: number, mirror: 1 | -1) {
+    const s = mirror;
+    // Heel + sole, a simple elongated rounded shape.
+    ctx.beginPath();
+    ctx.ellipse(fx, fy, w * 0.05, h * 0.14, 0, 0, Math.PI * 2);
+    ctx.fill();
+    // Toes, five small dots fanning off the top.
+    for (let i = 0; i < 5; i++) {
+      const t = i / 4 - 0.5;
+      ctx.beginPath();
+      ctx.ellipse(fx + s * t * w * 0.06, fy - h * 0.17, w * 0.014, h * 0.022, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  withGlowFill(ctx, color, w * 0.04, 0.62, () => {
+    footprint(w * 0.22, cy, 1);
+    footprint(w * 0.5, cy - h * 0.06, -1);
+    footprint(w * 0.78, cy, 1);
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
+ * Dhanishta: the nakshatra's own symbol -- a damaru (hourglass hand-drum),
+ * matching the real rhombus/"Job's Coffin" shape its four stars trace.
+ * See docs/research/dhanishta-asterism-sources.md.
+ */
+export function makeDhanishtaDamaruSilhouette(color: string, w = 260, h = 220): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  const cx = w / 2;
+  const cy = h / 2;
+
+  auraBackdrop(ctx, cx, cy, w * 0.62, color);
+
+  withGlowFill(ctx, color, w * 0.04, 0.6, () => {
+    // Two drum heads (circular discs) joined by a pinched hourglass waist.
+    const headR = h * 0.28;
+    const leftCx = cx - w * 0.22;
+    const rightCx = cx + w * 0.22;
+    ctx.beginPath();
+    ctx.arc(leftCx, cy, headR, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(rightCx, cy, headR, 0, Math.PI * 2);
+    ctx.fill();
+    // Hourglass body connecting the two heads, pinched at the centre.
+    ctx.beginPath();
+    ctx.moveTo(leftCx, cy - headR * 0.7);
+    ctx.quadraticCurveTo(cx, cy - h * 0.06, rightCx, cy - headR * 0.7);
+    ctx.lineTo(rightCx, cy + headR * 0.7);
+    ctx.quadraticCurveTo(cx, cy + h * 0.06, leftCx, cy + headR * 0.7);
+    ctx.closePath();
+    ctx.fill();
+
+    // Lacing strands criss-crossing the waist, traditional damaru detail.
+    ctx.lineWidth = w * 0.008;
+    ctx.strokeStyle = color;
+    for (const t of [-0.5, 0, 0.5]) {
+      ctx.beginPath();
+      ctx.moveTo(leftCx + w * 0.06, cy + t * headR * 0.9);
+      ctx.lineTo(rightCx - w * 0.06, cy - t * headR * 0.9);
+      ctx.stroke();
+    }
+
+    // Two striking cords with beads, hanging from the waist.
+    ctx.lineWidth = w * 0.01;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.quadraticCurveTo(cx - w * 0.08, cy + h * 0.22, cx + w * 0.02, cy + h * 0.36);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(cx + w * 0.02, cy + h * 0.38, w * 0.018, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/**
  * Dhruva: the young boy in penance, seated in meditation with hands
  * folded, a faint halo marking the boon that fixed him as the pole star --
  * see docs/research/dhruva-figure-sources.md.

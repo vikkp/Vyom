@@ -124,4 +124,34 @@ export const ASTERISMS: Asterism[] = [
     starIds: ["delta-hydrae", "sigma-hydrae", "eta-hydrae", "epsilon-hydrae", "zeta-hydrae", "rho-hydrae", "delta-hydrae"],
     nodeId: "ashlesha",
   },
+  // Fifth batch: Mula, Shravana, Dhanishta.
+  {
+    id: "mula",
+    name: "Mula",
+    // The real "fish-hook" curve of Scorpius' tail: sweeps south from
+    // Epsilon through the tail's lowest point (Eta), then curves back
+    // north to the stinger tip (Lesath/Shaula). Open path, not closed --
+    // a tail has two ends. See docs/research/mula-asterism-sources.md.
+    starIds: ["epsilon-scorpii", "mu1-scorpii", "zeta2-scorpii", "eta-scorpii", "theta-scorpii", "iota1-scorpii", "kappa-scorpii", "upsilon-scorpii", "shaula"],
+    nodeId: "mula",
+  },
+  {
+    id: "shravana",
+    name: "Shravana",
+    // Three stars in a near-straight line, Tarazed north of Altair and
+    // Alshain south of it -- matching the "three footprints" symbol
+    // directly. See docs/research/shravana-asterism-sources.md.
+    starIds: ["gamma-aquilae", "altair", "beta-aquilae"],
+    nodeId: "shravana",
+  },
+  {
+    id: "dhanishta",
+    name: "Dhanishta",
+    // Closed quadrilateral ("Job's Coffin"), ordering derived from the
+    // convex hull of the four real positions (by angle around their
+    // centroid) so the drawn rhombus doesn't self-intersect. See
+    // docs/research/dhanishta-asterism-sources.md.
+    starIds: ["rotanev", "delta-delphini", "gamma-delphini", "alpha-delphini", "rotanev"],
+    nodeId: "dhanishta",
+  },
 ];

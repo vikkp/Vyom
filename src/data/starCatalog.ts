@@ -193,6 +193,40 @@ export const ASHLESHA_EXTRA_STARS: SkyCatalogStar[] = [
   { id: "zeta-hydrae", ra: 8.9232, dec: 5.9456, mag: 3.1, indianName: "Ashlesha", westernName: "Zeta Hydrae", nodeId: "ashlesha", constellation: "Nakshatra" },
 ];
 
+// Fifth asterism batch: Mula, Shravana, Dhanishta.
+
+// Mula: the existing yogatara Shaula plus the rest of the real "fish-hook"
+// tail-of-Scorpius asterism -- Epsilon, Mu1, Zeta2, Eta, Theta (Sargas),
+// Iota1, Kappa (Girtab), Upsilon (Lesath) Scorpii. See
+// docs/research/mula-asterism-sources.md.
+export const MULA_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "epsilon-scorpii", ra: 16.8361, dec: -34.2933, mag: 2.29, indianName: "Mula", westernName: "Epsilon Scorpii", nodeId: "mula", constellation: "Nakshatra" },
+  { id: "mu1-scorpii", ra: 16.8645, dec: -38.0474, mag: 3.08, indianName: "Mula", westernName: "Mu¹ Scorpii", nodeId: "mula", constellation: "Nakshatra" },
+  { id: "zeta2-scorpii", ra: 16.9097, dec: -42.3613, mag: 3.62, indianName: "Mula", westernName: "Zeta² Scorpii", nodeId: "mula", constellation: "Nakshatra" },
+  { id: "eta-scorpii", ra: 17.2026, dec: -43.2392, mag: 3.33, indianName: "Mula", westernName: "Eta Scorpii", nodeId: "mula", constellation: "Nakshatra" },
+  { id: "theta-scorpii", ra: 17.622, dec: -42.9978, mag: 1.84, indianName: "Mula", westernName: "Sargas (θ Scorpii)", nodeId: "mula", constellation: "Nakshatra" },
+  { id: "iota1-scorpii", ra: 17.7931, dec: -40.127, mag: 3.03, indianName: "Mula", westernName: "Iota¹ Scorpii", nodeId: "mula", constellation: "Nakshatra" },
+  { id: "kappa-scorpii", ra: 17.7081, dec: -39.0299, mag: 2.39, indianName: "Mula", westernName: "Girtab (κ Scorpii)", nodeId: "mula", constellation: "Nakshatra" },
+  { id: "upsilon-scorpii", ra: 17.5127, dec: -37.2958, mag: 2.7, indianName: "Mula", westernName: "Lesath (υ Scorpii)", nodeId: "mula", constellation: "Nakshatra" },
+];
+
+// Shravana: the existing yogatara Altair flanked by Tarazed (north) and
+// Alshain (south) -- the real "head of Aquila" triad. See
+// docs/research/shravana-asterism-sources.md.
+export const SHRAVANA_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "gamma-aquilae", ra: 19.771, dec: 10.6133, mag: 2.71, indianName: "Shravana", westernName: "Tarazed (γ Aquilae)", nodeId: "shravana", constellation: "Nakshatra" },
+  { id: "beta-aquilae", ra: 19.9219, dec: 6.4068, mag: 3.87, indianName: "Shravana", westernName: "Alshain (β Aquilae)", nodeId: "shravana", constellation: "Nakshatra" },
+];
+
+// Dhanishta: the existing yogatara Beta Delphini (Rotanev) plus Alpha
+// (Sualocin), Gamma, and Delta Delphini -- the compact rhombus/"Job's
+// Coffin" shape. See docs/research/dhanishta-asterism-sources.md.
+export const DHANISHTA_EXTRA_STARS: SkyCatalogStar[] = [
+  { id: "alpha-delphini", ra: 20.6606, dec: 15.9121, mag: 3.77, indianName: "Dhanishta", westernName: "Sualocin (α Delphini)", nodeId: "dhanishta", constellation: "Nakshatra" },
+  { id: "gamma-delphini", ra: 20.7776, dec: 16.1243, mag: 4.36, indianName: "Dhanishta", westernName: "Gamma Delphini", nodeId: "dhanishta", constellation: "Nakshatra" },
+  { id: "delta-delphini", ra: 20.7243, dec: 15.0746, mag: 4.43, indianName: "Dhanishta", westernName: "Delta Delphini", nodeId: "dhanishta", constellation: "Nakshatra" },
+];
+
 export const BRIGHT_STARS: SkyCatalogStar[] = [
   { id: "sirius", ra: 6.753, dec: -16.716, mag: -1.46, westernName: "Sirius" },
   { id: "canopus", ra: 6.399, dec: -52.696, mag: -0.74, westernName: "Canopus" },
@@ -234,5 +268,8 @@ export const STAR_CATALOG: SkyCatalogStar[] = [
   ...PUNARVASU_EXTRA_STARS,
   ...PUSHYA_EXTRA_STARS,
   ...ASHLESHA_EXTRA_STARS,
+  ...MULA_EXTRA_STARS,
+  ...SHRAVANA_EXTRA_STARS,
+  ...DHANISHTA_EXTRA_STARS,
   ...BRIGHT_STARS,
 ];

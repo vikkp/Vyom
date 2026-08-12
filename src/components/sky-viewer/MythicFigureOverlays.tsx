@@ -21,6 +21,9 @@ import {
   makePushyaLotusSilhouette,
   makeAshleshaSerpentSilhouette,
   makeSwatiShootSilhouette,
+  makeMulaRootsSilhouette,
+  makeShravanaFootprintsSilhouette,
+  makeDhanishtaDamaruSilhouette,
 } from "./mythicFigureSilhouette";
 import { DOME_RADIUS, sizeForAspect } from "./constants";
 
@@ -235,6 +238,35 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     placeholderSize: [2.9, 4.3],
     realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Swati",
+  },
+  // Fifth batch: Mula, Shravana, Dhanishta -- placeholders only, real art
+  // pending. No real PNGs exist yet, so realSize below is a guess from
+  // each silhouette's own canvas aspect, same as every earlier batch's
+  // initial placeholder-only state -- update to measured pixel dimensions
+  // once real art lands.
+  {
+    nodeId: "mula",
+    anchorStarIds: ["epsilon-scorpii", "mu1-scorpii", "zeta2-scorpii", "eta-scorpii", "theta-scorpii", "iota1-scorpii", "kappa-scorpii", "upsilon-scorpii", "shaula"],
+    makeTexture: makeMulaRootsSilhouette,
+    placeholderSize: [3.6, 4.4],
+    realSize: sizeForAspect(260 / 320),
+    label: "Mula",
+  },
+  {
+    nodeId: "shravana",
+    anchorStarIds: ["gamma-aquilae", "altair", "beta-aquilae"],
+    makeTexture: makeShravanaFootprintsSilhouette,
+    placeholderSize: [4.9, 3.2],
+    realSize: sizeForAspect(340 / 220),
+    label: "Shravana",
+  },
+  {
+    nodeId: "dhanishta",
+    anchorStarIds: ["rotanev", "alpha-delphini", "gamma-delphini", "delta-delphini"],
+    makeTexture: makeDhanishtaDamaruSilhouette,
+    placeholderSize: [3.7, 3.1],
+    realSize: sizeForAspect(260 / 220),
+    label: "Dhanishta",
   },
 ];
 
