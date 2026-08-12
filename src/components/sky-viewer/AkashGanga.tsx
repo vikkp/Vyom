@@ -185,7 +185,14 @@ export function AkashGanga() {
           depthWrite={false}
           blending={AdditiveBlending}
           toneMapped={false}
-          opacity={0.55}
+          // Softening pass: nudged down from 0.55 -- the texture itself
+          // (akashGangaTexture.ts) now spreads its brightness over a wider,
+          // blurred area than before, so keeping the same peak opacity on
+          // top of that would have made the band read as more present
+          // overall even though each individual pixel is softer. Lowering
+          // this keeps the band from competing with nearby Nakshatra
+          // figures and the Navagraha for visual attention.
+          opacity={0.46}
           // Viewed from inside a closed sphere -- DoubleSide guarantees
           // the surface is visible regardless of the manually-built
           // geometry's winding direction (same reasoning as before, now

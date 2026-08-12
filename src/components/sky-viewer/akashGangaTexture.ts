@@ -36,20 +36,28 @@ function longitudeBrightness(lDeg: number): number {
  */
 const BAND_HALF_WIDTH_DEG = 16;
 
+// A smootherstep-shaped falloff (rather than the previous 1-t^2 parabola)
+// -- its slope eases toward 0 at both ends of the window instead of just
+// at t=0, so the taper's own shoulder is gentler going into the cutoff,
+// not just the cutoff point itself. Softening pass (visual refinement,
+// see makeAkashGangaTexture's doc comment): reducing sharpness at the
+// source, on top of the new blur pass below, means the blur has less
+// hard content to smooth over in the first place.
 function edgeWindow(bDeg: number, halfWidthDeg: number): number {
   const t = Math.min(1, Math.abs(bDeg) / halfWidthDeg);
-  return Math.max(0, 1 - t * t);
+  return Math.max(0, 1 - smoothstep(t));
 }
 
 /**
  * Brightness across the band's width (galactic latitude): a narrow
  * bright core plus a broader, fainter halo -- two Gaussians rather than
  * one, so the edge reads as a soft feather -- windowed to reach exactly
- * 0 well before the poles.
+ * 0 well before the poles. Halo widened (11 -> 13 degrees) and core
+ * softened (4.2 -> 4.6) for a gentler, more feathered cross-section.
  */
 function latitudeBrightness(bDeg: number): number {
-  const coreLayer = 0.74 * Math.exp(-((bDeg / 4.2) ** 2));
-  const haloLayer = 0.42 * Math.exp(-((bDeg / 11) ** 2));
+  const coreLayer = 0.7 * Math.exp(-((bDeg / 4.6) ** 2));
+  const haloLayer = 0.46 * Math.exp(-((bDeg / 13) ** 2));
   const raw = Math.max(0, Math.min(1, coreLayer + haloLayer));
   return raw * edgeWindow(bDeg, BAND_HALF_WIDTH_DEG);
 }
@@ -144,13 +152,20 @@ function latToNoiseV(bDeg: number): number {
 }
 
 /**
- * Four-octave fractal cloud-density field: patchy, high-contrast, and
- * -- crucially -- multiplies (not just perturbs) the base alpha, so the
- * band's cross-section stops being a perfectly smooth Gaussian ridge and
+ * Four-octave fractal cloud-density field: patchy, and -- crucially --
+ * multiplies (not just perturbs) the base alpha, so the band's
+ * cross-section stops being a perfectly smooth Gaussian ridge and
  * instead reads as clumped starcloud, the way the real Milky Way's
- * unresolved starlight does. `1.9`/`1.3` push contrast up (recentered
- * around the field's ~0.5 mean, then a power curve) rather than leaving
- * the raw lattice sum's naturally low contrast in place.
+ * unresolved starlight does.
+ *
+ * Softening pass: contrast/range both pulled back from the previous
+ * version (recenter multiplier 1.9 -> 1.3, output range 0.35-1.65 ->
+ * 0.55-1.4, power curve 1.3 -> 1.05) -- the earlier settings produced
+ * enough dark-to-bright swing on their own to read as sharp/patchy even
+ * before the blur pass below runs, which fought against the "ethereal,
+ * gentle" goal. This keeps the mottled-cloud structure recognisable
+ * while lowering its contrast, so the still-textured result reads as
+ * soft variation rather than a busy, high-contrast pattern.
  */
 function cloudDensity(u: number, v: number): number {
   const fbm =
@@ -158,8 +173,61 @@ function cloudDensity(u: number, v: number): number {
     sampleLattice(CLOUD_OCTAVE_B, u, v) * 0.28 +
     sampleLattice(CLOUD_OCTAVE_C, u, v) * 0.17 +
     sampleLattice(CLOUD_OCTAVE_D, u, v) * 0.1;
-  const contrasted = Math.max(0, Math.min(1, (fbm - 0.5) * 1.9 + 0.5));
-  return 0.35 + Math.pow(contrasted, 1.3) * 1.3;
+  const contrasted = Math.max(0, Math.min(1, (fbm - 0.5) * 1.3 + 0.5));
+  return 0.55 + Math.pow(contrasted, 1.05) * 0.85;
+}
+
+// Wrap-safe Gaussian blur radius, in texture pixels. This texture's WIDTH
+// and HEIGHT/degree scale match exactly (1024/360 == 512/180), so a
+// uniform pixel blur is a uniform *angular* blur in both directions --
+// no separate horizontal/vertical tuning needed. This is the main lever
+// for "soften the edges significantly" / "ethereal and gentle": it's
+// applied as a final pass over the fully-composited texture (see
+// blurTextureWrapped below) rather than by hand-tuning every falloff
+// curve above to be individually softer, so it smooths *everything*
+// uniformly -- the band edge, the cloud mottling, the dust lane -- the
+// same way real atmospheric/optical softness would, instead of leaving
+// some features sharp and others soft.
+const EDGE_BLUR_PX = 6;
+
+/**
+ * Blurs `source` using CSS/canvas `filter: blur()`, but safely across the
+ * texture's horizontal wrap seam (u=0/u=1, the galactic longitude 0/360
+ * boundary) -- naively blurring a single canvas would sample transparent
+ * space just past each horizontal edge instead of wrapping around to the
+ * texture's other side, producing a visible seam artifact exactly at the
+ * seam's location. Since l=0 (the galactic center, this band's single
+ * brightest feature) sits right at that seam, an artifact there would be
+ * far more noticeable than anywhere else on the texture. Standard fix:
+ * tile the source three times horizontally, blur the tripled canvas, then
+ * crop back out the middle copy -- every pixel in the final crop then has
+ * real (tiled) neighbours on both sides to blend with, not empty space.
+ */
+function blurTextureWrapped(source: HTMLCanvasElement, blurPx: number): HTMLCanvasElement {
+  const w = source.width;
+  const h = source.height;
+
+  const tiled = document.createElement("canvas");
+  tiled.width = w * 3;
+  tiled.height = h;
+  const tiledCtx = tiled.getContext("2d")!;
+  tiledCtx.drawImage(source, -w, 0);
+  tiledCtx.drawImage(source, 0, 0);
+  tiledCtx.drawImage(source, w, 0);
+
+  const blurred = document.createElement("canvas");
+  blurred.width = w * 3;
+  blurred.height = h;
+  const blurredCtx = blurred.getContext("2d")!;
+  blurredCtx.filter = `blur(${blurPx}px)`;
+  blurredCtx.drawImage(tiled, 0, 0);
+
+  const result = document.createElement("canvas");
+  result.width = w;
+  result.height = h;
+  const resultCtx = result.getContext("2d")!;
+  resultCtx.drawImage(blurred, -w, 0);
+  return result;
 }
 
 /**
@@ -228,7 +296,9 @@ export function makeAkashGangaTexture(): CanvasTexture {
       const u = px / WIDTH;
       const l = u * 360;
 
-      const edgeWarpDeg = (sampleLattice(EDGE_WARP_LATTICE, u, noiseV) - 0.5) * 7;
+      // Gentler edge warp (was *7) -- less aggressive wandering, in
+      // keeping with the softening pass overall.
+      const edgeWarpDeg = (sampleLattice(EDGE_WARP_LATTICE, u, noiseV) - 0.5) * 5;
       const bEff = b + edgeWarpDeg;
       const noiseVEff = latToNoiseV(bEff);
 
@@ -241,35 +311,38 @@ export function makeAkashGangaTexture(): CanvasTexture {
 
       // Fine stippled grain on top, sampled from the highest-frequency
       // octave at an offset phase so it doesn't just repeat cloudDensity's
-      // own fine layer.
+      // own fine layer. Narrower range than before (was 0.82-1.18) -- the
+      // grain is meant to read as a subtle texture cue, not a source of
+      // sharp per-pixel contrast on its own.
       const grain = sampleLattice(CLOUD_OCTAVE_D, u * 1.7 + 0.13, noiseVEff * 1.3 + 0.07);
-      alpha *= 0.82 + grain * 0.36;
+      alpha *= 0.9 + grain * 0.2;
 
       // Dust lane: distance from a wobbling centerline, strongest through
-      // the bright core/disc, tapered with a squared falloff for a soft
-      // but still legible rift.
+      // the bright core/disc. Widened and softened (radius 2.3->2.8,
+      // exponent 1.6->1.8, max darkening 0.72->0.5) so it reads as a
+      // gentle dimming rather than a carved-out gap.
       const riftCenter = (sampleLattice(RIFT_WOBBLE_LATTICE, u, noiseVEff) - 0.5) * 6;
       const riftDist = Math.abs(bEff - riftCenter);
-      const riftRaw = Math.max(0, 1 - (riftDist / 2.3) ** 2);
-      const riftStrength = Math.pow(riftRaw, 1.6) * Math.max(0, Math.min(1, lonB * 1.4));
-      alpha *= 1 - riftStrength * 0.72;
+      const riftRaw = Math.max(0, 1 - (riftDist / 2.8) ** 2);
+      const riftStrength = Math.pow(riftRaw, 1.8) * Math.max(0, Math.min(1, lonB * 1.4));
+      alpha *= 1 - riftStrength * 0.5;
 
       alpha = Math.max(0, Math.min(1, alpha));
 
-      const warmth = Math.max(0, Math.min(1, Math.exp(-((angDist(l, 0) / 28) ** 2)) * 0.6));
+      const warmth = Math.max(0, Math.min(1, Math.exp(-((angDist(l, 0) / 28) ** 2)) * 0.55));
       let r = coolR + (warmR - coolR) * warmth;
       let g = coolG + (warmG - coolG) * warmth;
       let bC = coolB + (warmB - coolB) * warmth;
 
       const rose = sampleLattice(ROSE_TINT_LATTICE, u * 0.8 + 0.31, noiseVEff * 0.9);
-      const roseMask = Math.max(0, Math.min(1, (rose - 0.58) * 3)) * (latB > 0.04 ? 1 : 0);
-      r += roseMask * 22;
-      g -= roseMask * 12;
-      bC -= roseMask * 8;
+      const roseMask = Math.max(0, Math.min(1, (rose - 0.6) * 2.6)) * (latB > 0.04 ? 1 : 0);
+      r += roseMask * 16;
+      g -= roseMask * 9;
+      bC -= roseMask * 6;
 
-      r -= riftStrength * 20;
-      g -= riftStrength * 28;
-      bC -= riftStrength * 38;
+      r -= riftStrength * 15;
+      g -= riftStrength * 21;
+      bC -= riftStrength * 28;
 
       const idx = (py * WIDTH + px) * 4;
       data[idx] = Math.max(0, Math.min(255, r));
@@ -281,7 +354,16 @@ export function makeAkashGangaTexture(): CanvasTexture {
 
   ctx.putImageData(imageData, 0, 0);
 
-  const texture = new CanvasTexture(canvas);
+  // Final softening pass: a wrap-safe blur over the whole composited
+  // texture (see blurTextureWrapped's doc comment for why the wrap
+  // handling matters here specifically) -- this is what turns "somewhat
+  // gentler math" into "significantly softer edges," smoothing the band's
+  // boundary, the cloud mottling, and the dust lane uniformly in one
+  // pass, the way real atmospheric softness would, rather than leaving
+  // any one feature comparatively sharp.
+  const softened = blurTextureWrapped(canvas, EDGE_BLUR_PX);
+
+  const texture = new CanvasTexture(softened);
   texture.wrapS = RepeatWrapping;
   texture.wrapT = ClampToEdgeWrapping;
   texture.needsUpdate = true;
