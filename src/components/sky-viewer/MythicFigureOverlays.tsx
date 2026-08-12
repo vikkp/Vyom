@@ -315,15 +315,17 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     label: "Revati",
   },
   // Eighth batch: Hasta, Chitra, Vishakha, Purva Ashadha -- placeholders
-  // only, real art pending. No real PNGs exist yet, so realSize below is
-  // a guess from each silhouette's own canvas aspect, same as every
-  // earlier batch's initial placeholder-only state.
+  // batch. Real art has landed for all four (784x1168, same portrait
+  // dimensions as the rest) -- realSize below is measured from the
+  // actual delivered pixels. All four compositions are close to
+  // vertically centred (alpha centroid 0.51-0.56 of frame height), so
+  // none need a realAnchorFrac override.
   {
     nodeId: "hasta",
     anchorStarIds: ["algorab", "alpha-corvi", "beta-corvi", "gamma-corvi", "epsilon-corvi"],
     makeTexture: makeHastaHandSilhouette,
     placeholderSize: [3.4, 3.9],
-    realSize: sizeForAspect(260 / 300),
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Hasta",
   },
   {
@@ -331,7 +333,7 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     anchorStarIds: ["spica"],
     makeTexture: makeChitraJewelSilhouette,
     placeholderSize: [2.9, 3.9],
-    realSize: sizeForAspect(220 / 300),
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Chitra",
   },
   {
@@ -339,7 +341,7 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     anchorStarIds: ["zubenelgenubi", "beta-librae", "gamma-librae", "iota-librae"],
     makeTexture: makeVishakhaArchSilhouette,
     placeholderSize: [4.2, 3.4],
-    realSize: sizeForAspect(320 / 260),
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Vishakha",
   },
   {
@@ -347,7 +349,7 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     anchorStarIds: ["kaus-media", "epsilon-sagittarii", "lambda-sagittarii"],
     makeTexture: makePurvaAshadhaFanSilhouette,
     placeholderSize: [3.6, 3.9],
-    realSize: sizeForAspect(280 / 300),
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Purva Ashadha",
   },
 ];
