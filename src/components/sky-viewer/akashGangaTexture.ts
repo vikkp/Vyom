@@ -1,7 +1,7 @@
 import { CanvasTexture, RepeatWrapping, ClampToEdgeWrapping } from "three";
 
-const WIDTH = 512;
-const HEIGHT = 160;
+const WIDTH = 1024;
+const HEIGHT = 512;
 
 /** Shortest angular distance between two longitudes, handling 0/360 wrap. */
 function angDist(lDeg: number, refDeg: number): number {
@@ -24,21 +24,20 @@ function longitudeBrightness(lDeg: number): number {
   return Math.max(0, Math.min(1, base + core + carina - dip));
 }
 
-/** Half-width of the rendered band, in galactic latitude degrees -- must match AkashGanga.tsx's BAND_HALF_WIDTH_DEG. */
-export const AKASH_GANGA_BAND_HALF_WIDTH_DEG = 16;
-
 /**
- * Forces brightness to exactly 0 at the mesh's geometric edge (b = +-
- * AKASH_GANGA_BAND_HALF_WIDTH_DEG). Without this, the two Gaussian layers
- * below are still ~0.08 (not ~0) at the edge -- invisible when the band
- * is viewed face-on (it just reads as "a bit less soft"), but a glaring
- * hard-edged rectangular seam when the band is viewed nearly edge-on
- * (looking along its length), because at that viewing angle the mesh's
- * fixed-width geometric boundary itself becomes visible as two long
- * parallel lines rather than fading away with the rest of the glow. A
- * smooth parabolic window, 1 at the centre and exactly 0 at the edge,
- * removes that boundary regardless of viewing angle.
+ * Half-width, in galactic latitude degrees, of the visible glow --
+ * brightness is forced to exactly 0 beyond this (see edgeWindow). This
+ * texture now covers the *entire* sphere (b from +90 to -90, see
+ * AkashGanga.tsx), not just this band -- everywhere outside it is fully
+ * transparent, which is what actually matters now: because the geometry
+ * is a closed sphere rather than an open strip, there's no geometric
+ * boundary left for a non-zero edge value to expose as a hard line (the
+ * bug this constant was originally added to fix). Kept anyway because a
+ * smooth taper still looks better than a sharp Gaussian cutoff, and
+ * matches the width described in the ADR/research doc.
  */
+const BAND_HALF_WIDTH_DEG = 16;
+
 function edgeWindow(bDeg: number, halfWidthDeg: number): number {
   const t = Math.min(1, Math.abs(bDeg) / halfWidthDeg);
   return Math.max(0, 1 - t * t);
@@ -47,15 +46,14 @@ function edgeWindow(bDeg: number, halfWidthDeg: number): number {
 /**
  * Brightness across the band's width (galactic latitude): a narrow
  * bright core plus a broader, fainter halo -- two Gaussians rather than
- * one, so the edge reads as a soft feather rather than a clean falloff --
- * windowed to guarantee it reaches exactly 0 at the band's geometric
- * edge (see edgeWindow above).
+ * one, so the edge reads as a soft feather -- windowed to reach exactly
+ * 0 well before the poles.
  */
 function latitudeBrightness(bDeg: number): number {
   const coreLayer = 0.72 * Math.exp(-((bDeg / 4.5) ** 2));
   const haloLayer = 0.45 * Math.exp(-((bDeg / 12) ** 2));
   const raw = Math.max(0, Math.min(1, coreLayer + haloLayer));
-  return raw * edgeWindow(bDeg, AKASH_GANGA_BAND_HALF_WIDTH_DEG);
+  return raw * edgeWindow(bDeg, BAND_HALF_WIDTH_DEG);
 }
 
 /** Tiny deterministic PRNG (mulberry32) so the mottling is stable across renders. */
@@ -71,13 +69,21 @@ function mulberry32(seed: number): () => number {
 }
 
 /**
- * Procedurally generates the Akash Ganga band's cross-section texture:
- * u (0-1, wraps seamlessly) maps to galactic longitude 0-360; v (0-1)
- * maps to galactic latitude +BAND_HALF_WIDTH..-BAND_HALF_WIDTH. Cool
- * pale white-blue, matching StarField.tsx's existing "mostly cool white/
- * blue-white" star palette, with light mottling layered on top so it
- * reads as a textured starcloud rather than a flat gradient -- see
- * docs/adr/ADR0006-akash-ganga-milky-way.md.
+ * Procedurally generates Akash Ganga's texture as a **full equirectangular
+ * map of the whole sphere** -- u (0-1, wraps seamlessly) is galactic
+ * longitude 0-360, v (0-1) is galactic latitude +90 (top) to -90
+ * (bottom) -- almost entirely transparent, with the soft glow band only
+ * occupying the strip near v=0.5 (b=0). This texture is mapped onto a
+ * full enclosing sphere (AkashGanga.tsx), not just a narrow ring: a
+ * closed sphere viewed from its centre is crossed by every ray exactly
+ * once no matter which way the camera looks, which is what actually
+ * fixes the hard-edged "column" artifact an earlier narrow-ring version
+ * of this mesh produced at grazing/edge-on viewing angles (an open strip
+ * with real geometric width gets crossed *multiple* times by a grazing
+ * ray, and with additive blending those overlapping layers stack into a
+ * bright, hard-edged streak -- no amount of texture softness fixes that,
+ * only closing the geometry does). See ADR0006 and the follow-up fix
+ * commit for the full diagnosis.
  */
 export function makeAkashGangaTexture(): CanvasTexture {
   const canvas = document.createElement("canvas");
@@ -95,7 +101,7 @@ export function makeAkashGangaTexture(): CanvasTexture {
 
   for (let py = 0; py < HEIGHT; py++) {
     const v = py / (HEIGHT - 1);
-    const b = AKASH_GANGA_BAND_HALF_WIDTH_DEG - v * 2 * AKASH_GANGA_BAND_HALF_WIDTH_DEG;
+    const b = 90 - v * 180;
     const latB = latitudeBrightness(b);
 
     for (let px = 0; px < WIDTH; px++) {
@@ -123,18 +129,20 @@ export function makeAkashGangaTexture(): CanvasTexture {
 
   // Light mottling: soft, low-opacity blobs scattered mostly within the
   // bright core region, for an organic "starcloud" texture rather than a
-  // flat gradient -- deterministic seed so the look is stable.
+  // flat gradient -- deterministic seed so the look is stable. Confined
+  // to rows near the band (the only place with any alpha to speak of),
+  // rather than scanning the whole now-much-taller canvas.
   const rand = mulberry32(88172645);
+  const bandRowCenter = HEIGHT / 2;
+  const bandRowSpan = (BAND_HALF_WIDTH_DEG / 90) * (HEIGHT / 2) * 1.8;
   ctx.globalCompositeOperation = "overlay";
-  for (let i = 0; i < 70; i++) {
+  for (let i = 0; i < 90; i++) {
     const u = rand();
     const l = u * 360;
-    // Weight blob placement toward brighter longitude regions so the
-    // mottling reads as part of the band, not scattered noise.
     if (rand() > longitudeBrightness(l) + 0.15) continue;
     const px = u * WIDTH;
-    const py = HEIGHT / 2 + (rand() - 0.5) * HEIGHT * 0.75;
-    const radius = 8 + rand() * 22;
+    const py = bandRowCenter + (rand() - 0.5) * bandRowSpan;
+    const radius = 14 + rand() * 40;
     const grad = ctx.createRadialGradient(px, py, 0, px, py, radius);
     const tint = rand() > 0.5 ? "255,255,255" : "170,190,230";
     grad.addColorStop(0, `rgba(${tint},${0.12 + rand() * 0.1})`);
