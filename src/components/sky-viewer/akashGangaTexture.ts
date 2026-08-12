@@ -17,7 +17,15 @@ function angDist(lDeg: number, refDeg: number): number {
  * photometry -- see the ADR's Consequences section.
  */
 function longitudeBrightness(lDeg: number): number {
-  const base = 0.3;
+  // Lowered (was 0.3) per the "flat dividing sash" feedback: at a
+  // uniform floor this high, stretches of the band far from the
+  // center/Carina peaks never got meaningfully dimmer than the peaks
+  // once cloud-density/blur evened everything out, so a wide swath of
+  // sky read as one uniform stripe. A lower floor lets those stretches
+  // genuinely fade -- including down to nearly nothing right at the
+  // anticenter (base + core+carina - dip ~= 0 there), matching how faint
+  // the real Milky Way actually is through Taurus/Auriga.
+  const base = 0.18;
   const core = 0.72 * Math.exp(-((angDist(lDeg, 0) / 20) ** 2));
   const carina = 0.34 * Math.exp(-((angDist(lDeg, 283) / 16) ** 2));
   const dip = 0.18 * Math.exp(-((angDist(lDeg, 180) / 28) ** 2));
@@ -52,12 +60,19 @@ function edgeWindow(bDeg: number, halfWidthDeg: number): number {
  * Brightness across the band's width (galactic latitude): a narrow
  * bright core plus a broader, fainter halo -- two Gaussians rather than
  * one, so the edge reads as a soft feather -- windowed to reach exactly
- * 0 well before the poles. Halo widened (11 -> 13 degrees) and core
- * softened (4.2 -> 4.6) for a gentler, more feathered cross-section.
+ * 0 well before the poles.
+ *
+ * A previous pass widened both layers (core 4.2->4.6, halo 11->13) to
+ * soften the edge, but that made the band occupy enough of the sky's
+ * vertical extent to read as a wide diffuse wash rather than a defined
+ * ribbon. Narrowed back down further than the original values (core
+ * ->3.8, halo ->8) -- edge softness now comes from edgeWindow's
+ * smootherstep taper and the blur pass in makeAkashGangaTexture, not
+ * from spreading the Gaussians themselves this wide.
  */
 function latitudeBrightness(bDeg: number): number {
-  const coreLayer = 0.7 * Math.exp(-((bDeg / 4.6) ** 2));
-  const haloLayer = 0.46 * Math.exp(-((bDeg / 13) ** 2));
+  const coreLayer = 0.7 * Math.exp(-((bDeg / 3.8) ** 2));
+  const haloLayer = 0.46 * Math.exp(-((bDeg / 8) ** 2));
   const raw = Math.max(0, Math.min(1, coreLayer + haloLayer));
   return raw * edgeWindow(bDeg, BAND_HALF_WIDTH_DEG);
 }
@@ -158,14 +173,17 @@ function latToNoiseV(bDeg: number): number {
  * instead reads as clumped starcloud, the way the real Milky Way's
  * unresolved starlight does.
  *
- * Softening pass: contrast/range both pulled back from the previous
- * version (recenter multiplier 1.9 -> 1.3, output range 0.35-1.65 ->
- * 0.55-1.4, power curve 1.3 -> 1.05) -- the earlier settings produced
- * enough dark-to-bright swing on their own to read as sharp/patchy even
- * before the blur pass below runs, which fought against the "ethereal,
- * gentle" goal. This keeps the mottled-cloud structure recognisable
- * while lowering its contrast, so the still-textured result reads as
- * soft variation rather than a busy, high-contrast pattern.
+ * A previous softening pass pulled contrast/range back quite far
+ * (recenter multiplier 1.9 -> 1.3, range 0.35-1.65 -> 0.55-1.4, power
+ * curve 1.3 -> 1.05) to fight a "torch beam" look -- but combined with a
+ * heavier blur pass, that left almost no internal texture once
+ * composited, which is part of why the band read as a flat, uniform sash
+ * rather than a textured river. Restored partway back toward the
+ * original contrast (recenter -> 1.6, range -> 0.42-1.55, power -> 1.15)
+ * now that the blur radius has also come down (see EDGE_BLUR_PX) -- the
+ * combination is meant to keep mottled structure visible through the
+ * (now lighter) blur rather than relying on the blur to do all the
+ * softening work by itself.
  */
 function cloudDensity(u: number, v: number): number {
   const fbm =
@@ -173,22 +191,26 @@ function cloudDensity(u: number, v: number): number {
     sampleLattice(CLOUD_OCTAVE_B, u, v) * 0.28 +
     sampleLattice(CLOUD_OCTAVE_C, u, v) * 0.17 +
     sampleLattice(CLOUD_OCTAVE_D, u, v) * 0.1;
-  const contrasted = Math.max(0, Math.min(1, (fbm - 0.5) * 1.3 + 0.5));
-  return 0.55 + Math.pow(contrasted, 1.05) * 0.85;
+  const contrasted = Math.max(0, Math.min(1, (fbm - 0.5) * 1.6 + 0.5));
+  return 0.42 + Math.pow(contrasted, 1.15) * 1.13;
 }
 
 // Wrap-safe Gaussian blur radius, in texture pixels. This texture's WIDTH
 // and HEIGHT/degree scale match exactly (1024/360 == 512/180), so a
 // uniform pixel blur is a uniform *angular* blur in both directions --
-// no separate horizontal/vertical tuning needed. This is the main lever
-// for "soften the edges significantly" / "ethereal and gentle": it's
-// applied as a final pass over the fully-composited texture (see
-// blurTextureWrapped below) rather than by hand-tuning every falloff
-// curve above to be individually softer, so it smooths *everything*
-// uniformly -- the band edge, the cloud mottling, the dust lane -- the
-// same way real atmospheric/optical softness would, instead of leaving
-// some features sharp and others soft.
-const EDGE_BLUR_PX = 6;
+// no separate horizontal/vertical tuning needed. Applied as a final pass
+// over the fully-composited texture (see blurTextureWrapped below) to
+// take the remaining edge off the band boundary and pixel-level noise.
+//
+// Brought down from 6 -> 3: at 6px, combined with the lower-contrast
+// mottling of that same pass, the blur erased essentially all internal
+// texture, leaving a flat, uniform-looking sash rather than a textured
+// river -- most noticeable in stretches of sky away from the
+// core/Carina, where there was no strong feature left to survive the
+// blur. A lighter blur here still smooths the hard boundary and grain,
+// while leaving the (now higher-contrast again, see cloudDensity)
+// mottling visibly intact.
+const EDGE_BLUR_PX = 3;
 
 /**
  * Blurs `source` using CSS/canvas `filter: blur()`, but safely across the
@@ -311,11 +333,12 @@ export function makeAkashGangaTexture(): CanvasTexture {
 
       // Fine stippled grain on top, sampled from the highest-frequency
       // octave at an offset phase so it doesn't just repeat cloudDensity's
-      // own fine layer. Narrower range than before (was 0.82-1.18) -- the
-      // grain is meant to read as a subtle texture cue, not a source of
-      // sharp per-pixel contrast on its own.
+      // own fine layer. Range restored partway back up (was tightened to
+      // 0.9-1.1, now 0.86-1.14) alongside cloudDensity's contrast, so
+      // this texture cue survives the lighter blur pass instead of
+      // disappearing into it.
       const grain = sampleLattice(CLOUD_OCTAVE_D, u * 1.7 + 0.13, noiseVEff * 1.3 + 0.07);
-      alpha *= 0.9 + grain * 0.2;
+      alpha *= 0.86 + grain * 0.28;
 
       // Dust lane: distance from a wobbling centerline, strongest through
       // the bright core/disc. Widened and softened (radius 2.3->2.8,
