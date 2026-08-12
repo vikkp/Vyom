@@ -273,16 +273,17 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     label: "Dhanishta",
   },
   // Sixth (final) batch: Shatabhisha, Purva Bhadrapada, Uttara
-  // Bhadrapada, Revati -- completes all 27 nakshatras. Placeholders only,
-  // real art pending. No real PNGs exist yet, so realSize below is a
-  // guess from each silhouette's own canvas aspect, same as every earlier
-  // batch's initial placeholder-only state.
+  // Bhadrapada, Revati -- completes all 27 nakshatras. Real art has
+  // landed for all four (784x1168, same portrait dimensions as the rest)
+  // -- realSize below is measured from the actual delivered pixels. All
+  // four compositions are reasonably centred (alpha centroid 0.48-0.60 of
+  // frame height), so none need a realAnchorFrac override.
   {
     nodeId: "shatabhisha",
     anchorStarIds: ["lambda-aquarii"],
     makeTexture: makeShatabhishaCircleSilhouette,
     placeholderSize: [3.4, 3.4],
-    realSize: sizeForAspect(1),
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Shatabhisha",
   },
   {
@@ -290,7 +291,7 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     anchorStarIds: ["markab", "scheat"],
     makeTexture: makeBhadrapadaFrontLegsSilhouette,
     placeholderSize: [4.1, 3.3],
-    realSize: sizeForAspect(300 / 240),
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Purva Bhadrapada",
   },
   {
@@ -298,7 +299,7 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     anchorStarIds: ["algenib", "alpheratz"],
     makeTexture: makeBhadrapadaBackLegsSilhouette,
     placeholderSize: [4.1, 3.3],
-    realSize: sizeForAspect(300 / 240),
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Uttara Bhadrapada",
   },
   {
@@ -306,7 +307,7 @@ const MYTHIC_FIGURES: MythicFigureDef[] = [
     anchorStarIds: ["zeta-piscium", "mu-piscium"],
     makeTexture: makeRevatiFishSilhouette,
     placeholderSize: [4.7, 2.9],
-    realSize: sizeForAspect(320 / 200),
+    realSize: sizeForAspect(PORTRAIT_ASPECT),
     label: "Revati",
   },
 ];
