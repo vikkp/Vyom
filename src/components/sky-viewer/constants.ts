@@ -61,20 +61,29 @@ export const GROUND_CURVE_RADIUS = 420;
 // at a steady ~60fps that works out to `6 * autoRotateSpeed` degrees of
 // drift per second.
 //
-// AMBIENT_AUTO_ROTATE_SPEED (0.02, ~0.12 deg/s, a full 360-degree sweep
-// in about 50 minutes) is deliberately subtle -- present enough that the
+// AMBIENT_AUTO_ROTATE_SPEED (0.01, ~0.06 deg/s, a full 360-degree sweep
+// in about 100 minutes) is deliberately subtle -- present enough that the
 // sky never feels perfectly frozen, but slow enough to stay out of the
 // way of normal use (reading a story in DetailPanel, aiming a click at a
-// specific star).
+// specific star). Halved from the value this shipped with at launch
+// (0.02, ~50-minute sweep): once auto-rotate went always-on, the dense
+// background <Stars> layers in SkyViewer.tsx (radius > DOME_RADIUS,
+// tens of thousands of points, previously only ever seen static) turned
+// out to read as distracting/busy in motion even at that "subtle" rate --
+// a lot of moving points is more visually salient than a few named
+// stars drifting at the exact same angular speed. Slowing the shared
+// rotation is the fix, since every layer (named catalog stars, the
+// background field, the Navagraha) shares this one angular rate; there's
+// no way to give the background field its own slower rotation without a
+// second, independent rotation system.
 //
 // SATELLITE_AUTO_ROTATE_SPEED (0.08, ~0.48 deg/s, a full sweep in a
-// little over 12 minutes -- 4x the ambient rate) is the same "slow and
-// contemplative" speed this mode originally launched with, now reframed
-// as a *boost* over the ambient rate rather than the only speed that
-// ever applies. Still well under the library's own default of 2.0
-// (~12 deg/s, a brisk 30-second lap, which would read as spinning rather
-// than drifting).
-export const AMBIENT_AUTO_ROTATE_SPEED = 0.02;
+// little over 12 minutes) is unchanged from launch -- now an 8x boost
+// over the ambient rate (was 4x) rather than the only speed that ever
+// applies. Still well under the library's own default of 2.0 (~12 deg/s,
+// a brisk 30-second lap, which would read as spinning rather than
+// drifting).
+export const AMBIENT_AUTO_ROTATE_SPEED = 0.01;
 export const SATELLITE_AUTO_ROTATE_SPEED = 0.08;
 
 // Visual polish pass: a shared target plane *area* (world units^2) for

@@ -118,18 +118,27 @@ degrees per second. The library's own default (`autoRotateSpeed = 2.0`)
 works out to ~12°/s — a full lap in 30 seconds, which reads as spinning,
 not drifting.
 
-**(Revised)** Two speeds now exist, both in `constants.ts`:
+**(Revised twice)** Two speeds now exist, both in `constants.ts`:
 
-- `AMBIENT_AUTO_ROTATE_SPEED = 0.02` (~0.12°/s, a full 360° sweep in
-  about 50 minutes) — the standard, always-on rate during normal
+- `AMBIENT_AUTO_ROTATE_SPEED = 0.01` (~0.06°/s, a full 360° sweep in
+  about 100 minutes) — the standard, always-on rate during normal
   viewing. Deliberately subtle: present enough that the sky never feels
   perfectly frozen, but slow enough to stay out of the way of reading a
-  `DetailPanel` story or aiming a click at a specific star.
+  `DetailPanel` story or aiming a click at a specific star. Halved from
+  the value this shipped with earlier the same day (0.02, ~50-minute
+  sweep) after the project owner reported the dense background `<Stars>`
+  layers (tens of thousands of unnamed points, previously only ever seen
+  static) read as distracting once always-on rotation put them in
+  continuous motion — a lot of moving points is more visually salient
+  than a few named stars drifting at the identical angular speed, and
+  since every layer shares one camera rotation, slowing the shared rate
+  was the only lever available (there's no independent rotation for the
+  background field).
 - `SATELLITE_AUTO_ROTATE_SPEED = 0.08` (~0.48°/s, a full sweep in a
-  little over 12 minutes, 4x the ambient rate) — unchanged from the
-  original version's only speed, now reframed as the *boost* "I am a
-  satellite" applies on top of the ambient rate rather than the only
-  speed that ever applies.
+  little over 12 minutes) — unchanged from the original version's only
+  speed, now reframed as the *boost* "I am a satellite" applies on top of
+  the ambient rate rather than the only speed that ever applies. With the
+  ambient rate's halving, this is now an 8x boost (was 4x).
 
 Both stay well under the library's own default (2.0, ~12°/s) — even the
 "fast" satellite speed remains slow and contemplative by that
